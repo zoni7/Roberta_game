@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Binding of Perros - Demo</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="shell">
+      <canvas id="game" width="1280" height="720" aria-label="Demo del juego"></canvas>
+
+      <section class="hud" id="hud" hidden>
+        <div class="hud-health">
+          <img class="hud-face" src="assets/characters/player-front.png" alt="">
+          <div class="hearts" id="hearts"></div>
+        </div>
+        <div class="resource-stack">
+          <div class="counter">
+            <img src="assets/pickups/coin.png" alt="">
+            <span id="coins">0</span>
+          </div>
+          <div class="counter">
+            <img src="assets/pickups/bomb.png" alt="">
+            <span id="bombs">0</span>
+          </div>
+          <div class="counter">
+            <img src="assets/pickups/key.png" alt="">
+            <span id="keys">0</span>
+          </div>
+        </div>
+        <div class="room-count" id="roomCount">Sala 1</div>
+      </section>
+
+      <section class="game-over" id="gameOver" hidden>
+        <img src="assets/characters/player-dead.png" alt="">
+        <h1>Fin de la run</h1>
+        <p id="runSummary"></p>
+        <button class="primary" id="retryBtn" type="button">Otra run</button>
+      </section>
+
+      <section class="victory" id="victory" hidden>
+        <img src="assets/characters/player-item.png" alt="">
+        <h1>Has ganado</h1>
+        <p id="victorySummary"></p>
+        <button class="primary" id="victoryBtn" type="button">Nueva run</button>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>

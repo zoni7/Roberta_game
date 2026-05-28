@@ -1,0 +1,248 @@
+:root {
+  color-scheme: dark;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #050404;
+  color: #f4ece5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(125, 34, 28, 0.24), transparent 44%),
+    #050404;
+}
+
+.game-over button,
+.victory button {
+  min-width: 142px;
+  border: 2px solid #201512;
+  border-radius: 8px;
+  padding: 12px 22px;
+  background: #ece0cf;
+  box-shadow: 0 5px 0 #4d3327;
+  color: #281713;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.game-over button:hover,
+.game-over button:focus-visible,
+.victory button:hover,
+.victory button:focus-visible {
+  background: #fff4df;
+  outline: 3px solid rgba(252, 222, 131, 0.5);
+  outline-offset: 3px;
+}
+
+.game-over button:active,
+.victory button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #4d3327;
+}
+
+.shell {
+  position: relative;
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  place-items: center;
+  background: #030202;
+}
+
+#game {
+  width: min(100vw, 177.7778vh);
+  height: min(56.25vw, 100vh);
+  image-rendering: pixelated;
+  background: #120806;
+}
+
+.hud {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  right: 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  align-items: start;
+  column-gap: 14px;
+  row-gap: 8px;
+  pointer-events: none;
+  text-shadow:
+    3px 3px 0 #170b08,
+    -2px -2px 0 #170b08,
+    2px -2px 0 #170b08,
+    -2px 2px 0 #170b08;
+}
+
+.hud-health {
+  display: flex;
+  align-items: center;
+  min-width: 390px;
+  gap: 8px;
+}
+
+.hud-face {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(3px 3px 0 #170b08);
+}
+
+.hearts {
+  display: flex;
+  align-items: center;
+  min-width: 294px;
+  gap: 1px;
+}
+
+.hearts img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.resource-stack {
+  grid-column: 1;
+  display: grid;
+  gap: 0;
+  padding-left: 0;
+}
+
+.counter {
+  display: inline-flex;
+  align-items: center;
+  min-width: 92px;
+  height: 38px;
+  gap: 4px;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.counter img {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.room-count {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.game-over,
+.victory {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 14px;
+  padding: 24px;
+  background: rgba(7, 2, 1, 0.74);
+  text-align: center;
+}
+
+.game-over[hidden],
+.victory[hidden],
+.hud[hidden] {
+  display: none;
+}
+
+.game-over img,
+.victory img {
+  width: 118px;
+  height: 118px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.game-over h1,
+.victory h1 {
+  margin: 0;
+  color: #f7d7c3;
+  font-size: clamp(36px, 8vw, 82px);
+  line-height: 0.95;
+  text-shadow: 4px 4px 0 #1d0c08;
+}
+
+.game-over p,
+.victory p {
+  min-height: 32px;
+  margin: 0 0 12px;
+  color: #f4ece5;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+  .hud {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    column-gap: 8px;
+  }
+
+  .hud-health {
+    min-width: 238px;
+    gap: 4px;
+  }
+
+  .hud-face {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hearts {
+    min-width: 188px;
+  }
+
+  .hearts img {
+    width: 31px;
+    height: 31px;
+  }
+
+  .counter {
+    min-width: 66px;
+    height: 29px;
+    font-size: 20px;
+  }
+
+  .counter img {
+    width: 27px;
+    height: 27px;
+  }
+
+  .room-count {
+    font-size: 18px;
+  }
+
+  .menu-actions {
+    bottom: 24px;
+    width: min(92vw, 360px);
+  }
+
+  .game-over button,
+  .victory button {
+    min-width: 0;
+    flex: 1;
+    padding: 11px 10px;
+    font-size: 15px;
+  }
+}

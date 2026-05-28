@@ -1,0 +1,3866 @@
+{
+  "source": "isaac_balance_salas_100_completo_corregido_transiciones.xlsx",
+  "roomTypes": [
+    {
+      "room": 1,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 2,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 3,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 7.0,
+        "silverChest": 2.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 4,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 7.0,
+        "silverChest": 4.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 5,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 7.0,
+        "silverChest": 6.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 6,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 7.0,
+        "silverChest": 7.0,
+        "goldChest": 1.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 7,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 6.0,
+        "silverChest": 10.0,
+        "goldChest": 2.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 8,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 6.0,
+        "silverChest": 10.0,
+        "goldChest": 4.0,
+        "madShop": 0.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 9,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 4.0,
+        "silverChest": 13.0,
+        "goldChest": 8.0,
+        "madShop": 0.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 10,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    },
+    {
+      "room": 11,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 12,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 3.0,
+        "silverChest": 5.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 13,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 4.0,
+        "silverChest": 5.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 14,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 4.0,
+        "silverChest": 6.0,
+        "goldChest": 1.0,
+        "madShop": 0.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 15,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 4.0,
+        "silverChest": 7.0,
+        "goldChest": 1.0,
+        "madShop": 1.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 16,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 3.0,
+        "silverChest": 8.0,
+        "goldChest": 2.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 17,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 3.0,
+        "silverChest": 9.0,
+        "goldChest": 3.0,
+        "madShop": 2.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 18,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 2.0,
+        "silverChest": 9.0,
+        "goldChest": 6.0,
+        "madShop": 4.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 19,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 1.0,
+        "silverChest": 10.0,
+        "goldChest": 8.0,
+        "madShop": 7.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 20,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    },
+    {
+      "room": 21,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 22,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 2.0,
+        "silverChest": 4.0,
+        "goldChest": 1.0,
+        "madShop": 1.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 23,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 2.0,
+        "silverChest": 6.0,
+        "goldChest": 1.0,
+        "madShop": 1.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 24,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 2.0,
+        "silverChest": 7.0,
+        "goldChest": 2.0,
+        "madShop": 1.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 25,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 1.0,
+        "silverChest": 8.0,
+        "goldChest": 3.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 26,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 1.0,
+        "silverChest": 9.0,
+        "goldChest": 4.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 27,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 11.0,
+        "goldChest": 5.0,
+        "madShop": 2.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 28,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 9.0,
+        "goldChest": 8.0,
+        "madShop": 4.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 29,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 9.0,
+        "goldChest": 10.0,
+        "madShop": 8.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 30,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    },
+    {
+      "room": 31,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 2.0,
+        "madShop": 1.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 32,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 2.0,
+        "madShop": 1.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 33,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 2.0,
+        "madShop": 1.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 34,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 3.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 35,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 9.0,
+        "goldChest": 4.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 36,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 10.0,
+        "goldChest": 5.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 37,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 9.0,
+        "goldChest": 6.0,
+        "madShop": 3.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 38,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 10.0,
+        "madShop": 4.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 39,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 11.0,
+        "madShop": 8.0,
+        "riskEvent": 4.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 40,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    },
+    {
+      "room": 41,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 2.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 42,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 3.0,
+        "madShop": 1.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 43,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 7.0,
+        "goldChest": 3.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 44,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 4.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 45,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 5.0,
+        "madShop": 2.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 46,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 7.0,
+        "madShop": 2.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 47,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 8.0,
+        "goldChest": 8.0,
+        "madShop": 3.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 48,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 12.0,
+        "madShop": 5.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 49,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 13.0,
+        "madShop": 9.0,
+        "riskEvent": 4.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 50,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    },
+    {
+      "room": 51,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 7.0,
+        "goldChest": 4.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 52,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 3.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 53,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 7.0,
+        "goldChest": 4.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 54,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 7.0,
+        "goldChest": 5.0,
+        "madShop": 2.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 55,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 7.0,
+        "goldChest": 6.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 56,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 7.0,
+        "goldChest": 8.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 57,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 7.0,
+        "goldChest": 10.0,
+        "madShop": 3.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 58,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 13.0,
+        "madShop": 5.0,
+        "riskEvent": 4.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 59,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 14.0,
+        "madShop": 9.0,
+        "riskEvent": 5.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 60,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    },
+    {
+      "room": 61,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 7.0,
+        "goldChest": 4.0,
+        "madShop": 2.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 62,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 4.0,
+        "madShop": 2.0,
+        "riskEvent": 1.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 63,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 5.0,
+        "madShop": 2.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 64,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 6.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 65,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 8.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 66,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 10.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 67,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 10.0,
+        "madShop": 4.0,
+        "riskEvent": 4.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 68,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 14.0,
+        "madShop": 6.0,
+        "riskEvent": 4.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 69,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 14.0,
+        "madShop": 10.0,
+        "riskEvent": 5.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 70,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    },
+    {
+      "room": 71,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 6.0,
+        "goldChest": 5.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 72,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 5.0,
+        "madShop": 2.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 73,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 6.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 74,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 8.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 75,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 10.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 76,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 10.0,
+        "madShop": 4.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 77,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 12.0,
+        "madShop": 4.0,
+        "riskEvent": 4.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 78,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 14.0,
+        "madShop": 6.0,
+        "riskEvent": 5.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 79,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 14.0,
+        "madShop": 10.0,
+        "riskEvent": 6.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 80,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    },
+    {
+      "room": 81,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 6.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 82,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 6.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 83,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 8.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 84,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 10.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 85,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 10.0,
+        "madShop": 4.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 86,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 12.0,
+        "madShop": 4.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 87,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 14.0,
+        "madShop": 4.0,
+        "riskEvent": 4.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 88,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 14.0,
+        "madShop": 7.0,
+        "riskEvent": 5.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 89,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 15.0,
+        "madShop": 10.0,
+        "riskEvent": 6.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 90,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    },
+    {
+      "room": 91,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 7.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 92,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 7.0,
+        "madShop": 3.0,
+        "riskEvent": 2.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 93,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 3.0,
+        "goldChest": 9.0,
+        "madShop": 3.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 94,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 3.0,
+        "goldChest": 10.0,
+        "madShop": 4.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 95,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 11.0,
+        "madShop": 4.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 96,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 13.0,
+        "madShop": 4.0,
+        "riskEvent": 3.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 97,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 13.0,
+        "madShop": 5.0,
+        "riskEvent": 5.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 98,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 4.0,
+        "goldChest": 14.0,
+        "madShop": 7.0,
+        "riskEvent": 6.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 99,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 5.0,
+        "goldChest": 15.0,
+        "madShop": 10.0,
+        "riskEvent": 7.0,
+        "boss": 0.0
+      },
+      "note": null
+    },
+    {
+      "room": 100,
+      "transition": null,
+      "weights": {
+        "fightBasic": 0,
+        "fightElite": 0,
+        "woodChest": 0.0,
+        "silverChest": 0.0,
+        "goldChest": 0.0,
+        "madShop": 0.0,
+        "riskEvent": 0.0,
+        "boss": 100.0
+      },
+      "note": null
+    }
+  ],
+  "doors": [
+    {
+      "room": 1,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 2,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 3,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 90.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 4,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 90.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 5,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 76.0,
+        "2": 21.0,
+        "3": 3.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 1.0,
+      "realBombDoorChance": 0.9,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 6,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 76.0,
+        "2": 21.0,
+        "3": 3.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 2.0,
+      "realBombDoorChance": 1.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 7,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 3.0,
+      "realBombDoorChance": 2.5,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 8,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 4.0,
+      "realBombDoorChance": 3.1,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 9,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 10,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    },
+    {
+      "room": 11,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 12,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 90.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 2.0,
+      "realBombDoorChance": 1.8,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 13,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 90.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 3.0,
+      "realBombDoorChance": 2.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 14,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 90.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 4.0,
+      "realBombDoorChance": 3.5,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 15,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 76.0,
+        "2": 21.0,
+        "3": 3.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 5.0,
+      "realBombDoorChance": 4.3,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 16,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 76.0,
+        "2": 21.0,
+        "3": 3.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 6.0,
+      "realBombDoorChance": 5.0,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 17,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 7.0,
+      "realBombDoorChance": 5.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 18,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 8.0,
+      "realBombDoorChance": 6.2,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 19,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 20,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    },
+    {
+      "room": 21,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 22,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 90.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 4.0,
+      "realBombDoorChance": 3.6,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 23,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 90.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 5.0,
+      "realBombDoorChance": 4.5,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 24,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 90.0,
+        "2": 10.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 6.0,
+      "realBombDoorChance": 5.2,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 25,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 76.0,
+        "2": 21.0,
+        "3": 3.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 7.0,
+      "realBombDoorChance": 6.0,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 26,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 76.0,
+        "2": 21.0,
+        "3": 3.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 8.0,
+      "realBombDoorChance": 6.6,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 27,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 9.0,
+      "realBombDoorChance": 7.2,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 28,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 10.0,
+      "realBombDoorChance": 7.6,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 29,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 30,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    },
+    {
+      "room": 31,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 32,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 5.0,
+      "realBombDoorChance": 4.5,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 33,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 6.0,
+      "realBombDoorChance": 5.3,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 34,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 7.0,
+      "realBombDoorChance": 6.0,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 35,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 68.0,
+        "2": 26.0,
+        "3": 5.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 8.0,
+      "realBombDoorChance": 6.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 36,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 68.0,
+        "2": 26.0,
+        "3": 5.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 9.0,
+      "realBombDoorChance": 7.4,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 37,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 55.0,
+        "2": 34.0,
+        "3": 9.0,
+        "4": 2.0
+      },
+      "bombDoorChance": 10.0,
+      "realBombDoorChance": 7.9,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 38,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 55.0,
+        "2": 34.0,
+        "3": 9.0,
+        "4": 2.0
+      },
+      "bombDoorChance": 11.0,
+      "realBombDoorChance": 8.3,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 39,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 40,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    },
+    {
+      "room": 41,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 42,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 6.0,
+      "realBombDoorChance": 5.3,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 43,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 7.0,
+      "realBombDoorChance": 6.1,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 44,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 8.0,
+      "realBombDoorChance": 6.8,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 45,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 68.0,
+        "2": 26.0,
+        "3": 5.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 9.0,
+      "realBombDoorChance": 7.5,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 46,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 68.0,
+        "2": 26.0,
+        "3": 5.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 10.0,
+      "realBombDoorChance": 8.1,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 47,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 55.0,
+        "2": 34.0,
+        "3": 9.0,
+        "4": 2.0
+      },
+      "bombDoorChance": 11.0,
+      "realBombDoorChance": 8.6,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 48,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 55.0,
+        "2": 34.0,
+        "3": 9.0,
+        "4": 2.0
+      },
+      "bombDoorChance": 12.0,
+      "realBombDoorChance": 8.9,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 49,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 50,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    },
+    {
+      "room": 51,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 52,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 7.0,
+      "realBombDoorChance": 6.2,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 53,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 8.0,
+      "realBombDoorChance": 6.9,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 54,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 9.0,
+      "realBombDoorChance": 7.6,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 55,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 68.0,
+        "2": 26.0,
+        "3": 5.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 10.0,
+      "realBombDoorChance": 8.2,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 56,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 68.0,
+        "2": 26.0,
+        "3": 5.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 11.0,
+      "realBombDoorChance": 8.8,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 57,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 55.0,
+        "2": 34.0,
+        "3": 9.0,
+        "4": 2.0
+      },
+      "bombDoorChance": 12.0,
+      "realBombDoorChance": 9.2,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 58,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 55.0,
+        "2": 34.0,
+        "3": 9.0,
+        "4": 2.0
+      },
+      "bombDoorChance": 13.0,
+      "realBombDoorChance": 9.5,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 59,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 60,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    },
+    {
+      "room": 61,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 62,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 8.0,
+      "realBombDoorChance": 7.0,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 63,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 9.0,
+      "realBombDoorChance": 7.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 64,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 84.0,
+        "2": 14.0,
+        "3": 2.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 10.0,
+      "realBombDoorChance": 8.3,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 65,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 68.0,
+        "2": 26.0,
+        "3": 5.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 11.0,
+      "realBombDoorChance": 8.9,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 66,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 68.0,
+        "2": 26.0,
+        "3": 5.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 12.0,
+      "realBombDoorChance": 9.5,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 67,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 55.0,
+        "2": 34.0,
+        "3": 9.0,
+        "4": 2.0
+      },
+      "bombDoorChance": 13.0,
+      "realBombDoorChance": 9.9,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 68,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 55.0,
+        "2": 34.0,
+        "3": 9.0,
+        "4": 2.0
+      },
+      "bombDoorChance": 14.0,
+      "realBombDoorChance": 10.1,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 69,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 70,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    },
+    {
+      "room": 71,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 72,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 78.0,
+        "2": 18.0,
+        "3": 4.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 9.0,
+      "realBombDoorChance": 7.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 73,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 78.0,
+        "2": 18.0,
+        "3": 4.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 10.0,
+      "realBombDoorChance": 8.4,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 74,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 78.0,
+        "2": 18.0,
+        "3": 4.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 11.0,
+      "realBombDoorChance": 9.0,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 75,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 12.0,
+      "realBombDoorChance": 9.6,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 76,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 13.0,
+      "realBombDoorChance": 10.1,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 77,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 48.0,
+        "2": 38.0,
+        "3": 11.0,
+        "4": 3.0
+      },
+      "bombDoorChance": 14.0,
+      "realBombDoorChance": 10.5,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 78,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 48.0,
+        "2": 38.0,
+        "3": 11.0,
+        "4": 3.0
+      },
+      "bombDoorChance": 15.0,
+      "realBombDoorChance": 10.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 79,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 80,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    },
+    {
+      "room": 81,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 82,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 78.0,
+        "2": 18.0,
+        "3": 4.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 10.0,
+      "realBombDoorChance": 8.5,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 83,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 78.0,
+        "2": 18.0,
+        "3": 4.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 11.0,
+      "realBombDoorChance": 9.1,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 84,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 78.0,
+        "2": 18.0,
+        "3": 4.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 12.0,
+      "realBombDoorChance": 9.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 85,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 13.0,
+      "realBombDoorChance": 10.3,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 86,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 14.0,
+      "realBombDoorChance": 10.8,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 87,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 48.0,
+        "2": 38.0,
+        "3": 11.0,
+        "4": 3.0
+      },
+      "bombDoorChance": 15.0,
+      "realBombDoorChance": 11.1,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 88,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 48.0,
+        "2": 38.0,
+        "3": 11.0,
+        "4": 3.0
+      },
+      "bombDoorChance": 16.0,
+      "realBombDoorChance": 11.2,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 89,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 90,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    },
+    {
+      "room": 91,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Ruta lineal inicial/reset",
+      "note": null
+    },
+    {
+      "room": 92,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 78.0,
+        "2": 18.0,
+        "3": 4.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 11.0,
+      "realBombDoorChance": 9.2,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 93,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 78.0,
+        "2": 18.0,
+        "3": 4.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 12.0,
+      "realBombDoorChance": 9.8,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 94,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 78.0,
+        "2": 18.0,
+        "3": 4.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 13.0,
+      "realBombDoorChance": 10.4,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 95,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 14.0,
+      "realBombDoorChance": 10.9,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 96,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 62.0,
+        "2": 30.0,
+        "3": 7.0,
+        "4": 1.0
+      },
+      "bombDoorChance": 15.0,
+      "realBombDoorChance": 11.4,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 97,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 48.0,
+        "2": 38.0,
+        "3": 11.0,
+        "4": 3.0
+      },
+      "bombDoorChance": 16.0,
+      "realBombDoorChance": 11.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 98,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "No",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 48.0,
+        "2": 38.0,
+        "3": 11.0,
+        "4": 3.0
+      },
+      "bombDoorChance": 17.0,
+      "realBombDoorChance": 11.7,
+      "rule": "Puede aparecer 1 puerta bomba opcional",
+      "note": null
+    },
+    {
+      "room": 99,
+      "transition": null,
+      "boss": "No",
+      "preBoss": "Sí",
+      "appliesFight": "Sí",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Pre-boss: 1 puerta al boss",
+      "note": null
+    },
+    {
+      "room": 100,
+      "transition": null,
+      "boss": "Sí",
+      "preBoss": "No",
+      "appliesFight": "No",
+      "doorWeights": {
+        "1": 100.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "bombDoorChance": 0.0,
+      "realBombDoorChance": 0.0,
+      "rule": "Boss: sin puertas extra",
+      "note": null
+    }
+  ],
+  "fightLoot": [
+    {
+      "fightType": "fightBasic",
+      "range": [
+        1,
+        10
+      ],
+      "weights": {
+        "nothing": 40.0,
+        "coins": 32.0,
+        "heart": 0,
+        "key": 6.0,
+        "bomb": 3.0,
+        "woodChest": 7.0,
+        "silverChest": 0.0
+      },
+      "coinQuantity": [
+        1,
+        3
+      ],
+      "note": "Inicio: poca economía y bomba muy rara"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        11,
+        30
+      ],
+      "weights": {
+        "nothing": 36.0,
+        "coins": 35.0,
+        "heart": 0,
+        "key": 7.0,
+        "bomb": 4.0,
+        "woodChest": 6.0,
+        "silverChest": 1.0
+      },
+      "coinQuantity": [
+        1,
+        4
+      ],
+      "note": "Sube levemente la economía"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        31,
+        50
+      ],
+      "weights": {
+        "nothing": 34.0,
+        "coins": 38.0,
+        "heart": 0,
+        "key": 8.0,
+        "bomb": 5.0,
+        "woodChest": 3.0,
+        "silverChest": 2.0
+      },
+      "coinQuantity": [
+        2,
+        5
+      ],
+      "note": "Madera casi fuera; plata aparece poco"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        51,
+        70
+      ],
+      "weights": {
+        "nothing": 31.0,
+        "coins": 40.0,
+        "heart": 0,
+        "key": 9.0,
+        "bomb": 6.0,
+        "woodChest": 1.0,
+        "silverChest": 4.0
+      },
+      "coinQuantity": [
+        2,
+        6
+      ],
+      "note": "Más recursos, pero no lluvia de bombas"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        71,
+        90
+      ],
+      "weights": {
+        "nothing": 28.0,
+        "coins": 42.0,
+        "heart": 0,
+        "key": 10.0,
+        "bomb": 7.0,
+        "woodChest": 0.0,
+        "silverChest": 5.0
+      },
+      "coinQuantity": [
+        3,
+        7
+      ],
+      "note": "Late game: más monedas y llaves"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        91,
+        100
+      ],
+      "weights": {
+        "nothing": 25.0,
+        "coins": 45.0,
+        "heart": 0,
+        "key": 11.0,
+        "bomb": 8.0,
+        "woodChest": 0.0,
+        "silverChest": 5.0
+      },
+      "coinQuantity": [
+        4,
+        8
+      ],
+      "note": "Preparación final sin romper balance"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        1,
+        10
+      ],
+      "weights": {
+        "nothing": 15.0,
+        "coins": 35.0,
+        "heart": 0,
+        "key": 10.0,
+        "bomb": 5.0,
+        "woodChest": 20.0,
+        "silverChest": 0.0
+      },
+      "coinQuantity": [
+        3,
+        5
+      ],
+      "note": "Élite paga mejor, pero no da dorado directo"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        11,
+        30
+      ],
+      "weights": {
+        "nothing": 12.0,
+        "coins": 35.0,
+        "heart": 0,
+        "key": 12.0,
+        "bomb": 6.0,
+        "woodChest": 16.0,
+        "silverChest": 6.0
+      },
+      "coinQuantity": [
+        3,
+        7
+      ],
+      "note": "Aquí empieza a compensar arriesgar"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        31,
+        50
+      ],
+      "weights": {
+        "nothing": 10.0,
+        "coins": 36.0,
+        "heart": 0,
+        "key": 13.0,
+        "bomb": 7.0,
+        "woodChest": 8.0,
+        "silverChest": 14.0
+      },
+      "coinQuantity": [
+        4,
+        8
+      ],
+      "note": "Madera baja; plata gana valor"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        51,
+        70
+      ],
+      "weights": {
+        "nothing": 8.0,
+        "coins": 37.0,
+        "heart": 0,
+        "key": 14.0,
+        "bomb": 8.0,
+        "woodChest": 3.0,
+        "silverChest": 20.0
+      },
+      "coinQuantity": [
+        5,
+        9
+      ],
+      "note": "Élite puede sostener la run"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        71,
+        90
+      ],
+      "weights": {
+        "nothing": 6.0,
+        "coins": 38.0,
+        "heart": 0,
+        "key": 15.0,
+        "bomb": 9.0,
+        "woodChest": 0.0,
+        "silverChest": 23.0
+      },
+      "coinQuantity": [
+        6,
+        10
+      ],
+      "note": "Late: mejor loot, pero sigue sin regalar bombas"
+    },
+    {
+      "fightType": "fightBasic",
+      "range": [
+        91,
+        100
+      ],
+      "weights": {
+        "nothing": 5.0,
+        "coins": 40.0,
+        "heart": 0,
+        "key": 16.0,
+        "bomb": 10.0,
+        "woodChest": 0.0,
+        "silverChest": 22.0
+      },
+      "coinQuantity": [
+        8,
+        12
+      ],
+      "note": "Último tramo: recompensa fuerte controlada"
+    }
+  ],
+  "chestLoot": [
+    {
+      "chest": "madera",
+      "cost": "Gratis",
+      "reward": "Monedas",
+      "probability": 45.0,
+      "quantity": "2-5",
+      "intent": null
+    },
+    {
+      "chest": "madera",
+      "cost": "Gratis",
+      "reward": "Corazón",
+      "probability": 20.0,
+      "quantity": "1",
+      "intent": null
+    },
+    {
+      "chest": "madera",
+      "cost": "Gratis",
+      "reward": "Llave",
+      "probability": 15.0,
+      "quantity": "1",
+      "intent": null
+    },
+    {
+      "chest": "madera",
+      "cost": "Gratis",
+      "reward": "Bomba",
+      "probability": 8.0,
+      "quantity": "1",
+      "intent": null
+    },
+    {
+      "chest": "madera",
+      "cost": "Gratis",
+      "reward": "Consumible",
+      "probability": 7.0,
+      "quantity": "Carta/píldora simple",
+      "intent": null
+    },
+    {
+      "chest": "madera",
+      "cost": "Gratis",
+      "reward": "Objeto común",
+      "probability": 5.0,
+      "quantity": "1",
+      "intent": null
+    },
+    {
+      "chest": "plata",
+      "cost": "1 llave",
+      "reward": "Monedas",
+      "probability": 30.0,
+      "quantity": "5-10",
+      "intent": null
+    },
+    {
+      "chest": "plata",
+      "cost": "1 llave",
+      "reward": "Llaves",
+      "probability": 18.0,
+      "quantity": "1-2",
+      "intent": null
+    },
+    {
+      "chest": "plata",
+      "cost": "1 llave",
+      "reward": "Bomba",
+      "probability": 12.0,
+      "quantity": "1",
+      "intent": null
+    },
+    {
+      "chest": "plata",
+      "cost": "1 llave",
+      "reward": "Curación buena",
+      "probability": 15.0,
+      "quantity": "1-2 corazones",
+      "intent": null
+    },
+    {
+      "chest": "plata",
+      "cost": "1 llave",
+      "reward": "Consumible fuerte",
+      "probability": 10.0,
+      "quantity": "Carta/runa",
+      "intent": null
+    },
+    {
+      "chest": "plata",
+      "cost": "1 llave",
+      "reward": "Objeto común",
+      "probability": 12.0,
+      "quantity": "1",
+      "intent": null
+    },
+    {
+      "chest": "plata",
+      "cost": "1 llave",
+      "reward": "Objeto raro",
+      "probability": 3.0,
+      "quantity": "1",
+      "intent": null
+    },
+    {
+      "chest": "dorado",
+      "cost": "1 llave",
+      "reward": "Objeto común",
+      "probability": 35.0,
+      "quantity": "1",
+      "intent": null
+    },
+    {
+      "chest": "dorado",
+      "cost": "1 llave",
+      "reward": "Objeto raro",
+      "probability": 20.0,
+      "quantity": "1",
+      "intent": null
+    },
+    {
+      "chest": "dorado",
+      "cost": "1 llave",
+      "reward": "Monedas",
+      "probability": 15.0,
+      "quantity": "10-20",
+      "intent": null
+    },
+    {
+      "chest": "dorado",
+      "cost": "1 llave",
+      "reward": "Llaves",
+      "probability": 10.0,
+      "quantity": "2",
+      "intent": null
+    },
+    {
+      "chest": "dorado",
+      "cost": "1 llave",
+      "reward": "Bombas",
+      "probability": 8.0,
+      "quantity": "1-2",
+      "intent": null
+    },
+    {
+      "chest": "dorado",
+      "cost": "1 llave",
+      "reward": "Curación grande",
+      "probability": 7.0,
+      "quantity": "2-3 corazones",
+      "intent": null
+    },
+    {
+      "chest": "dorado",
+      "cost": "1 llave",
+      "reward": "Objeto épico",
+      "probability": 5.0,
+      "quantity": "1",
+      "intent": null
+    }
+  ],
+  "bombDoorLoot": [],
+  "objects": [
+    {
+      "name": "Diente afilado",
+      "rarity": "Común",
+      "type": "Stat",
+      "effect": "+1 daño",
+      "penalty": null,
+      "comment": "Simple y entendible"
+    },
+    {
+      "name": "Botas ligeras",
+      "rarity": "Común",
+      "type": "Stat",
+      "effect": "+10% velocidad",
+      "penalty": null,
+      "comment": "Mejora de movilidad"
+    },
+    {
+      "name": "Lágrima rápida",
+      "rarity": "Común",
+      "type": "Stat",
+      "effect": "+10% cadencia",
+      "penalty": null,
+      "comment": "DPS ligero"
+    },
+    {
+      "name": "Corazón duro",
+      "rarity": "Común",
+      "type": "Stat",
+      "effect": "+1 vida máxima",
+      "penalty": null,
+      "comment": "Supervivencia"
+    },
+    {
+      "name": "Monedero viejo",
+      "rarity": "Común",
+      "type": "Economía",
+      "effect": "+1 moneda extra cuando ganas monedas",
+      "penalty": null,
+      "comment": "Escala suave"
+    },
+    {
+      "name": "Guante de piedra",
+      "rarity": "Común",
+      "type": "Intercambio",
+      "effect": "+15% daño",
+      "penalty": null,
+      "comment": "Daño temprano con coste bajo"
+    },
+    {
+      "name": "Piel gruesa",
+      "rarity": "Común",
+      "type": "Defensa",
+      "effect": "-10% daño recibido",
+      "penalty": null,
+      "comment": "Bueno para jugadores torpes"
+    },
+    {
+      "name": "Ojo preciso",
+      "rarity": "Común",
+      "type": "Stat",
+      "effect": "+8% crítico",
+      "penalty": null,
+      "comment": "Pequeño pico de daño"
+    },
+    {
+      "name": "Llave doblada",
+      "rarity": "Común",
+      "type": "Economía",
+      "effect": "+10% probabilidad de encontrar llaves",
+      "penalty": null,
+      "comment": "Ayuda a cofres"
+    },
+    {
+      "name": "Mecha corta",
+      "rarity": "Común",
+      "type": "Bombas",
+      "effect": "+10% daño de bombas",
+      "penalty": null,
+      "comment": "No da bombas; solo potencia"
+    },
+    {
+      "name": "Sangre caliente",
+      "rarity": "Raro",
+      "type": "Combate",
+      "effect": "Al recibir daño, +20% daño durante 5s",
+      "penalty": null,
+      "comment": "Riesgo/recompensa"
+    },
+    {
+      "name": "Escudo inicial",
+      "rarity": "Raro",
+      "type": "Defensa",
+      "effect": "Bloquea el primer golpe de cada sala",
+      "penalty": null,
+      "comment": "Muy valioso pero no ofensivo"
+    },
+    {
+      "name": "Imán de cobre",
+      "rarity": "Raro",
+      "type": "Economía",
+      "effect": "+10% probabilidad de monedas tras pelea",
+      "penalty": null,
+      "comment": "Economía estable"
+    },
+    {
+      "name": "Bolsa explosiva",
+      "rarity": "Raro",
+      "type": "Economía",
+      "effect": "+15% probabilidad de encontrar bombas",
+      "penalty": null,
+      "comment": "Cuidado: puede romper puertas si se acumula"
+    },
+    {
+      "name": "Pólvora seca",
+      "rarity": "Raro",
+      "type": "Bombas",
+      "effect": "15% de no gastar bomba al abrir puerta bomba",
+      "penalty": null,
+      "comment": "Buen objeto para explorar"
+    },
+    {
+      "name": "Llave maestra rota",
+      "rarity": "Raro",
+      "type": "Llaves",
+      "effect": "15% de no gastar llave al abrir cofre",
+      "penalty": null,
+      "comment": "Muy fuerte con dorados"
+    },
+    {
+      "name": "Ojo del avaro",
+      "rarity": "Raro",
+      "type": "Economía/daño",
+      "effect": "+1% daño por cada 5 monedas",
+      "penalty": null,
+      "comment": "Decisión económica"
+    },
+    {
+      "name": "Bala pesada",
+      "rarity": "Raro",
+      "type": "Intercambio",
+      "effect": "+25% daño",
+      "penalty": null,
+      "comment": "Build lenta/fuerte"
+    },
+    {
+      "name": "Bala dividida",
+      "rarity": "Raro",
+      "type": "Mecánica",
+      "effect": "Disparo doble",
+      "penalty": null,
+      "comment": "Cambia sensación de combate"
+    },
+    {
+      "name": "Botas malditas",
+      "rarity": "Raro",
+      "type": "Intercambio",
+      "effect": "+25% velocidad",
+      "penalty": null,
+      "comment": "Movilidad por daño"
+    },
+    {
+      "name": "Corona pesada",
+      "rarity": "Épico",
+      "type": "Economía",
+      "effect": "+25% monedas ganadas",
+      "penalty": null,
+      "comment": "Muy buena en run larga"
+    },
+    {
+      "name": "Cofre hambriento",
+      "rarity": "Épico",
+      "type": "Cofres",
+      "effect": "Los cofres tienen mejor loot",
+      "penalty": null,
+      "comment": "Transforma economía"
+    },
+    {
+      "name": "Ritual de bombas",
+      "rarity": "Épico",
+      "type": "Bombas",
+      "effect": "Bombas hacen doble daño",
+      "penalty": null,
+      "comment": "Potencia sin abundancia"
+    },
+    {
+      "name": "Alma blindada",
+      "rarity": "Épico",
+      "type": "Defensa",
+      "effect": "+2 vida máxima",
+      "penalty": null,
+      "comment": "Tanque"
+    },
+    {
+      "name": "Mano del mercader",
+      "rarity": "Épico",
+      "type": "Tienda",
+      "effect": "Tiendas con 20% descuento",
+      "penalty": null,
+      "comment": "Muy fuerte si hay monedas"
+    },
+    {
+      "name": "Doble filo",
+      "rarity": "Épico",
+      "type": "Intercambio",
+      "effect": "+40% daño",
+      "penalty": null,
+      "comment": "Objeto agresivo"
+    },
+    {
+      "name": "Pacto rojo",
+      "rarity": "Maldito",
+      "type": "Intercambio",
+      "effect": "+50% daño",
+      "penalty": null,
+      "comment": "Fuerte pero peligroso"
+    },
+    {
+      "name": "Ojo maldito",
+      "rarity": "Maldito",
+      "type": "Crítico",
+      "effect": "+30% crítico",
+      "penalty": null,
+      "comment": "Daño irregular"
+    },
+    {
+      "name": "Hambre de oro",
+      "rarity": "Maldito",
+      "type": "Escalado",
+      "effect": "Más daño cuanto menos vida tienes",
+      "penalty": null,
+      "comment": "Alto riesgo"
+    },
+    {
+      "name": "Bomba viva",
+      "rarity": "Maldito",
+      "type": "Bombas",
+      "effect": "Cada 5 salas generas una bomba",
+      "penalty": null,
+      "comment": "Bomba gratis con peligro"
+    }
+  ]
+}
