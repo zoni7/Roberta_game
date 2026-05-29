@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Binding of Perros - Demo</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20260529-3">
   </head>
   <body>
     <main class="shell">
@@ -45,8 +45,64 @@
         <p id="victorySummary"></p>
         <button class="primary" id="victoryBtn" type="button">Nueva run</button>
       </section>
+
+      <section class="collection-menu" id="statsMenu" hidden>
+        <div class="collection-card">
+          <div class="collection-head">
+            <h1>Stats</h1>
+            <button id="statsBackBtn" type="button">Volver</button>
+          </div>
+          <p id="collectionProgress"></p>
+          <div id="collectionRelics" class="collection-grid"></div>
+        </div>
+      </section>
+
+      <section class="pause-menu" id="pauseMenu" hidden>
+        <div class="pause-card">
+          <div class="pause-head">
+            <h1>Pausa</h1>
+            <div class="pause-actions">
+              <button class="primary" id="resumeBtn" type="button">Continuar</button>
+              <button id="pauseMenuBtn" type="button">Menu</button>
+              <button id="pauseNewRunBtn" type="button">New run</button>
+            </div>
+          </div>
+          <div class="pause-body">
+            <section class="pause-stats" aria-label="Stats">
+              <h2>Stats</h2>
+              <div id="pauseStats" class="stats-grid"></div>
+            </section>
+            <section class="pause-relics" aria-label="Reliquias">
+              <h2>Reliquias</h2>
+              <div id="pauseRelics" class="relic-grid"></div>
+            </section>
+          </div>
+        </div>
+        <button class="secret-tool-button" id="secretToolBtn" type="button" aria-label="Herramienta"></button>
+        <div class="debug-panel" id="debugPanel" hidden>
+          <div class="debug-lock" id="debugLock">
+            <input id="debugCodeInput" type="password" maxlength="4" inputmode="numeric" autocomplete="off" aria-label="Codigo">
+          </div>
+          <div class="debug-tools" id="debugTools" hidden>
+            <label>
+              <span>Sala</span>
+              <select id="debugRoomSelect" aria-label="Saltar a sala"></select>
+            </label>
+            <button id="debugGoRoomBtn" type="button">Ir</button>
+            <button class="debug-close" id="debugCloseBtn" type="button">Volver</button>
+            <label class="debug-check">
+              <input id="debugGodMode" type="checkbox">
+              <span>Inmortal</span>
+            </label>
+            <label class="debug-check">
+              <input id="debugOneShot" type="checkbox">
+              <span>One shot</span>
+            </label>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <script src="game.js"></script>
+    <script src="game.js?v=20260529-3"></script>
   </body>
 </html>
