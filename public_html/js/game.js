@@ -1032,7 +1032,7 @@ function updateShots(dt) {
         addDamageNumber(enemy, damage, Boolean(shot.critical || debugState.oneShot || shot.talonShot));
         state.shake = 0.05;
         if (enemy.hp <= 0 && !enemy._deathSoundPlayed) {
-          SFX.enemyDeath();
+          if (state.room <= 10) SFX.enemyDeath();
           enemy._deathSoundPlayed = true;
         }
       }
