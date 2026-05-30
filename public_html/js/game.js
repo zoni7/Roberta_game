@@ -1004,41 +1004,63 @@ function fireAt(dx, dy) {
 }
 
 function updateShots(dt) {
-  for (const shot of state.shots) {
+  advanceShots(state.shots, dt);
+  advanceShots(state.enemyShots, dt);
+  updateEnemyHitTimers(dt);
+  resolvePlayerShotsAgainstEnemies();
+  resolveEnemyShotsAgainstPlayer();
+  cleanupShotsAndEnemies();
+}
+
+function advanceShots(shots, dt) {
+  for (const shot of shots) {
     shot.x += shot.vx * dt;
     shot.y += shot.vy * dt;
     shot.life -= dt;
   }
+}
 
-  for (const shot of state.enemyShots) {
-    shot.x += shot.vx * dt;
-    shot.y += shot.vy * dt;
-    shot.life -= dt;
-  }
-
+function updateEnemyHitTimers(dt) {
   for (const enemy of state.enemies) {
     enemy.hit = Math.max(0, enemy.hit - dt);
+  }
+}
+
+function resolvePlayerShotsAgainstEnemies() {
+  for (const enemy of state.enemies) {
     for (const shot of state.shots) {
-      if (shot.life > 0 && distance(enemy, shot) < enemy.r + shot.r) {
-        const damage = debugState.oneShot || shot.talonShot ? Math.max(enemy.hp, shot.damage) : shot.damage;
-        enemy.hp -= damage;
-        enemy.hit = 0.15;
-        shot.life = 0;
-        if (tryReincarnateBoss(enemy)) {
-          addDamageNumber(enemy, damage, true);
-          state.shake = 0.35;
-          break;
-        }
-        addDamageNumber(enemy, damage, Boolean(shot.critical || debugState.oneShot || shot.talonShot));
-        state.shake = 0.05;
-        if (enemy.hp <= 0 && !enemy._deathSoundPlayed) {
-          SFX.enemyDeath(state.roomProfile?.theme?.name ?? null);
-          enemy._deathSoundPlayed = true;
-        }
-      }
+      if (applyPlayerShotToEnemy(enemy, shot)) break;
     }
   }
+}
 
+function applyPlayerShotToEnemy(enemy, shot) {
+  if (shot.life <= 0 || distance(enemy, shot) >= enemy.r + shot.r) return false;
+
+  const damage = debugState.oneShot || shot.talonShot ? Math.max(enemy.hp, shot.damage) : shot.damage;
+  enemy.hp -= damage;
+  enemy.hit = 0.15;
+  shot.life = 0;
+
+  if (tryReincarnateBoss(enemy)) {
+    addDamageNumber(enemy, damage, true);
+    state.shake = 0.35;
+    return true;
+  }
+
+  addDamageNumber(enemy, damage, Boolean(shot.critical || debugState.oneShot || shot.talonShot));
+  state.shake = 0.05;
+  playEnemyDeathSound(enemy);
+  return false;
+}
+
+function playEnemyDeathSound(enemy) {
+  if (enemy.hp > 0 || enemy._deathSoundPlayed) return;
+  SFX.enemyDeath(enemy.name || null);
+  enemy._deathSoundPlayed = true;
+}
+
+function resolveEnemyShotsAgainstPlayer() {
   const player = state.player;
   for (const shot of state.enemyShots) {
     if (shot.life > 0 && player.invuln <= 0 && distance(player, shot) < player.r + shot.r) {
@@ -1046,7 +1068,9 @@ function updateShots(dt) {
       shot.life = 0;
     }
   }
+}
 
+function cleanupShotsAndEnemies() {
   state.enemies = state.enemies.filter((enemy) => enemy.hp > 0);
   state.shots = state.shots.filter((shot) => shot.life > 0 && inBounds(shot.x, shot.y, 720));
   state.enemyShots = state.enemyShots.filter((shot) => shot.life > 0 && inBounds(shot.x, shot.y, 90));

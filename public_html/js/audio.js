@@ -40,9 +40,9 @@ const AUDIO_CONFIG = {
 //
 //    "files"     → Lista de rutas absolutas a archivos concretos.
 //
-//    "themePool" → Pool genérico + pools opcionales por tema de sala.
-//                  Usa el pool del tema si existe; si no, usa "generic".
-//                  Añadir entradas en "themes" cuando existan los archivos.
+//    "enemyPool" → Pool genérico + pools opcionales por tipo/nombre de enemigo.
+//                  Usa el pool del enemigo si existe; si no, usa "generic".
+//                  Añadir entradas en "byEnemy" cuando existan los archivos.
 //
 //  Los temas disponibles se definen en ROOM_THEMES (constants.js):
 //    Isaac | Japon | Moho | Hielo | Dorado
@@ -58,9 +58,9 @@ const SOUND_REGISTRY = {
     volume: 0.7,
   },
 
-  // Muerte de enemigo — con variantes opcionales por tema de sala
+  // Muerte de enemigo — con variantes opcionales por nombre de enemigo
   enemyDeath: {
-    type   : "themePool",
+    type   : "enemyPool",
     volume : 0.7,
 
     // Sonido genérico de fallback (se usa cuando el tema no tiene pool propio)
@@ -69,13 +69,12 @@ const SOUND_REGISTRY = {
       files: ["assets/audio/enemy/muerte_jordi.mp3"],
     },
 
-    // Pools por tema: descomentar cuando existan los archivos de audio.
-    themes: {
-      // Isaac : { type: "pool", folder: "enemy/isaac", count: 2 },
-      // Japon : { type: "pool", folder: "enemy/japon", count: 2 },
-      // Moho  : { type: "pool", folder: "enemy/moho",  count: 2 },
-      // Hielo : { type: "pool", folder: "enemy/hielo", count: 2 },
-      // Dorado: { type: "pool", folder: "enemy/dorado", count: 2 },
+    // Pools por enemigo: descomentar/editar cuando existan los audios.
+    // Convencion recomendada: assets/audio/enemy/<slug-enemigo>.mp3
+    byEnemy: {
+      // "Grumo": { type: "files", files: ["assets/audio/enemy/grumo.mp3"] },
+      // "Vena": { type: "files", files: ["assets/audio/enemy/vena.mp3"] },
+      // "Chef Nigiri": { type: "files", files: ["assets/audio/enemy/chef-nigiri.mp3"] },
     },
   },
 
@@ -126,7 +125,7 @@ const SFX = {
     switch (def.type) {
       case "pool":      return this._loadPool(label, def.folder, def.count, def.volume);
       case "files":     return this._loadFiles(label, def.files, def.volume);
-      case "themePool": return this._buildThemePool(label, def);
+      case "enemyPool": return this._buildEnemyPool(label, def);
       default:
         throw new Error(`Tipo de sonido desconocido: "${def.type}"`);
     }
@@ -151,19 +150,19 @@ const SFX = {
   },
 
   /**
-   * Construye un pool con variantes por tema.
-   * Devuelve { generic: Howl[], themes: { [tema]: Howl[] } }
+   * Construye un pool con variantes por enemigo.
+   * Devuelve { generic: Howl[], byEnemy: { [enemyName]: Howl[] } }
    */
-  _buildThemePool(label, def) {
+  _buildEnemyPool(label, def) {
     const entry = {
       generic: this._buildEntry(`${label}:generic`, { ...def.generic, volume: def.volume }),
-      themes : {},
+      byEnemy : {},
     };
 
-    for (const [themeName, themeDef] of Object.entries(def.themes)) {
-      entry.themes[themeName] = this._buildEntry(
-        `${label}:${themeName}`,
-        { ...themeDef, volume: def.volume },
+    for (const [enemyName, enemyDef] of Object.entries(def.byEnemy || {})) {
+      entry.byEnemy[enemyName] = this._buildEntry(
+        `${label}:${enemyName}`,
+        { ...enemyDef, volume: def.volume },
       );
     }
 
@@ -203,42 +202,47 @@ const SFX = {
       return;
     }
 
-    const sound     = pool[Math.floor(Math.random() * pool.length)];
-    const soundState = sound.state();
-
-    const doPlay = () => {
+    const loadedSounds = pool.filter((sound) => sound.state() === "loaded");
+    if (loadedSounds.length > 0) {
+      const sound = loadedSounds[Math.floor(Math.random() * loadedSounds.length)];
       const pitch = AUDIO_CONFIG.PITCH_MIN
         + Math.random() * (AUDIO_CONFIG.PITCH_MAX - AUDIO_CONFIG.PITCH_MIN);
       sound.rate(pitch);
       sound.play();
-    };
-
-    if (soundState === "loaded") {
-      doPlay();
-    } else if (soundState === "loading") {
-      AudioLogger.info(`_play("${label}"): sonido cargando, en espera…`);
-      sound.once("load", doPlay);
-    } else {
-      AudioLogger.warn(`_play("${label}"): estado inesperado del sonido: "${soundState}".`);
+      return;
     }
+
+    const loadingSound = pool.find((sound) => sound.state() === "loading");
+    if (loadingSound) {
+      AudioLogger.info(`_play("${label}"): sonido cargando, en espera…`);
+      loadingSound.once("load", () => {
+        const pitch = AUDIO_CONFIG.PITCH_MIN
+          + Math.random() * (AUDIO_CONFIG.PITCH_MAX - AUDIO_CONFIG.PITCH_MIN);
+        loadingSound.rate(pitch);
+        loadingSound.play();
+      });
+      return;
+    }
+
+    AudioLogger.warn(`_play("${label}"): no hay sonidos listos para reproducir.`);
   },
 
   /**
-   * Resuelve el pool a usar para un themePool.
-   * Devuelve el pool del tema si existe, o el genérico como fallback.
+   * Resuelve el pool a usar para un enemyPool.
+   * Devuelve el pool del enemigo si existe, o el genérico como fallback.
    *
-   * @param {{ generic: Howl[], themes: object }} entry
-   * @param {string|null} theme
+   * @param {{ generic: Howl[], byEnemy: object }} entry
+   * @param {string|null} enemyName
    * @returns {Howl[]|null}
    */
-  _resolveThemePool(entry, theme) {
+  _resolveEnemyPool(entry, enemyName) {
     if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
-      AudioLogger.warn("_resolveThemePool: entrada inválida.");
+      AudioLogger.warn("_resolveEnemyPool: entrada inválida.");
       return null;
     }
 
-    if (theme && entry.themes?.[theme]) {
-      return entry.themes[theme];
+    if (enemyName && entry.byEnemy?.[enemyName]) {
+      return entry.byEnemy[enemyName];
     }
 
     return entry.generic ?? null;
@@ -273,17 +277,17 @@ const SFX = {
 
   /**
    * Reproduce un sonido de muerte de enemigo.
-   * Si existe un pool para el tema actual, lo usa; si no, usa el genérico.
+   * Si existe un pool para ese enemigo, lo usa; si no, usa el genérico.
    *
-   * @param {string|null} theme - Nombre del tema de sala actual
-   *   (Isaac, Japon, Moho, Hielo, Dorado). Pasar null para usar el genérico.
+   * @param {string|null} enemyName - Nombre/tipo de enemigo actual.
+   *   Pasar null para usar el genérico.
    */
-  enemyDeath(theme = null) {
+  enemyDeath(enemyName = null) {
     const entry = this._getPool("enemyDeath");
     if (!entry) return;
 
-    const pool = this._resolveThemePool(entry, theme);
-    this._play(pool, `enemyDeath:${theme ?? "generic"}`);
+    const pool = this._resolveEnemyPool(entry, enemyName);
+    this._play(pool, `enemyDeath:${enemyName ?? "generic"}`);
   },
 
 
