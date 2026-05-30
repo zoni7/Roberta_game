@@ -66,7 +66,7 @@ const SOUND_REGISTRY = {
     // Sonido genérico de fallback (se usa cuando el tema no tiene pool propio)
     generic: {
       type : "files",
-      files: ["assets/audio/enemy/muerte_jordi.mp3"],
+      files: ["assets/audio/enemy/default_enemy.mp3"],
     },
 
     // Pools por enemigo: descomentar/editar cuando existan los audios.
