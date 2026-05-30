@@ -243,6 +243,7 @@ debugOneShot?.addEventListener("change", () => {
 });
 
 Promise.all([loadImages(), loadBalance()]).then(() => {
+  SFX.init();
   setMode("menu");
   requestAnimationFrame(loop);
 });
