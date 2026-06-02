@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Binding of Perros - Demo</title>
-    <link rel="stylesheet" href="style.css?v=20260529-3">
+    <link rel="stylesheet" href="style.css?v=20260602-38">
   </head>
   <body>
     <main class="shell">
@@ -37,6 +37,7 @@
         <h1>Fin de la run</h1>
         <p id="runSummary"></p>
         <button class="primary" id="retryBtn" type="button">Otra run</button>
+        <button id="gameOverMenuBtn" type="button">Back to menu</button>
       </section>
 
       <section class="victory" id="victory" hidden>
@@ -53,7 +54,43 @@
             <button id="statsBackBtn" type="button">Volver</button>
           </div>
           <p id="collectionProgress"></p>
+          <div id="recordsGrid" class="records-grid"></div>
           <div id="collectionRelics" class="collection-grid"></div>
+        </div>
+      </section>
+
+      <section class="options-menu" id="optionsMenu" hidden>
+        <div class="options-card">
+          <div class="collection-head">
+            <h1>Options</h1>
+            <button id="optionsBackBtn" type="button">Volver</button>
+          </div>
+          <div class="options-grid">
+            <label class="option-row">
+              <span>Sonido general</span>
+              <input id="masterVolume" type="range" min="0" max="100" step="1">
+              <strong id="masterVolumeValue"></strong>
+            </label>
+            <label class="option-row">
+              <span>Música</span>
+              <input id="musicVolume" type="range" min="0" max="100" step="1">
+              <strong id="musicVolumeValue"></strong>
+            </label>
+            <label class="option-row">
+              <span>Efectos</span>
+              <input id="effectsVolume" type="range" min="0" max="100" step="1">
+              <strong id="effectsVolumeValue"></strong>
+            </label>
+            <label class="option-toggle"><input id="muteAudio" type="checkbox"><span>Silenciar todo</span></label>
+            <label class="option-toggle"><input id="screenShake" type="checkbox"><span>Vibración de pantalla</span></label>
+            <label class="option-toggle"><input id="screenFlashes" type="checkbox"><span>Destellos visuales</span></label>
+            <label class="option-toggle"><input id="damageNumbers" type="checkbox"><span>Números de daño</span></label>
+            <label class="option-toggle"><input id="highContrast" type="checkbox"><span>Contraste alto</span></label>
+          </div>
+          <div class="options-actions">
+            <button class="primary" id="fullscreenBtn" type="button">Pantalla completa</button>
+            <button id="resetOptionsBtn" type="button">Restablecer</button>
+          </div>
         </div>
       </section>
 
@@ -89,6 +126,9 @@
               <select id="debugRoomSelect" aria-label="Saltar a sala"></select>
             </label>
             <button id="debugGoRoomBtn" type="button">Ir</button>
+            <button id="debugLabBtn" type="button">Laboratorio</button>
+            <button id="debugSpawnEnemyBtn" type="button">Añadir enemigo</button>
+            <button id="debugHealBtn" type="button">Curar</button>
             <button class="debug-close" id="debugCloseBtn" type="button">Volver</button>
             <label class="debug-check">
               <input id="debugGodMode" type="checkbox">
@@ -98,17 +138,61 @@
               <input id="debugOneShot" type="checkbox">
               <span>One shot</span>
             </label>
+            <label class="debug-check">
+              <input id="debugUnlimitedMoney" type="checkbox">
+              <span>Dinero ilimitado</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="merchant-menu" id="merchantMenu" hidden>
+        <div class="merchant-card">
+          <div class="merchant-head">
+            <div>
+              <h1>Mercader</h1>
+              <p>Monedas: <strong id="merchantCoins">0</strong></p>
+            </div>
+            <button id="merchantCloseBtn" type="button">Volver</button>
+          </div>
+          <div class="merchant-offers" id="merchantOffers"></div>
+          <div class="merchant-info" id="merchantInfo">
+            <strong>Pasa el cursor por una opción</strong>
+            <span>Verás aquí qué hace antes de comprarla.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="merchant-menu" id="healerMenu" hidden>
+        <div class="merchant-card">
+          <div class="merchant-head">
+            <div>
+              <h1>Cesc</h1>
+              <p>Monedas: <strong id="healerCoins">0</strong></p>
+            </div>
+            <button id="healerCloseBtn" type="button">Volver</button>
+          </div>
+          <div class="merchant-offers" id="healerOffers"></div>
+          <div class="merchant-info">
+            <strong>Recupera vida</strong>
+            <span>Los packs grandes tienen un pequeno descuento.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="upgrade-menu" id="upgradeMenu" hidden>
+        <div class="upgrade-card">
+          <h1 id="upgradeTitle">Elige una mejora</h1>
+          <p id="upgradeSubtitle">Boss derrotado</p>
+          <div class="upgrade-options" id="upgradeOptions"></div>
+          <div class="setup-preview" id="setupPreview" hidden>
+            <strong>Pasa el cursor por una reliquia</strong>
+            <span>Veras su efecto actual y la mejora antes de elegir.</span>
           </div>
         </div>
       </section>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
-    <script src="js/constants.js"></script>
-    <script src="js/save.js"></script>
-    <script src="js/audio.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/rendering.js"></script>
-    <script src="js/main.js"></script>
+    <script src="game.js?v=20260602-38"></script>
   </body>
 </html>
