@@ -22,28 +22,35 @@ C:\Users\ot7\Documents\Codex\2026-05-22\files-mentioned-by-the-user-chatgpt
 Para Hostinger deben subirse los archivos de esta carpeta principal. No usar copias
 antiguas de `hostinger-upload` ni carpetas duplicadas.
 
-## Estructura actual
+## Estructura oficial obligatoria
 
 ```text
-/
-  index.html       Entrada de la web y estructura de menus
-  style.css        Estilos de menus, overlays, HUD y responsive
-  game.js          Toda la logica, catalogos, balance, guardado y render Canvas
-  AGENTS.md        Esta guia
+/public_html/
+  index.html              - Punto de entrada
+  style.css               - Estilos HUD, menus, pausa, coleccion
+  LISTA_ASSETS_PENDIENTES.md - Sprites que faltan por dibujar
   assets/
-    bosses/
-    characters/
-    chests/
-    enemies/
-    environment/
-    pickups/
-    relics/
-    ui/
+    data/balance.json     - Balance de 100 salas: tipos, puertas, loot, enemigos
+    characters/           - Sprites del jugador
+    environment/          - Fondos de sala, puertas
+    enemies/              - Sprites de enemigos, con fallback si falta alguno
+    pickups/              - Moneda, llave, bomba, corazon
+    relics/               - Sprites de reliquias, con fallback provisional si falta alguno
+    audio/
+      enemy/              - Sonidos de muerte de enemigo: enemy-1.mp3, enemy-2.mp3
+      merchant/           - Sonidos de compra en mercader: merchant-1.mp3, merchant-2.mp3, merchant-3.mp3
+    ui/                   - Fondos de menu, HUD, cursores
+  js/
+    constants.js          - Constantes, catalogos, ASSETS, ROOM_THEMES, RELIC_CATALOG, ENEMY_CATALOG
+    game.js               - Logica principal: salas, enemigos, disparos, objetos, HUD, pausa, debug, coleccion
+    rendering.js          - Renderizado Canvas: menus, salas, jugador, enemigos, proyectiles, UI, particulas
+    save.js               - Sistema de guardado en localStorage
+    main.js               - Bucle principal, input, carga de assets y orquestacion
 ```
 
-No existe actualmente una separacion en `js/constants.js`, `rendering.js`,
-`save.js` o `main.js`. Antes de crear archivos nuevos hay que comprobar si realmente
-aporta valor, porque el prototipo actual funciona como una web estatica sencilla.
+Esta es la estructura que debe respetarse al ordenar el proyecto y al preparar la
+subida a Hostinger. Si la carpeta local contiene archivos sueltos por prototipo, el
+objetivo es moverlos a esta organizacion sin perder funcionalidad ni assets.
 
 ## Tecnologia
 
