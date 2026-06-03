@@ -1,4 +1,4 @@
-function loop(now) {
+﻿function loop(now) {
   const dt = Math.min(0.033, (now - lastTime) / 1000);
   lastTime = now;
   update(dt);

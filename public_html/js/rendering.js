@@ -1,4 +1,4 @@
-function render() {
+﻿function render() {
   ctx.save();
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 

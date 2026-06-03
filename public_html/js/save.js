@@ -1,4 +1,4 @@
-function loadSave() {
+﻿function loadSave() {
   try {
     const parsed = {
       bestRoom: 0,

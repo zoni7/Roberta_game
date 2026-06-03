@@ -1,4 +1,4 @@
-
+﻿
 function setMode(nextMode) {
   mode = nextMode;
   hud.hidden = mode !== "game" && mode !== "paused";

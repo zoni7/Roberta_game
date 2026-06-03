@@ -1,4 +1,4 @@
-const canvas = document.querySelector("#game");
+﻿const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
 
 ctx.imageSmoothingEnabled = false;
