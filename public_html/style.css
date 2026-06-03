@@ -991,6 +991,5 @@ body.cursor-action #game {
   .debug-panel {
     right: 10px;
     bottom: 48px;
-    min-width: min(260px, calc(100vw - 20px));
-  }
+    min-width: min(260px, calc(100vw - 20px)); }
 }
