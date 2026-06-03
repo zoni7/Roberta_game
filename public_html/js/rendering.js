@@ -16,7 +16,7 @@ function render() {
     renderMainMenu();
   }
 
-  if (mode === "stats") {
+  if (mode === "stats" || mode === "options") {
     renderMainMenu();
   }
 
@@ -75,14 +75,13 @@ function renderMainMenu() {
       item.bounds.w,
       item.bounds.h,
     );
-    ctx.globalAlpha = 1;
-  }
+    ctx.globalAlpha = 1;}
 
   ctx.restore();
 }
 
 function renderGame() {
-  if (state?.shake) {
+  if (state?.shake && options.screenShake) {
     const amount = state.shake * 35;
     ctx.translate((Math.random() - 0.5) * amount, (Math.random() - 0.5) * amount);
   }
@@ -93,12 +92,45 @@ function renderGame() {
   drawRoomDarkness();
   drawDoors(state.roomProfile);
   drawBossHealthBar();
+  drawRelicEntities();
 
   for (const chest of state.chests) {
     drawChest(chest);
   }
 
   drawShopItems();
+
+  for (const zone of state.discoZones) drawDiscoZone(zone);
+
+  for (const block of state.minecraftBlocks) {
+    const sprite = images.minecraftBlock;
+    if (sprite?.complete && sprite.naturalWidth > 0) drawImagePixel(sprite, block.x - 42, block.y - 42, 84, 84);
+  }
+
+  for (const summon of state.minecraftSummons) {
+    ctx.save();
+    ctx.globalAlpha = 0.35 + Math.sin(summon.life * 24) * 0.15;
+    ctx.fillStyle = "#8f42cc";
+    ctx.beginPath();
+    ctx.ellipse(summon.x, summon.y, 40, 18, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  for (const enemy of state.enemies) {
+    if (!enemy.alexJump) continue;
+    const pulse = 0.35 + Math.sin(enemy.alexJump.timer * 26) * 0.16;
+    ctx.save();
+    ctx.globalAlpha = pulse;
+    ctx.fillStyle = "#da2d24";
+    ctx.strokeStyle = "#ffe096";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(enemy.alexJump.x, enemy.alexJump.y, 68, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
 
   for (const pickup of state.pickups) {
     const y = pickup.y + Math.sin(pickup.bob) * 8;
@@ -116,15 +148,34 @@ function renderGame() {
   }
 
   for (const enemy of state.enemies) {
-    const size = (enemy.finalBoss ? 164 : enemy.boss ? 124 : 62) + Math.sin(enemy.wobble) * (enemy.boss ? 5 : 3);
+    const size = (enemy.pattern === "xavi" ? 116 : enemy.finalBoss ? 164 : enemy.boss ? 124 : 62) + Math.sin(enemy.wobble) * (enemy.boss ? 5 : 3);
     ctx.globalAlpha = enemy.hit > 0 ? 0.65 : 1;
-    const sprite = enemy.sprite ? images[enemy.sprite] : null;
+    const spriteKey = enemy.pattern === "alex" && enemy.alexPose === "open" && enemy.alexPoseTime > 0 ? "bossAlexOpen" : enemy.sprite;
+    const sprite = spriteKey ? images[spriteKey] : null;
     if (sprite?.complete && sprite.naturalWidth > 0) {
-      drawImagePixel(sprite, enemy.x - size / 2, enemy.y - size / 2, size, size);
+      if (enemy.pattern === "xavi" && enemy.jumpFlip) drawImagePixelFlipped(sprite, enemy.x - size / 2, enemy.y - size / 2, size, size);
+      else drawImagePixel(sprite, enemy.x - size / 2, enemy.y - size / 2, size, size);
     } else {
       drawTintedImage(images.slime, enemy.x - size / 2, enemy.y - size / 2, size, size, enemy.tint);
     }
     ctx.globalAlpha = 1;
+    if (enemy.pattern === "creeper" && enemy.creeperFuse > 0) {
+      const pulse = 0.45 + Math.sin(enemy.creeperFuse * 34) * 0.18;
+      ctx.save();
+      ctx.globalAlpha = pulse;
+      ctx.strokeStyle = "#ffdf76";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.arc(enemy.x, enemy.y, enemy.r + 14, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+    if (enemy.specialPrompt > 0) {
+      const alpha = clamp(enemy.specialPrompt / 1.7, 0.18, 1);
+      drawSpeechText("Â¿QUE?", enemy.x, enemy.y - enemy.r - 34, alpha, "#ffe098");
+    } else if (enemy.specialReply > 0) {
+      drawSpeechText("QUE POR QUE NO TE CALLAS!", enemy.x, enemy.y - enemy.r - 34, 1, "#ffe098", 16);
+    }
   }
 
   for (const shot of state.shots) {
@@ -132,7 +183,13 @@ function renderGame() {
   }
 
   for (const shot of state.enemyShots) {
-    drawTear(shot.x, shot.y, "#fa6868", "#651b1b", shot.r);
+    const projectileSprite = shot.sprite ? images[shot.sprite] : null;
+    if (projectileSprite?.complete && projectileSprite.naturalWidth > 0) {
+      const size = shot.r * 3.1;
+      drawImagePixel(projectileSprite, shot.x - size / 2, shot.y - size / 2, size, size);
+    } else {
+      drawTear(shot.x, shot.y, "#fa6868", "#651b1b", shot.r);
+    }
   }
 
   for (const number of state.damageNumbers) {
@@ -154,12 +211,15 @@ function drawPlayer() {
 
   if (player.dead) sprite = images.playerDead;
   else if (player.itemPose > 0) sprite = images.playerItem;
-  else if (player.hitFlash > 0 && Math.floor(player.hitFlash * 22) % 2 === 0) sprite = images.playerHit;
+  else if (options.screenFlashes && player.hitFlash > 0 && Math.floor(player.hitFlash * 22) % 2 === 0) sprite = images.playerHit;
   else if (player.facing === "left") sprite = images.playerLeft;
   else if (player.facing === "right") sprite = images.playerRight;
 
   const size = player.itemPose > 0 ? 86 : 78;
   drawImagePixel(sprite, player.x - size / 2, player.y - size / 2 - 10, size, size);
+  if (state.message === "LO QUE?" && state.messageTime > 0) {
+    drawSpeechText("LO QUE?", player.x, player.y - 76, 1, "#f7dfc9");
+  }
 
   if (player.itemPose > 0 && player.heldItem) {
     const liftProgress = 1 - Math.min(1, player.itemPose / 1.15);
@@ -171,6 +231,69 @@ function drawPlayer() {
       drawImagePixel(player.heldItem.img, player.x - itemSize / 2, itemY - itemSize / 2, itemSize, itemSize);
     }
   }
+}
+
+function drawRelicEntities() {
+  for (const trail of state.toxicTrails) {
+    ctx.save();
+    ctx.globalAlpha = clamp(trail.life / trail.maxLife, 0, 0.58);
+    ctx.fillStyle = "#8f9f38";
+    ctx.beginPath();
+    ctx.ellipse(trail.x, trail.y, trail.r, trail.r * 0.55, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  for (const ant of state.allies) {
+    ctx.save();
+    ctx.translate(ant.x, ant.y);
+    ctx.fillStyle = "#120d0b";
+    for (const offset of [-7, 0, 7]) {
+      ctx.beginPath();
+      ctx.arc(offset, 0, 5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.strokeStyle = "#120d0b";
+    ctx.lineWidth = 2;
+    for (const side of [-1, 1]) {
+      for (const offset of [-5, 0, 5]) {
+        ctx.beginPath();
+        ctx.moveTo(offset, side * 2);
+        ctx.lineTo(offset - 6, side * 9);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  const rasta = state.player.rastaOrbit;
+  if (rasta) {
+    ctx.save();
+    ctx.translate(rasta.x, rasta.y);
+    ctx.rotate(state.player.rastaAngle || 0);
+    ctx.strokeStyle = "#100d0d";
+    ctx.lineWidth = 7;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(-17, 0);
+    ctx.quadraticCurveTo(-2, -8, 17, 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+}
+
+function drawSpeechText(text, x, y, alpha = 1, color = "#ffe098", size = 20) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.font = `900 ${size}px Arial, Helvetica, sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = "#160706";
+  ctx.fillStyle = color;
+  ctx.strokeText(text, x, y);
+  ctx.fillText(text, x, y);
+  ctx.restore();
 }
 
 function getRoomImage(profile) {
@@ -196,7 +319,7 @@ function drawThemeOverlay(profile) {
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
   }
 
-  if (profile.type === "chestRoom" || profile.type === "woodChest" || profile.type === "silverChest" || profile.type === "goldChest" || profile.type === "madShop" || profile.type === "sacrificeRoom") {
+  if (profile.type === "chestRoom" || profile.type === "woodChest" || profile.type === "silverChest" || profile.type === "goldChest" || profile.type === "madShop" || profile.type === "healerRoom" || profile.type === "sacrificeRoom") {
     const glow = ctx.createRadialGradient(WIDTH / 2, HEIGHT / 2, 20, WIDTH / 2, HEIGHT / 2, 220);
     const goldGlow = profile.type === "goldChest" || profile.chestVariant?.type === "goldChest";
     const sacrificeGlow = profile.type === "sacrificeRoom";
@@ -212,15 +335,6 @@ function drawRoomProps(profile) {
 
   if (profile.type === "jokeRoom") {
     drawFloorGraffiti("ROBERTO PAQUETE");
-  }
-
-  if (profile.type === "chestRoom" || profile.type === "woodChest" || profile.type === "silverChest" || profile.type === "goldChest") {
-    drawPedestal(WIDTH / 2 - 55, HEIGHT / 2 + 20, "#9a652c", "#f5cb66");
-    drawPedestal(WIDTH / 2 + 55, HEIGHT / 2 + 20, "#9a652c", "#f5cb66");
-  }
-
-  if (profile.type === "madShop") {
-    drawPedestal(WIDTH / 2, HEIGHT / 2 + 28, "#446179", "#a8edff");
   }
 
   if (profile.type === "sacrificeRoom") {
@@ -324,89 +438,49 @@ function drawSacrificeAltar(profile) {
 }
 
 function drawShopItems() {
-  if (!state?.shopItems?.length) return;
-  const nearest = nearestShopItem();
-
-  for (const item of state.shopItems) {
-    if (item.bought) continue;
-    const y = item.y + Math.sin(performance.now() / 360 + item.bob) * 4;
-
-    ctx.save();
-    ctx.fillStyle = "rgba(0,0,0,0.34)";
-    ctx.beginPath();
-    ctx.ellipse(item.x, item.y + 34, 38, 12, 0, 0, Math.PI * 2);
-    ctx.fill();
-    drawPedestal(item.x, item.y + 30, "#4c2c1e", "#f0d29a");
-
-    if (item.kind === "object" && item.item) {
-      drawRelicIcon(item.item, item.x, y - 20, 54);
-    } else if (item.img) {
-      drawImagePixel(item.img, item.x - 28, y - 46, 56, 56);
-    } else {
-      ctx.fillStyle = "#111";
-      roundRect(item.x - 24, y - 44, 48, 48, 6);
-      ctx.fill();
-      ctx.strokeStyle = "#f0d29a";
-      ctx.lineWidth = 4;
-      ctx.stroke();
-      ctx.font = "900 34px Arial, Helvetica, sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = "#f0d29a";
-      ctx.fillText("?", item.x, y - 20);
-    }
-
-    ctx.font = "900 20px Arial, Helvetica, sans-serif";
+  if (state?.roomProfile?.type !== "madShop" && state?.roomProfile?.type !== "healerRoom") return;
+  const x = WIDTH / 2;
+  const y = HEIGHT / 2 - 50;
+  const isHealer = state.roomProfile.type === "healerRoom";
+  const merchant = isHealer ? images.healerCesc : merchantMenuOpen ? images.merchantOpen : images.merchantClosed;
+  ctx.save();
+  ctx.fillStyle = "rgba(0,0,0,0.32)";
+  ctx.beginPath();
+  ctx.ellipse(x, y + 92, 92, 22, 0, 0, Math.PI * 2);
+  ctx.fill();
+  drawImagePixel(merchant, x - 92, y - 92, 184, 184);
+  if ((isHealer ? nearHealer() && !healerMenuOpen : nearMerchant() && !merchantMenuOpen)) {
+    ctx.fillStyle = "#f8edd3";
+    ctx.strokeStyle = "#160807";
+    ctx.lineWidth = 7;
+    ctx.font = "900 36px Arial, Helvetica, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = "#150706";
-    ctx.fillStyle = "#ffe5be";
-    ctx.strokeText(`${item.price}c`, item.x, item.y + 74);
-    ctx.fillText(`${item.price}c`, item.x, item.y + 74);
-
-    if (nearest === item) {
-      ctx.font = "900 34px Arial, Helvetica, sans-serif";
-      ctx.strokeText("E", item.x, item.y - 82);
-      ctx.fillText("E", item.x, item.y - 82);
-    }
-
-    ctx.restore();
+    ctx.strokeText("E", x, y - 112);
+    ctx.fillText("E", x, y - 112);
   }
+  if (isHealer) {
+    ctx.font = "900 24px Arial, Helvetica, sans-serif";
+    ctx.fillStyle = "#ff8585";
+    ctx.strokeStyle = "#160807";
+    ctx.lineWidth = 6;
+    ctx.strokeText("CESC", x, y + 136);
+    ctx.fillText("CESC", x, y + 136);
+  }
+  ctx.restore();
 }
 
 function drawChest(chest) {
   const y = chest.y + Math.sin(chest.bob) * 3;
-  const colors = {
-    woodChest: { base: "#8b542d", lid: "#bd7a3d", trim: "#f0c56c" },
-    silverChest: { base: "#787d87", lid: "#c8d0d8", trim: "#f4f7fb" },
-    goldChest: { base: "#a76f12", lid: "#ffd35a", trim: "#fff0a5" },
-  }[chest.chestType] || { base: "#8b542d", lid: "#bd7a3d", trim: "#f0c56c" };
-
   ctx.save();
   ctx.fillStyle = "rgba(0,0,0,0.34)";
   ctx.beginPath();
-  ctx.ellipse(chest.x, chest.y + 36, 42, 12, 0, 0, Math.PI * 2);
+  ctx.ellipse(chest.x, chest.y + 34, 46, 13, 0, 0, Math.PI * 2);
   ctx.fill();
-
-  ctx.fillStyle = colors.base;
-  roundRect(chest.x - 40, y - 12, 80, 48, 8);
-  ctx.fill();
-  ctx.strokeStyle = "#150906";
-  ctx.lineWidth = 5;
-  ctx.stroke();
-
-  ctx.fillStyle = colors.lid;
-  roundRect(chest.x - 43, y - 32, 86, 30, 10);
-  ctx.fill();
-  ctx.strokeStyle = "#150906";
-  ctx.stroke();
-
-  ctx.fillStyle = colors.trim;
-  ctx.fillRect(chest.x - 6, y - 15, 12, 22);
-  ctx.strokeStyle = "#150906";
-  ctx.lineWidth = 3;
-  ctx.strokeRect(chest.x - 6, y - 15, 12, 22);
+  const sprite = getChestSprite(chest);
+  if (sprite?.complete && sprite.naturalWidth > 0) {
+    drawImagePixel(sprite, chest.x - 56, y - 56, 112, 112);
+  }
 
   if (nearestClosedChest() === chest) {
     ctx.fillStyle = "#f8edd3";
@@ -420,6 +494,12 @@ function drawChest(chest) {
   }
 
   ctx.restore();
+}
+
+function getChestSprite(chest) {
+  if (chest.chestType === "silverChest") return chest.opened ? images.chestSilverOpen : images.chestSilverClosed;
+  if (chest.chestType === "goldChest") return chest.opened ? images.chestGoldOpen : images.chestGoldClosed;
+  return chest.opened ? images.chestWoodOpen : images.chestWoodClosed;
 }
 
 function drawRelicIcon(item, x, y, size = 48) {
@@ -440,12 +520,13 @@ function drawRelicIcon(item, x, y, size = 48) {
   ctx.fillStyle = visual.color;
 
   if (image?.complete && image.naturalWidth > 0) {
-    roundRect(-size * 0.46, -size * 0.46, size * 0.92, size * 0.92, 6);
-    ctx.fillStyle = "rgba(246, 225, 194, 0.92)";
-    ctx.fill();
-    ctx.stroke();
-    const imageSize = size * 0.78;
+    const imageSize = size * 0.92;
+    ctx.shadowColor = rarityColor(relic.rarity);
+    ctx.shadowBlur = Math.max(5, size * 0.14);
     drawImagePixel(image, -imageSize / 2, -imageSize / 2, imageSize, imageSize);
+    ctx.shadowBlur = Math.max(2, size * 0.05);
+    drawImagePixel(image, -imageSize / 2, -imageSize / 2, imageSize, imageSize);
+    ctx.shadowBlur = 0;
     ctx.restore();
     return;
   }
@@ -626,13 +707,43 @@ function drawBossHealthBar() {
 }
 
 function getActiveBoss() {
-  return state?.enemies?.find((enemy) => enemy.boss) || null;
+  return state?.enemies?.find((enemy) => enemy.boss || enemy.pattern === "xavi") || null;
 }
 
 function drawImagePixel(img, x, y, w, h) {
   if (!img?.complete) return;
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(img, Math.round(x), Math.round(y), Math.round(w), Math.round(h));
+}
+
+function drawImagePixelFlipped(img, x, y, w, h) {
+  if (!img?.complete) return;
+  ctx.save();
+  ctx.translate(x + w, y);
+  ctx.scale(-1, 1);
+  ctx.drawImage(img, 0, 0, w, h);
+  ctx.restore();
+}
+
+function drawDiscoZone(zone) {
+  ctx.save();
+  ctx.translate(zone.x, zone.y);
+  ctx.rotate(zone.angle);
+  const length = zone.length || 1000;
+  if (zone.kind === "xaviLaser") {
+    ctx.globalAlpha = zone.warning > 0 ? 0.30 : 0.92;
+    if (zone.warning > 0 || !images.xaviRay?.complete) {
+      ctx.fillStyle = "#ff3d48";
+      ctx.fillRect(0, -12, length, 24);
+    } else {
+      ctx.drawImage(images.xaviRay, 0, -18, length, 36);
+    }
+  } else {
+    ctx.globalAlpha = zone.warning > 0 ? 0.18 : 0.52;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, -(zone.width || 160) / 2, length, zone.width || 160);
+  }
+  ctx.restore();
 }
 
 function drawTintedImage(img, x, y, w, h, tint) {
@@ -719,4 +830,164 @@ function hashString(text) {
     hash = ((hash << 5) - hash + String(text).charCodeAt(i)) | 0;
   }
   return Math.abs(hash);
+}
+
+function getDoorExit(player) {
+  const profile = state.roomProfile;
+  if (!profile?.doorsOpen || player.itemPose > 0) return null;
+  const sides = profile.doorSides;
+
+  if (sides.includes("top") && player.y <= 132 && Math.abs(player.x - WIDTH / 2) < 70) return "top";
+  if (sides.includes("bottom") && player.y >= HEIGHT - 116 && Math.abs(player.x - WIDTH / 2) < 70) return "bottom";
+  if (sides.includes("left") && player.x <= 160 && Math.abs(player.y - HEIGHT / 2) < 70) return "left";
+  if (sides.includes("right") && player.x >= WIDTH - 160 && Math.abs(player.y - HEIGHT / 2) < 70) return "right";
+
+  if (profile.bombDoorSide && !profile.bombDoorUsed && isAtDoor(player, profile.bombDoorSide)) {
+    return `bomb:${profile.bombDoorSide}`;
+  }
+
+  return null;
+}
+
+function isAtDoor(player, side) {
+  if (side === "top") return player.y <= 132 && Math.abs(player.x - WIDTH / 2) < 70;
+  if (side === "bottom") return player.y >= HEIGHT - 116 && Math.abs(player.x - WIDTH / 2) < 70;
+  if (side === "left") return player.x <= 160 && Math.abs(player.y - HEIGHT / 2) < 70;
+  if (side === "right") return player.x >= WIDTH - 160 && Math.abs(player.y - HEIGHT / 2) < 70;
+  return false;
+}
+
+function openBombDoor(side) {
+  if (state.bombs <= 0) {
+    state.message = "Necesitas bomba";
+    state.messageTime = 0.9;
+    bouncePlayerFromDoor(side);
+    return;
+  }
+
+  state.bombs -= 1;
+  state.roomProfile.bombDoorUsed = true;
+  state.message = "Puerta bomba";
+  state.messageTime = 1.0;
+  spawnBombDoorReward(WIDTH / 2, HEIGHT / 2 - 34);
+  bouncePlayerFromDoor(side);
+  saveCurrentRun();
+}
+
+function bouncePlayerFromDoor(side) {
+  const player = state.player;
+  if (side === "top") player.y = 166;
+  if (side === "bottom") player.y = HEIGHT - 158;
+  if (side === "left") player.x = 178;
+  if (side === "right") player.x = WIDTH - 178;
+}
+
+function placePlayerAtEntrance(side) {
+  const player = state.player;
+  if (side === "top") {
+    player.x = WIDTH / 2;
+    player.y = 164;
+    player.facing = "front";
+    player.aimX = 0;
+    player.aimY = 1;
+    return;
+  }
+  if (side === "bottom") {
+    player.x = WIDTH / 2;
+    player.y = HEIGHT - 156;
+    player.facing = "front";
+    player.aimX = 0;
+    player.aimY = -1;
+    return;
+  }
+  if (side === "left") {
+    player.x = 178;
+    player.y = HEIGHT / 2;
+    player.facing = "right";
+    player.aimX = 1;
+    player.aimY = 0;
+    return;
+  }
+  if (side === "right") {
+    player.x = WIDTH - 178;
+    player.y = HEIGHT / 2;
+    player.facing = "left";
+    player.aimX = -1;
+    player.aimY = 0;
+    return;
+  }
+  player.x = WIDTH / 2;
+  player.y = HEIGHT / 2;
+}
+
+function oppositeSide(side) {
+  if (side === "top") return "bottom";
+  if (side === "bottom") return "top";
+  if (side === "left") return "right";
+  if (side === "right") return "left";
+  return null;
+}
+
+function distance(a, b) {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function inBounds(x, y, pad) {
+  return x > -pad && y > -pad && x < WIDTH + pad && y < HEIGHT + pad;
+}
+
+function resizeMousePosition(event) {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * WIDTH;
+  mouse.y = ((event.clientY - rect.top) / rect.height) * HEIGHT;
+  updateMenuCursor();
+}
+
+function isOverMenuStart() {
+  return mouse.x >= MENU_START_BOUNDS.x
+    && mouse.x <= MENU_START_BOUNDS.x + MENU_START_BOUNDS.w
+    && mouse.y >= MENU_START_BOUNDS.y
+    && mouse.y <= MENU_START_BOUNDS.y + MENU_START_BOUNDS.h;
+}
+
+function isPointInsideBounds(bounds, point = mouse) {
+  return point.x >= bounds.x
+    && point.x <= bounds.x + bounds.w
+    && point.y >= bounds.y
+    && point.y <= bounds.y + bounds.h;
+}
+
+function getMainMenuItemAtPointer() {
+  const point = getMainMenuPointer();
+  return MAIN_MENU_ITEMS.find((item) => isPointInsideBounds(item.bounds, point)) || null;
+}
+
+function updateMenuCursor() {
+  menuPressHover = mode === "menu" && isOverMenuStart();
+  const hoveredItem = mode === "mainmenu" ? getMainMenuItemAtPointer() : null;
+  mainMenuHover = hoveredItem?.id || null;
+  const canClickMainItem = Boolean(hoveredItem && hoveredItem.enabled());
+  setCustomCursor(menuPressHover || canClickMainItem);
+}
+
+function getMainMenuPointer() {
+  if (mode !== "mainmenu") return mouse;
+  const centerX = WIDTH / 2;
+  const centerY = 372;
+  const angle = 0.055;
+  const dx = mouse.x - centerX;
+  const dy = mouse.y - centerY;
+  return {
+    x: centerX + dx * Math.cos(angle) - dy * Math.sin(angle),
+    y: centerY + dx * Math.sin(angle) + dy * Math.cos(angle),
+  };
+}
+
+function setCustomCursor(isAction) {
+  document.body.classList.toggle("cursor-action", isAction);
+  canvas.style.cursor = "";
 }
