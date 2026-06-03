@@ -18,6 +18,12 @@ function showStatsMenu() {
   setMode("stats");
 }
 
+function showOptionsMenu() {
+  keys.clear();
+  mouse.down = false;
+  setMode("options");
+}
+
 function startFromMenu() {
   keys.clear();
   mouse.down = false;
@@ -55,31 +61,6 @@ function backToMainMenuFromPause() {
   setMode("mainmenu");
 }
 
-function loadImages() {
-  const entries = Object.entries(ASSETS);
-  return Promise.all(entries.map(([key, src]) => new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      images[key] = img;
-      resolve();
-    };
-    img.onerror = () => {
-      images[key] = img;
-      resolve();
-    };
-    img.src = src;
-  })));
-}
-
-async function loadBalance() {
-  try {
-    const response = await fetch("assets/data/balance.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`Balance ${response.status}`);
-    balanceData = await response.json();
-  } catch {
-    balanceData = null;
-  }
-}
 
 window.addEventListener("keydown", (event) => {
   if (shouldBlockBrowserShortcut(event)) {
@@ -93,16 +74,19 @@ window.addEventListener("keydown", (event) => {
   }
 
   if (event.code === "Escape") {
-    if (mode === "game") pauseGame();
+    if (merchantMenuOpen) closeMerchantMenu();
+    else if (healerMenuOpen) closeHealerMenu();
+    else if (mode === "game") pauseGame();
     else if (mode === "paused") resumeGame();
-    else if (mode === "stats") showMainMenu();
+    else if (mode === "stats" || mode === "options") showMainMenu();
     return;
   }
 
   keys.add(event.code);
 
   if (mode === "game" && event.code === "KeyE") {
-    if (tryBuyShopItem()) return;
+    if (openMerchantMenu()) return;
+    if (openHealerMenu()) return;
     if (tryUseSacrifice()) return;
     tryOpenNearbyChest();
   }
@@ -168,6 +152,7 @@ function shouldBlockBrowserShortcut(event) {
 
 canvas.addEventListener("pointerdown", (event) => {
   resizeMousePosition(event);
+  if (mode === "game" && clickFerriPrompt()) return;
   mouse.down = true;
   canvas.setPointerCapture(event.pointerId);
 
@@ -182,6 +167,7 @@ canvas.addEventListener("pointerdown", (event) => {
       if (item.id === "newRun") startFromMenu();
       if (item.id === "continue") continueFromMenu();
       if (item.id === "stats") showStatsMenu();
+      if (item.id === "options") showOptionsMenu();
     }
   }
 });
@@ -202,11 +188,37 @@ canvas.addEventListener("pointerup", (event) => {
 });
 
 retryBtn.addEventListener("click", () => startFromMenu());
+gameOverMenuBtn?.addEventListener("click", () => showMainMenu());
 victoryBtn.addEventListener("click", () => startFromMenu());
 statsBackBtn?.addEventListener("click", () => showMainMenu());
+optionsBackBtn?.addEventListener("click", () => showMainMenu());
 resumeBtn.addEventListener("click", () => resumeGame());
 pauseMenuBtn.addEventListener("click", () => backToMainMenuFromPause());
 pauseNewRunBtn.addEventListener("click", () => startFromMenu());
+merchantCloseBtn?.addEventListener("click", () => closeMerchantMenu());
+healerCloseBtn?.addEventListener("click", () => closeHealerMenu());
+
+for (const control of [masterVolume, musicVolume, effectsVolume, muteAudio, screenShake, screenFlashes, damageNumbers, highContrast]) {
+  control?.addEventListener("input", () => {
+    options[control.id] = control.type === "checkbox" ? control.checked : Number(control.value);
+    renderOptions();
+  });
+}
+
+fullscreenBtn?.addEventListener("click", async () => {
+  if (document.fullscreenElement) await document.exitFullscreen();
+  else await document.documentElement.requestFullscreen();
+  renderOptions();
+});
+
+document.addEventListener("fullscreenchange", () => {
+  if (mode === "options") renderOptions();
+});
+
+resetOptionsBtn?.addEventListener("click", () => {
+  options = { ...DEFAULT_OPTIONS };
+  renderOptions();
+});
 
 secretToolBtn?.addEventListener("click", () => {
   debugState.panelOpen = !debugState.panelOpen;
@@ -218,14 +230,21 @@ secretToolBtn?.addEventListener("click", () => {
 
 debugCodeInput?.addEventListener("input", () => {
   debugCodeInput.value = debugCodeInput.value.replace(/\D/g, "").slice(0, 4);
-  if (debugCodeInput.value === "2201") unlockDebugTools();
+  if (debugCodeInput.value === "2345") unlockDebugTools();
 });
 
 debugCodeInput?.addEventListener("keydown", (event) => {
-  if (event.code === "Enter" && debugCodeInput.value === "2201") unlockDebugTools();
+  if (event.code === "Enter" && debugCodeInput.value === "2345") unlockDebugTools();
 });
 
 debugGoRoomBtn?.addEventListener("click", () => jumpToDebugRoom());
+debugLabBtn?.addEventListener("click", () => enterDebugLab());
+debugSpawnEnemyBtn?.addEventListener("click", () => spawnDebugEnemy());
+debugHealBtn?.addEventListener("click", () => {
+  if (!state) return;
+  state.player.hp = state.player.maxHp;
+  syncHud();
+});
 debugRoomSelect?.addEventListener("change", () => {
   debugState.selectedRoom = Number(debugRoomSelect.value) || debugState.selectedRoom;
 });
@@ -241,9 +260,14 @@ debugOneShot?.addEventListener("change", () => {
   debugState.oneShot = debugOneShot.checked;
   renderDebugPanel();
 });
+debugUnlimitedMoney?.addEventListener("change", () => {
+  debugState.unlimitedMoney = debugUnlimitedMoney.checked;
+  renderDebugPanel();
+  if (merchantMenuOpen) renderMerchantMenu();
+  if (healerMenuOpen) renderHealerMenu();
+});
 
 Promise.all([loadImages(), loadBalance()]).then(() => {
-  SFX.init();
   setMode("menu");
   requestAnimationFrame(loop);
 });
