@@ -403,6 +403,62 @@ Guardar en `localStorage`:
 
 Mantener compatibilidad con partidas guardadas siempre que sea posible.
 
+## Audio - trabajo conservado del compañero
+
+Esta seccion procede del trabajo previo del compañero y no debe eliminarse ni
+reescribirse sin revisar primero su implementacion. Aunque los archivos de audio no
+esten todavia presentes en esta copia principal, se mantiene como contrato de
+integracion.
+
+### Dependencia externa prevista
+
+- Howler.js 2.2.4 cargado desde CDN en `index.html`.
+- Sin gestor de paquetes obligatorio.
+
+### Sistema SFX previsto
+
+El modulo `audio.js` define el objeto `SFX` con un sistema de pools:
+
+- Cada tipo de evento tiene varias muestras.
+- Al reproducir se elige una variante aleatoria.
+- Se aplica un `rate` variable entre `0.85` y `1.15` para evitar repeticiones
+  identicas.
+- `SFX.enemyDeath()` reproduce muerte de enemigo.
+- `SFX.merchantBuy()` reproduce compra en mercader.
+- `SFX.toggle()` activa o desactiva todo el audio.
+- Formato esperado: MP3.
+
+### Convencion de archivos
+
+```text
+assets/audio/<evento>/<evento>-N.mp3
+```
+
+Ejemplos previstos:
+
+```text
+assets/audio/enemy/enemy-1.mp3
+assets/audio/enemy/enemy-2.mp3
+assets/audio/merchant/merchant-1.mp3
+assets/audio/merchant/merchant-2.mp3
+assets/audio/merchant/merchant-3.mp3
+```
+
+`N` empieza en 1. El numero de variantes se configura en `SFX.init()` dentro de
+`audio.js`.
+
+### Archivos ausentes
+
+El sistema debe tolerar sonidos ausentes. Antes de reproducir, `_play()` comprueba
+que `sound.state() === "loaded"`. Si un MP3 no existe, se omite silenciosamente y el
+juego sigue funcionando.
+
+### Regla para agentes
+
+No borrar `audio.js`, Howler.js, llamadas `SFX.*`, ajustes de sonido ni carpetas
+`assets/audio/` cuando aparezcan en la rama compartida. Si se reorganiza el proyecto,
+adaptar las rutas conservando la funcionalidad del compañero.
+
 ## Reglas para futuros cambios
 
 1. Editar siempre esta carpeta principal.
@@ -417,4 +473,5 @@ Mantener compatibilidad con partidas guardadas siempre que sea posible.
 8. Revisar el Excel mas reciente antes de cambiar probabilidades o poderes.
 9. Verificar sintaxis con `node --check game.js`.
 10. Probar visualmente menus, sala afectada, pausa y HUD tras cambios importantes.
-
+11. Conservar la integracion de audio del compañero y revisar conflictos antes de
+    modificarla.
