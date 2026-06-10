@@ -8,7 +8,7 @@
     drawCenteredText("Cargando...", WIDTH / 2, HEIGHT / 2, 44, "#f5dcc9");
   }
 
-  if (mode === "menu") {
+  if (mode === "menu" || mode === "auth") {
     renderMenu();
   }
 
@@ -64,17 +64,7 @@ function renderMainMenu() {
     ctx.globalAlpha = enabled
       ? hovering ? 0.55 : 0.96
       : hovering ? 0.34 : 0.20;
-    drawTrimmedImage(
-      images[item.image],
-      item.crop.x,
-      item.crop.y,
-      item.crop.w,
-      item.crop.h,
-      item.bounds.x,
-      item.bounds.y,
-      item.bounds.w,
-      item.bounds.h,
-    );
+    drawContain(images[item.image], item.bounds.x, item.bounds.y, item.bounds.w, item.bounds.h);
     ctx.globalAlpha = 1;}
 
   ctx.restore();
@@ -101,6 +91,7 @@ function renderGame() {
   drawShopItems();
 
   for (const zone of state.discoZones) drawDiscoZone(zone);
+  for (const trap of state.tangleTraps || []) drawTangleTrap(trap);
 
   for (const block of state.minecraftBlocks) {
     const sprite = images.minecraftBlock;
@@ -150,7 +141,11 @@ function renderGame() {
   for (const enemy of state.enemies) {
     const size = (enemy.pattern === "xavi" ? 116 : enemy.finalBoss ? 164 : enemy.boss ? 124 : 62) + Math.sin(enemy.wobble) * (enemy.boss ? 5 : 3);
     ctx.globalAlpha = enemy.hit > 0 ? 0.65 : 1;
-    const spriteKey = enemy.pattern === "alex" && enemy.alexPose === "open" && enemy.alexPoseTime > 0 ? "bossAlexOpen" : enemy.sprite;
+    const spriteKey = enemy.pattern === "alex" && enemy.alexPose === "open" && enemy.alexPoseTime > 0
+      ? "bossAlexOpen"
+      : enemy.pattern === "daniRastas" && enemy.hp < enemy.maxHp * 0.5
+        ? "bossDaniNoRastas"
+        : enemy.sprite;
     const sprite = spriteKey ? images[spriteKey] : null;
     if (sprite?.complete && sprite.naturalWidth > 0) {
       if (enemy.pattern === "xavi" && enemy.jumpFlip) drawImagePixelFlipped(sprite, enemy.x - size / 2, enemy.y - size / 2, size, size);
@@ -172,24 +167,18 @@ function renderGame() {
     }
     if (enemy.specialPrompt > 0) {
       const alpha = clamp(enemy.specialPrompt / 1.7, 0.18, 1);
-      drawSpeechText("Â¿QUE?", enemy.x, enemy.y - enemy.r - 34, alpha, "#ffe098");
+      drawSpeechText("QUE?", enemy.x, enemy.y - enemy.r - 34, alpha, "#ffe098");
     } else if (enemy.specialReply > 0) {
       drawSpeechText("QUE POR QUE NO TE CALLAS!", enemy.x, enemy.y - enemy.r - 34, 1, "#ffe098", 16);
     }
   }
 
   for (const shot of state.shots) {
-    drawTear(shot.x, shot.y, "#9de8ff", "#327991", shot.r);
+    drawProjectile(shot, "#9de8ff", "#327991");
   }
 
   for (const shot of state.enemyShots) {
-    const projectileSprite = shot.sprite ? images[shot.sprite] : null;
-    if (projectileSprite?.complete && projectileSprite.naturalWidth > 0) {
-      const size = shot.r * 3.1;
-      drawImagePixel(projectileSprite, shot.x - size / 2, shot.y - size / 2, size, size);
-    } else {
-      drawTear(shot.x, shot.y, "#fa6868", "#651b1b", shot.r);
-    }
+    drawProjectile(shot, "#fa6868", "#651b1b");
   }
 
   for (const number of state.damageNumbers) {
@@ -205,11 +194,43 @@ function renderGame() {
   }
 }
 
+function drawProjectile(shot, fill, stroke) {
+  const projectileSprite = shot.sprite ? images[shot.sprite] : null;
+  if (projectileSprite?.complete && projectileSprite.naturalWidth > 0) {
+    const angle = shot.angle || Math.atan2(shot.vy || 0, shot.vx || 1);
+    let length = shot.r * 4.4;
+    let height = shot.r * 2.5;
+    if (shot.sprite === "scyllaLobo") {
+      length = shot.r * 6.6;
+      height = shot.r * 2.4;
+    } else if (shot.sprite === "projectileRifleBullet") {
+      length = shot.r * 6.2;
+      height = shot.r * 2.4;
+    } else if (shot.sprite === "projectileShuriken") {
+      length = shot.r * 3.6;
+      height = shot.r * 3.6;
+    } else if (shot.sprite === "projectilePlayerBlue" || shot.sprite === "projectileMagicPurple") {
+      length = shot.r * 4.9;
+      height = shot.r * 2.9;
+    }
+    ctx.save();
+    ctx.translate(shot.x, shot.y);
+    ctx.rotate(angle);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(projectileSprite, -length / 2, -height / 2, length, height);
+    ctx.restore();
+    return;
+  }
+  drawTear(shot.x, shot.y, fill, stroke, shot.r);
+}
+
 function drawPlayer() {
   const player = state.player;
   let sprite = images.playerFront;
 
   if (player.dead) sprite = images.playerDead;
+  else if (player.tangled > 0) sprite = images.playerTangled;
+  else if (player.flashPose > 0 || player.paralysis > 0) sprite = images.playerFlashed;
   else if (player.itemPose > 0) sprite = images.playerItem;
   else if (options.screenFlashes && player.hitFlash > 0 && Math.floor(player.hitFlash * 22) % 2 === 0) sprite = images.playerHit;
   else if (player.facing === "left") sprite = images.playerLeft;
@@ -217,6 +238,9 @@ function drawPlayer() {
 
   const size = player.itemPose > 0 ? 86 : 78;
   drawImagePixel(sprite, player.x - size / 2, player.y - size / 2 - 10, size, size);
+  if (player.tangled > 0 && (player.tangleHint || 0) > 0) {
+    drawSpeechText(`E ${player.tanglePresses || 0}/10`, player.x, player.y - 78, 1, "#f7dfc9", 18);
+  }
   if (state.message === "LO QUE?" && state.messageTime > 0) {
     drawSpeechText("LO QUE?", player.x, player.y - 76, 1, "#f7dfc9");
   }
@@ -726,6 +750,36 @@ function drawImagePixelFlipped(img, x, y, w, h) {
 }
 
 function drawDiscoZone(zone) {
+  if (zone.kind === "scyllaCrush") {
+    ctx.save();
+    const warning = zone.warning > 0;
+    const pulse = warning ? 0.55 + Math.sin(performance.now() * 0.014) * 0.12 : 1;
+    ctx.globalAlpha = warning ? 0.26 * pulse : 0.62;
+    ctx.fillStyle = warning ? "#7f4dff" : "#d8c7ff";
+    ctx.beginPath();
+    ctx.arc(zone.x, zone.y, zone.radius || 90, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = warning ? 0.72 : 0.95;
+    ctx.strokeStyle = warning ? "#d8c7ff" : "#ffffff";
+    ctx.lineWidth = warning ? 4 : 7;
+    ctx.beginPath();
+    ctx.arc(zone.x, zone.y, zone.radius || 90, 0, Math.PI * 2);
+    ctx.stroke();
+    if ((zone.blast || 0) > 0) {
+      const alpha = Math.min(0.74, (zone.blast || 0) / 0.34);
+      const radius = (zone.radius || 90) + (1 - alpha) * 58;
+      const gradient = ctx.createRadialGradient(zone.x, zone.y, 8, zone.x, zone.y, radius);
+      gradient.addColorStop(0, `rgba(230,214,255,${0.68 * alpha})`);
+      gradient.addColorStop(0.45, `rgba(139,76,255,${0.46 * alpha})`);
+      gradient.addColorStop(1, "rgba(139,76,255,0)");
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(zone.x, zone.y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+    return;
+  }
   ctx.save();
   ctx.translate(zone.x, zone.y);
   ctx.rotate(zone.angle);
@@ -738,10 +792,90 @@ function drawDiscoZone(zone) {
     } else {
       ctx.drawImage(images.xaviRay, 0, -18, length, 36);
     }
+  } else if (zone.kind === "ferriAwp") {
+    const following = (zone.follow || 0) > 0;
+    const firing = zone.triggered && (zone.blast || 0) > 0;
+    ctx.globalAlpha = firing ? 0.95 : following ? 0.36 : 0.72;
+    ctx.fillStyle = firing ? "#fff2b0" : "#ff1f2f";
+    ctx.fillRect(0, -(zone.width || 18) / 2, length, zone.width || 18);
+    ctx.globalAlpha *= 0.45;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, -2, length, 4);
   } else {
     ctx.globalAlpha = zone.warning > 0 ? 0.18 : 0.52;
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, -(zone.width || 160) / 2, length, zone.width || 160);
+  }
+  ctx.restore();
+  if (zone.kind === "ferriAwp" && (zone.blast || 0) > 0) {
+    ctx.save();
+    const alpha = Math.min(0.75, (zone.blast || 0) / 0.22);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = "rgba(255, 230, 120, 0.16)";
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    ctx.restore();
+  }
+  if (zone.kind === "jajoFlash" && (zone.blast || 0) > 0) {
+    ctx.save();
+    const alpha = Math.min(0.86, (zone.blast || 0) / 0.28);
+    const radius = 170 + (1 - alpha) * 280;
+    const gradient = ctx.createRadialGradient(zone.x, zone.y, 16, zone.x, zone.y, radius);
+    gradient.addColorStop(0, `rgba(255,255,255,${0.72 * alpha})`);
+    gradient.addColorStop(0.35, `rgba(255,244,214,${0.42 * alpha})`);
+    gradient.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(zone.x, zone.y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 0.22 * alpha;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    ctx.restore();
+  }
+  if (zone.kind === "scyllaCrush" && (zone.blast || 0) > 0) {
+    ctx.save();
+    const alpha = Math.min(0.74, (zone.blast || 0) / 0.34);
+    const radius = (zone.radius || 90) + (1 - alpha) * 58;
+    const gradient = ctx.createRadialGradient(zone.x, zone.y, 8, zone.x, zone.y, radius);
+    gradient.addColorStop(0, `rgba(230,214,255,${0.68 * alpha})`);
+    gradient.addColorStop(0.45, `rgba(139,76,255,${0.46 * alpha})`);
+    gradient.addColorStop(1, "rgba(139,76,255,0)");
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(zone.x, zone.y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function drawTangleTrap(trap) {
+  const alpha = Math.min(1, trap.life / 1.2);
+  ctx.save();
+  ctx.globalAlpha = 0.72 * alpha;
+  ctx.translate(trap.x, trap.y);
+  if (images.rastaTangle?.complete && images.rastaTangle.naturalWidth > 0) {
+    drawImagePixel(images.rastaTangle, -54, -38, 108, 76);
+    ctx.restore();
+    return;
+  }
+  ctx.strokeStyle = "#161412";
+  ctx.lineWidth = 8;
+  ctx.lineCap = "round";
+  for (let i = 0; i < 7; i += 1) {
+    const angle = (i / 7) * Math.PI * 2;
+    const rx = Math.cos(angle) * 34;
+    const ry = Math.sin(angle) * 18;
+    ctx.beginPath();
+    ctx.ellipse(rx * 0.25, ry * 0.2, 32 + i * 2, 13 + (i % 2) * 5, angle, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = "#34302c";
+  ctx.lineWidth = 3;
+  for (let i = 0; i < 5; i += 1) {
+    ctx.beginPath();
+    ctx.moveTo(-42 + i * 18, -12);
+    ctx.quadraticCurveTo(-10 + i * 8, 10 + i * 2, 40 - i * 14, 18);
+    ctx.stroke();
   }
   ctx.restore();
 }
@@ -963,7 +1097,7 @@ function isPointInsideBounds(bounds, point = mouse) {
 
 function getMainMenuItemAtPointer() {
   const point = getMainMenuPointer();
-  return MAIN_MENU_ITEMS.find((item) => isPointInsideBounds(item.bounds, point)) || null;
+  return MAIN_MENU_ITEMS.find((item) => item.enabled() && isPointInsideBounds(item.bounds, point)) || null;
 }
 
 function updateMenuCursor() {

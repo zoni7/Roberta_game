@@ -1,14 +1,88 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Binding of Perros - Demo</title>
-    <link rel="stylesheet" href="style.css?v=20260602-38">
+    <link rel="stylesheet" href="style.css?v=20260610-02">
   </head>
   <body>
     <main class="shell">
       <canvas id="game" width="1280" height="720" aria-label="Demo del juego"></canvas>
+      <button class="fullscreen-toggle" id="fullscreenToggleBtn" type="button" aria-label="Fullscreen">FULL</button>
+
+      <section class="intro-screen" id="introScreen" hidden>
+        <video id="introVideo" class="intro-video" src="assets/ui/intro.mp4" preload="auto" playsinline></video>
+        <button class="intro-skip" id="introSkipBtn" type="button">Skip</button>
+      </section>
+
+      <section class="auth-menu" id="authMenu" hidden>
+        <div class="auth-card">
+          <h1>The Binding of Perros</h1>
+          <p>Accede para guardar perfil, progreso y records.</p>
+          <label>
+            <span>Usuario</span>
+            <input id="authUser" type="text" autocomplete="username" maxlength="24">
+          </label>
+          <label>
+            <span>Contrasena</span>
+            <input id="authPass" type="password" autocomplete="current-password" maxlength="40">
+          </label>
+          <label class="auth-check">
+            <input id="authRemember" type="checkbox">
+            <span>Recordar sesion</span>
+          </label>
+          <div class="auth-actions">
+            <button class="primary" id="loginBtn" type="button">Login</button>
+            <button id="createAccountBtn" type="button">Create account</button>
+            <button id="guestBtn" type="button">Guest</button>
+          </div>
+          <p class="auth-message" id="authMessage"></p>
+        </div>
+      </section>
+
+      <section class="main-overlay" id="mainOverlay" hidden>
+        <aside class="ranking-panel">
+          <h2>Ranking</h2>
+          <div id="rankingList" class="ranking-list"></div>
+        </aside>
+        <button class="profile-button" id="profileButton" type="button" aria-label="Profile"></button>
+        <button class="dev-entry" id="devEntryBtn" type="button" aria-label="Dev"></button>
+      </section>
+
+      <section class="profile-panel" id="profilePanel" hidden>
+        <div class="profile-card">
+          <div class="profile-head">
+            <h1>Profile</h1>
+            <button id="profileCloseBtn" type="button">Close</button>
+          </div>
+          <div id="profileDetails" class="profile-details"></div>
+          <button class="primary" id="logoutBtn" type="button">Logout</button>
+        </div>
+      </section>
+
+      <section class="dev-menu" id="devMenu" hidden>
+        <div class="dev-card">
+          <div class="profile-head">
+            <h1>Developer</h1>
+            <button id="devCloseBtn" type="button">Close</button>
+          </div>
+          <div id="devLock" class="dev-lock">
+            <input id="devPasswordInput" type="password" inputmode="numeric" maxlength="6" placeholder="Password">
+            <button class="primary" id="devUnlockBtn" type="button">Unlock</button>
+          </div>
+          <div id="devTools" class="dev-tools" hidden>
+            <label class="option-toggle"><input id="leaderboardEnabledToggle" type="checkbox"><span>Record uploads enabled</span></label>
+            <div class="dev-actions">
+              <button id="exportDataBtn" type="button">Export data</button>
+              <button id="importDataBtn" type="button">Import data</button>
+              <button id="resetRankingBtn" type="button">Reset ranking</button>
+            </div>
+            <textarea id="devDataBox" spellcheck="false" placeholder="Export/import JSON"></textarea>
+            <div id="devUsersList" class="dev-users"></div>
+          </div>
+        </div>
+      </section>
 
       <section class="hud" id="hud" hidden>
         <div class="hud-health">
@@ -42,7 +116,7 @@
 
       <section class="victory" id="victory" hidden>
         <img src="assets/characters/player-item.png" alt="">
-        <h1>Has ganado</h1>
+        <h1>Victory</h1>
         <p id="victorySummary"></p>
         <button class="primary" id="victoryBtn" type="button">Nueva run</button>
       </section>
@@ -50,8 +124,8 @@
       <section class="collection-menu" id="statsMenu" hidden>
         <div class="collection-card">
           <div class="collection-head">
-            <h1>Stats</h1>
-            <button id="statsBackBtn" type="button">Volver</button>
+            <h1 id="statsTitle">Stats</h1>
+            <button id="statsBackBtn" type="button">Back</button>
           </div>
           <p id="collectionProgress"></p>
           <div id="recordsGrid" class="records-grid"></div>
@@ -63,7 +137,7 @@
         <div class="options-card">
           <div class="collection-head">
             <h1>Options</h1>
-            <button id="optionsBackBtn" type="button">Volver</button>
+            <button id="optionsBackBtn" type="button">Back</button>
           </div>
           <div class="options-grid">
             <label class="option-row">
@@ -72,7 +146,7 @@
               <strong id="masterVolumeValue"></strong>
             </label>
             <label class="option-row">
-              <span>Música</span>
+              <span>Musica</span>
               <input id="musicVolume" type="range" min="0" max="100" step="1">
               <strong id="musicVolumeValue"></strong>
             </label>
@@ -82,13 +156,13 @@
               <strong id="effectsVolumeValue"></strong>
             </label>
             <label class="option-toggle"><input id="muteAudio" type="checkbox"><span>Silenciar todo</span></label>
-            <label class="option-toggle"><input id="screenShake" type="checkbox"><span>Vibración de pantalla</span></label>
+            <label class="option-toggle"><input id="screenShake" type="checkbox"><span>Vibracion de pantalla</span></label>
             <label class="option-toggle"><input id="screenFlashes" type="checkbox"><span>Destellos visuales</span></label>
-            <label class="option-toggle"><input id="damageNumbers" type="checkbox"><span>Números de daño</span></label>
+            <label class="option-toggle"><input id="damageNumbers" type="checkbox"><span>Numeros de dano</span></label>
             <label class="option-toggle"><input id="highContrast" type="checkbox"><span>Contraste alto</span></label>
           </div>
           <div class="options-actions">
-            <button class="primary" id="fullscreenBtn" type="button">Pantalla completa</button>
+            <button class="primary" id="fullscreenBtn" type="button">Fullscreen</button>
             <button id="resetOptionsBtn" type="button">Restablecer</button>
           </div>
         </div>
@@ -97,7 +171,7 @@
       <section class="pause-menu" id="pauseMenu" hidden>
         <div class="pause-card">
           <div class="pause-head">
-            <h1>Pausa</h1>
+            <h1>Pause</h1>
             <div class="pause-actions">
               <button class="primary" id="resumeBtn" type="button">Continuar</button>
               <button id="pauseMenuBtn" type="button">Menu</button>
@@ -127,9 +201,9 @@
             </label>
             <button id="debugGoRoomBtn" type="button">Ir</button>
             <button id="debugLabBtn" type="button">Laboratorio</button>
-            <button id="debugSpawnEnemyBtn" type="button">Añadir enemigo</button>
+            <button id="debugSpawnEnemyBtn" type="button">Add enemy</button>
             <button id="debugHealBtn" type="button">Curar</button>
-            <button class="debug-close" id="debugCloseBtn" type="button">Volver</button>
+            <button class="debug-close" id="debugCloseBtn" type="button">Back</button>
             <label class="debug-check">
               <input id="debugGodMode" type="checkbox">
               <span>Inmortal</span>
@@ -153,12 +227,12 @@
               <h1>Mercader</h1>
               <p>Monedas: <strong id="merchantCoins">0</strong></p>
             </div>
-            <button id="merchantCloseBtn" type="button">Volver</button>
+            <button id="merchantCloseBtn" type="button">Back</button>
           </div>
           <div class="merchant-offers" id="merchantOffers"></div>
           <div class="merchant-info" id="merchantInfo">
-            <strong>Pasa el cursor por una opción</strong>
-            <span>Verás aquí qué hace antes de comprarla.</span>
+            <strong>Pasa el cursor por una opcion</strong>
+            <span>Veras aqui que hace antes de comprarla.</span>
           </div>
         </div>
       </section>
@@ -170,7 +244,7 @@
               <h1>Cesc</h1>
               <p>Monedas: <strong id="healerCoins">0</strong></p>
             </div>
-            <button id="healerCloseBtn" type="button">Volver</button>
+            <button id="healerCloseBtn" type="button">Back</button>
           </div>
           <div class="merchant-offers" id="healerOffers"></div>
           <div class="merchant-info">
@@ -182,7 +256,7 @@
 
       <section class="upgrade-menu" id="upgradeMenu" hidden>
         <div class="upgrade-card">
-          <h1 id="upgradeTitle">Elige una mejora</h1>
+          <h1 id="upgradeTitle">Choose upgrade</h1>
           <p id="upgradeSubtitle">Boss derrotado</p>
           <div class="upgrade-options" id="upgradeOptions"></div>
           <div class="setup-preview" id="setupPreview" hidden>
@@ -193,10 +267,25 @@
       </section>
     </main>
 
-    <script src="js/constants.js?v=20260603-02"></script>
-    <script src="js/save.js?v=20260603-02"></script>
-    <script src="js/game.js?v=20260603-02"></script>
-    <script src="js/rendering.js?v=20260603-02"></script>
-    <script src="js/main.js?v=20260603-02"></script>
+    <script src="js/constants.js?v=20260610-02"></script>
+    <script src="js/save.js?v=20260610-02"></script>
+    <script src="js/game.js?v=20260610-02"></script>
+    <script src="js/rendering.js?v=20260610-02"></script>
+    <script src="js/main.js?v=20260610-02"></script>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

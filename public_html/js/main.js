@@ -1,4 +1,53 @@
-﻿function loop(now) {
+﻿let introFinished = false;
+let introFallbackTimer = null;
+
+function updateFullscreenToggle() {
+  if (!fullscreenToggleBtn) return;
+  fullscreenToggleBtn.textContent = document.fullscreenElement ? "EXIT" : "FULL";
+}
+
+async function toggleFullscreen() {
+  try {
+    if (document.fullscreenElement) await document.exitFullscreen();
+    else await document.documentElement.requestFullscreen();
+  } catch {
+    // Fullscreen must come from a trusted browser interaction.
+  }
+  updateFullscreenToggle();
+}
+
+function finishIntro() {
+  if (introFinished) return;
+  introFinished = true;
+  if (introFallbackTimer) {
+    clearTimeout(introFallbackTimer);
+    introFallbackTimer = null;
+  }
+  if (introVideo) {
+    introVideo.pause();
+    introVideo.currentTime = 0;
+  }
+  setMode("menu");
+}
+
+function playIntro() {
+  if (!introScreen || !introVideo) {
+    finishIntro();
+    return;
+  }
+  introFinished = false;
+  setMode("intro");
+  introVideo.muted = Boolean(options?.muteAudio);
+  introVideo.volume = clamp((options?.masterVolume ?? 85) / 100, 0, 1);
+  introFallbackTimer = setTimeout(() => {
+    if (!introFinished && introVideo.readyState === 0 && (introVideo.error || introVideo.networkState === HTMLMediaElement.NETWORK_NO_SOURCE)) {
+      finishIntro();
+    }
+  }, 1000);
+  const playback = introVideo.play();
+  if (playback?.catch) playback.catch(() => {});
+}
+function loop(now) {
   const dt = Math.min(0.033, (now - lastTime) / 1000);
   lastTime = now;
   update(dt);
@@ -9,12 +58,21 @@
 function showMainMenu() {
   keys.clear();
   mouse.down = false;
+  renderRankingPanel();
+  renderProfilePanel();
   setMode("mainmenu");
 }
 
-function showStatsMenu() {
+function openEntryAfterPressStart() {
+  const remembered = currentUser && accountStore?.users?.[currentUser];
+  if (remembered || isGuest) showMainMenu();
+  else setMode("auth");
+}
+
+function showStatsMenu(view = "stats") {
   keys.clear();
   mouse.down = false;
+  statsViewMode = view;
   setMode("stats");
 }
 
@@ -73,18 +131,26 @@ window.addEventListener("keydown", (event) => {
     event.preventDefault();
   }
 
+  if (mode === "intro" && (event.code === "Enter" || event.code === "Space")) {
+    finishIntro();
+    return;
+  }
+
   if (event.code === "Escape") {
     if (merchantMenuOpen) closeMerchantMenu();
     else if (healerMenuOpen) closeHealerMenu();
     else if (mode === "game") pauseGame();
     else if (mode === "paused") resumeGame();
     else if (mode === "stats" || mode === "options") showMainMenu();
+    else if (mode === "mainmenu" && !profilePanel.hidden) profilePanel.hidden = true;
+    else if (mode === "mainmenu" && !devMenu.hidden) devMenu.hidden = true;
     return;
   }
 
   keys.add(event.code);
 
   if (mode === "game" && event.code === "KeyE") {
+    if (mashOutOfTangle()) return;
     if (openMerchantMenu()) return;
     if (openHealerMenu()) return;
     if (tryUseSacrifice()) return;
@@ -92,7 +158,7 @@ window.addEventListener("keydown", (event) => {
   }
 
   if (mode === "menu" && (event.code === "Enter" || event.code === "Space")) {
-    showMainMenu();
+    openEntryAfterPressStart();
     return;
   }
 
@@ -124,6 +190,17 @@ window.addEventListener("wheel", (event) => {
     event.preventDefault();
   }
 }, { passive: false });
+
+introSkipBtn?.addEventListener("click", () => finishIntro());
+introVideo?.addEventListener("ended", () => finishIntro());
+introVideo?.addEventListener("error", () => finishIntro());
+introScreen?.addEventListener("pointerdown", (event) => {
+  if (event.target === introSkipBtn) return;
+  if (introVideo?.paused && !introFinished) {
+    introVideo.play().catch(() => {});
+  }
+});
+fullscreenToggleBtn?.addEventListener("click", () => toggleFullscreen());
 
 function shouldBlockBrowserShortcut(event) {
   if (mode !== "game" && mode !== "paused") return false;
@@ -157,7 +234,7 @@ canvas.addEventListener("pointerdown", (event) => {
   canvas.setPointerCapture(event.pointerId);
 
   if (mode === "menu" && isOverMenuStart()) {
-    showMainMenu();
+    openEntryAfterPressStart();
     return;
   }
 
@@ -166,8 +243,10 @@ canvas.addEventListener("pointerdown", (event) => {
     if (item?.enabled()) {
       if (item.id === "newRun") startFromMenu();
       if (item.id === "continue") continueFromMenu();
-      if (item.id === "stats") showStatsMenu();
+      if (item.id === "stats") showStatsMenu("stats");
+      if (item.id === "relics") showStatsMenu("relics");
       if (item.id === "options") showOptionsMenu();
+      if (item.id === "exit") setMode("menu");
     }
   }
 });
@@ -198,6 +277,137 @@ pauseNewRunBtn.addEventListener("click", () => startFromMenu());
 merchantCloseBtn?.addEventListener("click", () => closeMerchantMenu());
 healerCloseBtn?.addEventListener("click", () => closeHealerMenu());
 
+loginBtn?.addEventListener("click", async () => {
+  authMessage.textContent = "Loading...";
+  const result = await loginUser(authUser.value, authPass.value, authRemember.checked);
+  authMessage.textContent = result.message;
+  if (result.ok) showMainMenu();
+});
+
+createAccountBtn?.addEventListener("click", async () => {
+  authMessage.textContent = "Loading...";
+  const result = await createAccount(authUser.value, authPass.value, authRemember.checked);
+  authMessage.textContent = result.message;
+  if (result.ok) showMainMenu();
+});
+
+guestBtn?.addEventListener("click", () => {
+  loginGuest();
+  showMainMenu();
+});
+
+profileButton?.addEventListener("click", () => {
+  renderProfilePanel();
+  profilePanel.hidden = false;
+});
+
+profileCloseBtn?.addEventListener("click", () => {
+  profilePanel.hidden = true;
+});
+
+logoutBtn?.addEventListener("click", () => logoutUser());
+
+devEntryBtn?.addEventListener("click", () => {
+  devMenu.hidden = false;
+  devLock.hidden = false;
+  devTools.hidden = true;
+  devPasswordInput.value = "";
+  devPasswordInput.focus();
+});
+
+devCloseBtn?.addEventListener("click", () => {
+  devMenu.hidden = true;
+});
+
+devUnlockBtn?.addEventListener("click", () => {
+  if (devPasswordInput.value === "234567") {
+    devLock.hidden = true;
+    devTools.hidden = false;
+    renderDeveloperPanel();
+  }
+});
+
+devPasswordInput?.addEventListener("keydown", (event) => {
+  if (event.code === "Enter") devUnlockBtn.click();
+});
+
+leaderboardEnabledToggle?.addEventListener("change", () => {
+  accountStore.leaderboardEnabled = leaderboardEnabledToggle.checked;
+  writeAccountStore();
+  if (onlineReady && onlineToken) {
+    apiRequest("set_leaderboard_enabled", { enabled: leaderboardEnabledToggle.checked }).catch(() => {});
+  }
+  renderRankingPanel();
+});
+
+exportDataBtn?.addEventListener("click", () => {
+  if (onlineReady && onlineToken) {
+    apiRequest("export_data").then((data) => {
+      devDataBox.value = JSON.stringify(data.export, null, 2);
+    }).catch((error) => {
+      devDataBox.value = error.message;
+    });
+  } else {
+    devDataBox.value = JSON.stringify(accountStore, null, 2);
+  }
+});
+
+importDataBtn?.addEventListener("click", () => {
+  try {
+    const parsed = JSON.parse(devDataBox.value);
+    accountStore = {
+      users: parsed?.users && typeof parsed.users === "object" ? parsed.users : {},
+      leaderboardEnabled: parsed?.leaderboardEnabled !== false,
+    };
+    writeAccountStore();
+    renderDeveloperPanel();
+    renderRankingPanel();
+  } catch {
+    devDataBox.value = "JSON invalido";
+  }
+});
+
+resetRankingBtn?.addEventListener("click", () => {
+  if (onlineReady && onlineToken) {
+    apiRequest("reset_ranking").then(() => refreshOnlineLeaderboard()).catch(() => {});
+  }
+  for (const user of Object.values(accountStore.users)) {
+    user.profile = normalizeProfile(user.profile, user.profile?.username || "User");
+    user.profile.bestRoom = 0;
+    user.profile.lastRun = null;
+  }
+  writeAccountStore();
+  renderDeveloperPanel();
+  renderRankingPanel();
+});
+
+devUsersList?.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+  if (!button) return;
+  const row = button.closest(".dev-user-row");
+  const username = row?.dataset.user;
+  const user = accountStore.users[username];
+  if (!user) return;
+  const action = button.dataset.action;
+  if (action === "save-record") {
+    user.profile.bestRoom = clamp(Number(row.querySelector('[data-action="room"]').value) || 0, 0, 100);
+    if (onlineReady && onlineToken) apiRequest("edit_record", { username, bestRoom: user.profile.bestRoom }).then(() => refreshOnlineLeaderboard()).catch(() => {});
+  }
+  if (action === "delete-record") {
+    user.profile.bestRoom = 0;
+    user.profile.lastRun = null;
+    if (onlineReady && onlineToken) apiRequest("delete_record", { username }).then(() => refreshOnlineLeaderboard()).catch(() => {});
+  }
+  if (action === "delete-user") {
+    delete accountStore.users[username];
+    if (onlineReady && onlineToken) apiRequest("delete_user", { username }).then(() => refreshOnlineLeaderboard()).catch(() => {});
+    if (currentUser === username) logoutUser();
+  }
+  writeAccountStore();
+  renderDeveloperPanel();
+  renderRankingPanel();
+});
+
 for (const control of [masterVolume, musicVolume, effectsVolume, muteAudio, screenShake, screenFlashes, damageNumbers, highContrast]) {
   control?.addEventListener("input", () => {
     options[control.id] = control.type === "checkbox" ? control.checked : Number(control.value);
@@ -213,6 +423,7 @@ fullscreenBtn?.addEventListener("click", async () => {
 
 document.addEventListener("fullscreenchange", () => {
   if (mode === "options") renderOptions();
+  updateFullscreenToggle();
 });
 
 resetOptionsBtn?.addEventListener("click", () => {
@@ -268,6 +479,8 @@ debugUnlimitedMoney?.addEventListener("change", () => {
 });
 
 Promise.all([loadImages(), loadBalance()]).then(() => {
-  setMode("menu");
+  detectOnlineApi();
+  playIntro();
+  updateFullscreenToggle();
   requestAnimationFrame(loop);
 });
