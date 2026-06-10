@@ -26,6 +26,7 @@ const AUDIO_CONFIG = {
   VOLUME_DEFAULT : 0.7,   // Volumen base para todos los sonidos (0.0 – 1.0)
   PITCH_MIN      : 0.85,  // Variación mínima de pitch (rate en Howler)
   PITCH_MAX      : 1.15,  // Variación máxima de pitch
+  MUSIC_VOLUME   : 0.45,  // Volumen base para música de fondo
 };
 
 
@@ -43,6 +44,10 @@ const AUDIO_CONFIG = {
 //    "enemyPool" → Pool genérico + pools opcionales por tipo/nombre de enemigo.
 //                  Usa el pool del enemigo si existe; si no, usa "generic".
 //                  Añadir entradas en "byEnemy" cuando existan los archivos.
+//
+//    "themePool" → Pool genérico + pools opcionales por tema de sala.
+//                  Usa el pool del tema si existe; si no, usa "generic".
+//                  Permite que varios temas compartan la misma pista.
 //
 //  Los temas disponibles se definen en ROOM_THEMES (constants.js):
 //    Isaac | Japon | Moho | Hielo | Dorado
@@ -78,6 +83,27 @@ const SOUND_REGISTRY = {
     },
   },
 
+  // Música de fondo por tema de sala (preparada para futuros MP3)
+  backgroundSoundtrack: {
+    type  : "themePool",
+    volume: AUDIO_CONFIG.MUSIC_VOLUME,
+
+    // Pista por defecto para cualquier tema sin configuración específica
+    generic: {
+      type : "files",
+      files: ["assets/audio/music/main-theme.mp3"],
+    },
+
+    // Configuración modular por tema (ROOM_THEMES en constants.js)
+    byTheme: {
+      Isaac : { type: "files", files: ["assets/audio/music/theme-isaac.mp3"] },
+      Japon : { type: "files", files: ["assets/audio/music/theme-japon.mp3"] },
+      Moho  : { type: "files", files: ["assets/audio/music/theme-moho.mp3"] },
+      Hielo : { type: "files", files: ["assets/audio/music/theme-hielo.mp3"] },
+      Dorado: { type: "files", files: ["assets/audio/music/theme-dorado.mp3"] },
+    },
+  },
+
 };
 
 
@@ -89,6 +115,10 @@ const SFX = {
 
   _enabled: true,
   _pools  : {},   // { [eventKey]: Howl[]  |  { generic: Howl[], themes: {…} } }
+  _music  : {
+    soundtrack: null,
+    theme     : null,
+  },
 
 
   // ───────────────────────────────────────────────────────────
@@ -126,6 +156,7 @@ const SFX = {
       case "pool":      return this._loadPool(label, def.folder, def.count, def.volume);
       case "files":     return this._loadFiles(label, def.files, def.volume);
       case "enemyPool": return this._buildEnemyPool(label, def);
+      case "themePool": return this._buildThemePool(label, def);
       default:
         throw new Error(`Tipo de sonido desconocido: "${def.type}"`);
     }
@@ -163,6 +194,26 @@ const SFX = {
       entry.byEnemy[enemyName] = this._buildEntry(
         `${label}:${enemyName}`,
         { ...enemyDef, volume: def.volume },
+      );
+    }
+
+    return entry;
+  },
+
+  /**
+   * Construye un pool con variantes por tema.
+   * Devuelve { generic: Howl[], byTheme: { [themeName]: Howl[] } }
+   */
+  _buildThemePool(label, def) {
+    const entry = {
+      generic: this._buildEntry(`${label}:generic`, { ...def.generic, volume: def.volume }),
+      byTheme: {},
+    };
+
+    for (const [themeName, themeDef] of Object.entries(def.byTheme || {})) {
+      entry.byTheme[themeName] = this._buildEntry(
+        `${label}:${themeName}`,
+        { ...themeDef, volume: def.volume },
       );
     }
 
@@ -249,6 +300,27 @@ const SFX = {
   },
 
   /**
+   * Resuelve el pool a usar para un themePool.
+   * Devuelve el pool del tema si existe, o el genérico como fallback.
+   *
+   * @param {{ generic: Howl[], byTheme: object }} entry
+   * @param {string|null} themeName
+   * @returns {Howl[]|null}
+   */
+  _resolveThemePool(entry, themeName) {
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+      AudioLogger.warn("_resolveThemePool: entrada inválida.");
+      return null;
+    }
+
+    if (themeName && entry.byTheme?.[themeName]) {
+      return entry.byTheme[themeName];
+    }
+
+    return entry.generic ?? null;
+  },
+
+  /**
    * Obtiene un pool por clave con advertencia si no existe.
    * @param {string} key
    * @returns {*|null}
@@ -288,6 +360,43 @@ const SFX = {
 
     const pool = this._resolveEnemyPool(entry, enemyName);
     this._play(pool, `enemyDeath:${enemyName ?? "generic"}`);
+  },
+
+  /**
+   * Prepara la banda sonora de fondo para un tema.
+   * No reproduce automáticamente: deja el Howl listo para usar.
+   *
+   * @param {string|null} themeName - Nombre del tema (Isaac, Japon, Moho...)
+   * @returns {Howl|null}
+   */
+  loadBackgroundSoundtrack(themeName = null) {
+    const entry = this._getPool("backgroundSoundtrack");
+    if (!entry) return null;
+
+    const pool = this._resolveThemePool(entry, themeName);
+    if (!Array.isArray(pool) || pool.length === 0) {
+      AudioLogger.warn(`loadBackgroundSoundtrack("${themeName ?? "generic"}"): pool vacío.`);
+      return null;
+    }
+
+    const loaded = pool.filter((sound) => sound.state() === "loaded");
+    const soundtrack = loaded.length > 0
+      ? loaded[Math.floor(Math.random() * loaded.length)]
+      : pool[0];
+
+    if (!soundtrack) {
+      AudioLogger.warn(`loadBackgroundSoundtrack("${themeName ?? "generic"}"): sin pista válida.`);
+      return null;
+    }
+
+    soundtrack.loop(true);
+    soundtrack.rate(1);
+
+    this._music.soundtrack = soundtrack;
+    this._music.theme = themeName ?? "generic";
+
+    AudioLogger.info(`Banda sonora preparada para tema "${this._music.theme}".`);
+    return soundtrack;
   },
 
 
