@@ -1,89 +1,29 @@
-
-const images = {};
-const keys = new Set();
-const mouse = { x: WIDTH / 2, y: HEIGHT / 2, down: false };
-
-const hud = document.querySelector("#hud");
-const heartsEl = document.querySelector("#hearts");
-const coinsEl = document.querySelector("#coins");
-const keysEl = document.querySelector("#keys");
-const bombsEl = document.querySelector("#bombs");
-const roomCountEl = document.querySelector("#roomCount");
-const gameOver = document.querySelector("#gameOver");
-const retryBtn = document.querySelector("#retryBtn");
-const runSummary = document.querySelector("#runSummary");
-const victory = document.querySelector("#victory");
-const victoryBtn = document.querySelector("#victoryBtn");
-const victorySummary = document.querySelector("#victorySummary");
-const statsMenu = document.querySelector("#statsMenu");
-const statsBackBtn = document.querySelector("#statsBackBtn");
-const collectionRelics = document.querySelector("#collectionRelics");
-const collectionProgress = document.querySelector("#collectionProgress");
-const pauseMenu = document.querySelector("#pauseMenu");
-const resumeBtn = document.querySelector("#resumeBtn");
-const pauseMenuBtn = document.querySelector("#pauseMenuBtn");
-const pauseNewRunBtn = document.querySelector("#pauseNewRunBtn");
-const pauseStats = document.querySelector("#pauseStats");
-const pauseRelics = document.querySelector("#pauseRelics");
-const secretToolBtn = document.querySelector("#secretToolBtn");
-const debugPanel = document.querySelector("#debugPanel");
-const debugLock = document.querySelector("#debugLock");
-const debugCodeInput = document.querySelector("#debugCodeInput");
-const debugToolsPanel = document.querySelector("#debugTools");
-const debugRoomSelect = document.querySelector("#debugRoomSelect");
-const debugGoRoomBtn = document.querySelector("#debugGoRoomBtn");
-const debugCloseBtn = document.querySelector("#debugCloseBtn");
-const debugGodMode = document.querySelector("#debugGodMode");
-const debugOneShot = document.querySelector("#debugOneShot");
-let menuPressHover = false;
-let mainMenuHover = null;
-
-let lastTime = performance.now();
-let mode = "loading";
-let save = loadSave();
-let state = null;
-const debugState = {
-  panelOpen: false,
-  unlocked: false,
-  godMode: false,
-  oneShot: false,
-  selectedRoom: null,
-};
-let balanceData = null;
-
-window.__perrosDebug = () => ({
-  mode,
-  hasCurrentRun: hasCurrentRun(),
-  room: state?.room ?? 0,
-  roomType: state?.roomProfile?.type ?? "none",
-  chestVariant: state?.roomProfile?.chestVariant ?? null,
-  doorSides: state?.roomProfile?.doorSides ?? [],
-  bombDoorSide: state?.roomProfile?.bombDoorSide ?? null,
-  theme: state?.roomProfile?.theme?.name ?? "",
-  hp: state?.player?.hp ?? 0,
-  facing: state?.player?.facing ?? "front",
-  aimX: state?.player?.aimX ?? 0,
-  aimY: state?.player?.aimY ?? 1,
-  enemies: state?.enemies?.length ?? 0,
-  chests: state?.chests?.length ?? 0,
-  shopItems: state?.shopItems?.filter((item) => !item.bought).length ?? 0,
-  pickups: state?.pickups?.length ?? 0,
-  coins: state?.coins ?? 0,
-  keys: state?.keys ?? 0,
-  bombs: state?.bombs ?? 0,
-  relics: state?.player?.items?.length ?? 0,
-});
+﻿
 function setMode(nextMode) {
   mode = nextMode;
+  if (introScreen) introScreen.hidden = mode !== "intro";
+  if (authMenu) authMenu.hidden = mode !== "auth";
+  if (mainOverlay) mainOverlay.hidden = mode !== "mainmenu";
+  if (profilePanel && mode !== "mainmenu") profilePanel.hidden = true;
+  if (devMenu && mode !== "mainmenu") devMenu.hidden = true;
   hud.hidden = mode !== "game" && mode !== "paused";
   gameOver.hidden = mode !== "gameover";
   victory.hidden = mode !== "victory";
   statsMenu.hidden = mode !== "stats";
+  if (optionsMenu) optionsMenu.hidden = mode !== "options";
   pauseMenu.hidden = mode !== "paused";
+  if (merchantMenu) merchantMenu.hidden = !merchantMenuOpen;
+  if (healerMenu) healerMenu.hidden = !healerMenuOpen;
+  if (upgradeMenu) upgradeMenu.hidden = !upgradeMenuOpen;
   if (mode === "stats") renderCollection();
+  if (mode === "options") renderOptions();
   if (mode === "paused") {
     renderPauseDetails();
     renderDebugPanel();
+  }
+  if (mode === "mainmenu") {
+    renderRankingPanel();
+    renderProfilePanel();
   }
   updateMenuCursor();
 }
@@ -94,7 +34,11 @@ function getBalanceRow(listName, roomNumber) {
 
 function rollRoomType(roomNumber) {
   if (roomNumber === 66) return "sacrificeRoom";
-  if (roomNumber === 21 && Math.random() < ROOM_21_MERCHANT_CHANCE) return "madShop";
+  if (HEALER_ROOM_CHANCES[roomNumber] && Math.random() < HEALER_ROOM_CHANCES[roomNumber]) return "healerRoom";
+  if (roomNumber === 33 && !(state?.chestRoomHistory || []).some((room) => room <= 30)) return "chestRoom";
+  if (roomNumber === 21) {
+    return weightedChoiceFromObject({ fightBasic: 10, fightMixed: 3, madShop: ROOM_21_MERCHANT_CHANCE * 100, riskEvent: 2 });
+  }
   const row = getBalanceRow("roomTypes", roomNumber);
   if (row?.weights) {
     return weightedChoiceFromObject(row.weights);
@@ -158,7 +102,8 @@ function getDoorCount(type, doorRow = null) {
 
 function pickBombDoorSide(type, doorSides, doorRow) {
   if (!doorRow || !isFightRoom(type) || doorRow.bombDoorChance <= 0) return null;
-  if (Math.random() * 100 > doorRow.bombDoorChance) return null;
+  const visibleChance = Math.min(24, doorRow.bombDoorChance * 2.15);
+  if (Math.random() * 100 > visibleChance) return null;
   const available = DOOR_SIDES.filter((side) => !doorSides.includes(side));
   if (!available.length) return null;
   return available[Math.floor(Math.random() * available.length)];
@@ -210,8 +155,9 @@ function getEnemyCount(profile) {
 
 function scaleEnemyCount(count, profile, cap) {
   const roomPressure = Math.min(state.room, 100);
+  const stageProgress = ((Math.max(1, state.room) - 1) % 10) / 9;
   const typeBonus = profile.type === "fightElite" ? 0.28 : profile.type === "riskEvent" ? 0.34 : profile.type === "fightMixed" ? 0.18 : 0;
-  const density = 1.55 + roomPressure / 130 + typeBonus;
+  const density = 1.48 + roomPressure / 135 + stageProgress * 0.30 + typeBonus;
   const flatBonus = profile.type === "fightElite" || profile.type === "riskEvent" ? 3 : profile.type === "fightMixed" ? 2 : 1;
   return Math.min(Math.max(4, Math.round(count * density) + flatBonus), cap);
 }
@@ -235,11 +181,32 @@ function isFinalBoss(profile) {
 }
 
 function getBossArchetype(profile) {
-  if (isFinalBoss(profile)) {
-    return { name: "Boss Final", tier: 3, tint: "rgba(255, 214, 90, 0.34)", rScale: 1.18, hpScale: 1.45, speedScale: 0.82, canShoot: true, pattern: "final" };
+  if (isFinalBoss(profile) || profile.theme.name === "Cuarto de Roberto") {
+    return { name: "Roberto", tier: 3, tint: "rgba(138, 158, 206, 0.38)", rScale: 1.22, hpScale: 2.35, speedScale: 0.82, canShoot: true, pattern: "final" };
   }
   if (profile.theme.name === "Japon") {
-    return { name: "Chef Nigiri", tier: 3, tint: "rgba(225, 78, 64, 0.34)", rScale: 1.1, hpScale: 1.28, speedScale: 0.72, canShoot: false, pattern: "nigiri" };
+    return { name: "Adri", tier: 3, tint: "rgba(225, 78, 64, 0.34)", rScale: 1.1, hpScale: 1.28, speedScale: 0.72, canShoot: false, pattern: "nigiri", sprite: "bossAdri" };
+  }
+  if (profile.theme.name === "Isaac") {
+    return { name: "Alex", tier: 3, tint: "rgba(178, 84, 92, 0.28)", rScale: 1.28, hpScale: 4.6, speedScale: 0.72, canShoot: false, pattern: "alex", sprite: "bossAlexPout" };
+  }
+  if (profile.theme.name === "Iglesia") {
+    return { name: "Victor", tier: 3, tint: "rgba(246, 214, 138, 0.24)", rScale: 1.22, hpScale: 2.15, speedScale: 0.74, canShoot: false, pattern: "victor", sprite: "bossVictor" };
+  }
+  if (profile.theme.name === "Minecraft") {
+    return { name: "Samu", tier: 3, tint: "rgba(88, 205, 96, 0.34)", rScale: 1.3, hpScale: 2.5, speedScale: 0.72, canShoot: false, pattern: "samu", sprite: "bossSamu" };
+  }
+  if (profile.theme.name === "Discoteca") {
+    return { name: "Jajo", tier: 3, tint: "rgba(255, 80, 187, 0.34)", rScale: 1.28, hpScale: 2.35, speedScale: 0.78, canShoot: false, pattern: "jajo", sprite: "bossJajo" };
+  }
+  if (profile.theme.name === "Counter") {
+    return { name: "Ferri", tier: 3, tint: "rgba(224, 70, 46, 0.28)", rScale: 1.32, hpScale: 2.45, speedScale: 0.64, canShoot: false, pattern: "ferriCounter", sprite: "bossFerriCounter" };
+  }
+  if (profile.theme.name === "Smite") {
+    return { name: "Scylla", tier: 3, tint: "rgba(116, 91, 232, 0.30)", rScale: 1.16, hpScale: 2.65, speedScale: 0.72, canShoot: false, pattern: "scylla", sprite: "bossScylla" };
+  }
+  if (profile.theme.name === "Rastas") {
+    return { name: "Dani", tier: 3, tint: "rgba(171, 202, 68, 0.36)", rScale: 1.24, hpScale: 2.08, speedScale: 0.86, canShoot: true, pattern: "daniRastas", sprite: "bossDaniRastas" };
   }
   return { name: "Lagrimon", tier: 3, tint: profile.theme.glow, rScale: 1, hpScale: 1, speedScale: 0.85, canShoot: true, pattern: "spread" };
 }
@@ -279,6 +246,8 @@ function spawnRoomReward(profile) {
     return;
   }
 
+  if (profile.type === "healerRoom") return;
+
   if (profile.type === "sacrificeRoom") {
     return;
   }
@@ -292,26 +261,36 @@ function spawnRoomReward(profile) {
 
 function spawnShopItems(profile) {
   const roomBoost = profile.roomNumber >= 21 ? Math.min(4, Math.floor((profile.roomNumber - 20) / 20)) : 0;
-  const relicOffer = chooseObject(profile.theme.name === "Japon" ? "bossJapan" : "goldChest") || chooseObject("boss") || chooseObject("fight");
-  const offers = [
-    relicOffer
-      ? { kind: "object", label: relicOffer.name, price: relicShopPrice(relicOffer) + roomBoost, img: null, item: relicOffer }
-      : { kind: "key", label: "Llave", price: 4 + roomBoost, img: images.key },
-    { kind: "bomb", label: "Bomba", price: 4 + roomBoost, img: images.bomb },
-    { kind: "heart", label: "Vida", price: 3 + roomBoost, img: images.heartRed },
-    { kind: "nothing", label: "Nada", price: 2 + Math.floor(roomBoost / 2), img: null },
-  ];
-  const positions = [
-    { x: WIDTH / 2 - 138, y: HEIGHT / 2 - 28 },
-    { x: WIDTH / 2 - 46, y: HEIGHT / 2 - 48 },
-    { x: WIDTH / 2 + 46, y: HEIGHT / 2 - 48 },
-    { x: WIDTH / 2 + 138, y: HEIGHT / 2 - 28 },
-  ];
+  const offers = [];
+  const offeredRelicIds = new Set();
+  const shopPool = ["goldChest", "boss", profile.theme.name === "Japon" ? "bossJapan" : "fight"];
+  for (let index = 0; index < 4; index += 1) {
+    let relic = null;
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      const candidate = chooseObject(shopPool[(index + attempt) % shopPool.length]);
+      if (candidate && !offeredRelicIds.has(candidate.id)) {
+        relic = candidate;
+        break;
+      }
+    }
+    if (!relic) break;
+    offeredRelicIds.add(relic.id);
+    offers.push({ kind: "object", label: relic.name, price: relicShopPrice(relic) + roomBoost, img: null, item: relic });
+  }
+  if (!offers.length) {
+    offers.push(
+      { kind: "key", label: "Llave", price: 4 + roomBoost, img: images.key },
+      { kind: "bomb", label: "Bomba", price: 4 + roomBoost, img: images.bomb },
+      { kind: "heart", label: "Vida", price: 3 + roomBoost, img: images.heartRed },
+    );
+  }
+  if (Math.random() < 0.24) offers.push({ kind: "nothing", label: "Nada", price: 2 + Math.floor(roomBoost / 2), img: null });
 
-  state.shopItems = offers.map((offer, index) => ({
+  state.shopItems = offers.map((offer) => ({
     ...offer,
-    ...positions[index],
-    r: 34,
+    x: WIDTH / 2,
+    y: HEIGHT / 2,
+    r: 42,
     bought: false,
     bob: Math.random() * Math.PI * 2,
   }));
@@ -319,42 +298,181 @@ function spawnShopItems(profile) {
 
 function relicShopPrice(relic) {
   const rarity = String(relic?.rarity || "").toLowerCase();
-  if (rarity.includes("mítica") || rarity.includes("mitica")) return 22;
+  if (rarity.includes("mitica")) return 22;
   if (rarity.includes("legend")) return 18;
-  if (rarity.includes("épica") || rarity.includes("epica")) return 15;
+  if (rarity.includes("epica")) return 15;
   if (rarity.includes("rara")) return 12;
   if (rarity.includes("poco")) return 10;
   return 8;
 }
 
-function nearestShopItem() {
-  if (!state?.shopItems?.length) return null;
-  let nearest = null;
-  let bestDistance = Infinity;
-
-  for (const item of state.shopItems) {
-    if (item.bought) continue;
-    const currentDistance = distance(state.player, item);
-    if (currentDistance < bestDistance && currentDistance <= state.player.r + item.r + 30) {
-      nearest = item;
-      bestDistance = currentDistance;
-    }
-  }
-
-  return nearest;
+function nearMerchant() {
+  return state?.roomProfile?.type === "madShop" && distance(state.player, { x: WIDTH / 2, y: HEIGHT / 2 - 24 }) <= 132;
 }
 
-function tryBuyShopItem() {
-  const item = nearestShopItem();
-  if (!item) return false;
+function openMerchantMenu() {
+  if (!nearMerchant()) return false;
+  merchantMenuOpen = true;
+  keys.clear();
+  mouse.down = false;
+  renderMerchantMenu();
+  if (merchantMenu) merchantMenu.hidden = false;
+  return true;
+}
 
-  if (state.coins < item.price) {
+function closeMerchantMenu() {
+  merchantMenuOpen = false;
+  if (merchantMenu) merchantMenu.hidden = true;
+}
+
+const HEALER_PACKS = [
+  { hearts: 1, price: 5 },
+  { hearts: 2, price: 9 },
+  { hearts: 3, price: 12 },
+];
+
+function nearHealer() {
+  return state?.roomProfile?.type === "healerRoom" && distance(state.player, { x: WIDTH / 2, y: HEIGHT / 2 - 24 }) <= 132;
+}
+
+function openHealerMenu() {
+  if (!nearHealer()) return false;
+  healerMenuOpen = true;
+  keys.clear();
+  mouse.down = false;
+  renderHealerMenu();
+  if (healerMenu) healerMenu.hidden = false;
+  return true;
+}
+
+function closeHealerMenu() {
+  healerMenuOpen = false;
+  if (healerMenu) healerMenu.hidden = true;
+}
+
+function renderHealerMenu() {
+  if (!healerOffers || !state) return;
+  healerCoins.textContent = state.coins;
+  healerOffers.innerHTML = "";
+  for (const pack of HEALER_PACKS) {
+    const button = document.createElement("button");
+    button.className = "merchant-offer";
+    button.type = "button";
+    button.disabled = state.player.hp >= state.player.maxHp || (!debugState.unlimitedMoney && state.coins < pack.price);
+    button.innerHTML = `<img src="${ASSETS.heartRed}" alt=""><strong>+${pack.hearts} vida</strong><span>${pack.price} monedas</span>`;
+    button.addEventListener("click", () => buyHealing(pack));
+    healerOffers.appendChild(button);
+  }
+}
+
+function buyHealing(pack) {
+  if (!pack || state.player.hp >= state.player.maxHp || (!debugState.unlimitedMoney && state.coins < pack.price)) return;
+  if (!debugState.unlimitedMoney) state.coins -= pack.price;
+  state.player.hp = Math.min(state.player.maxHp, state.player.hp + pack.hearts);
+  state.message = `+${pack.hearts} vida`;
+  state.messageTime = 1;
+  syncHud();
+  renderHealerMenu();
+  saveCurrentRun();
+}
+
+function openBossUpgradeMenu() {
+  if (!upgradeMenu || !upgradeOptions) return;
+  upgradeMenuKind = "boss";
+  if (upgradeTitle) upgradeTitle.textContent = "Choose upgrade";
+  if (upgradeSubtitle) upgradeSubtitle.textContent = "Boss derrotado";
+  if (setupPreview) setupPreview.hidden = true;
+  const candidates = [...BOSS_UPGRADES];
+  const choices = [];
+  while (choices.length < 3 && candidates.length) {
+    choices.push(candidates.splice(Math.floor(Math.random() * candidates.length), 1)[0]);
+  }
+  upgradeOptions.innerHTML = "";
+  for (const upgrade of choices) {
+    const button = document.createElement("button");
+    button.className = "upgrade-option";
+    button.type = "button";
+    button.innerHTML = `<strong>${upgrade.name}</strong><span>${upgrade.description}</span>`;
+    button.addEventListener("click", () => chooseBossUpgrade(upgrade));
+    upgradeOptions.appendChild(button);
+  }
+  upgradeMenuOpen = true;
+  upgradeMenu.hidden = false;
+  keys.clear();
+  mouse.down = false;
+}
+
+function openSetupUpgradeMenu() {
+  if (!upgradeMenu || !upgradeOptions) return;
+  const choices = state.player.items.filter((item) => item.id !== "setup" && SETUP_IMPROVEMENTS[item.id] && item.id !== state.player.setupRelicId);
+  if (!choices.length) {
+    state.message = "Setup guardado: aun no tienes una reliquia mejorable";
+    state.messageTime = 1.8;
+    return;
+  }
+  upgradeMenuKind = "setup";
+  if (upgradeTitle) upgradeTitle.textContent = "Configura tu Setup";
+  if (upgradeSubtitle) upgradeSubtitle.textContent = "Elige una reliquia para potenciarla";
+  if (setupPreview) setupPreview.hidden = false;
+  upgradeOptions.innerHTML = "";
+  for (const relic of choices) {
+    const button = document.createElement("button");
+    button.className = "upgrade-option";
+    button.type = "button";
+    const imageSrc = relic.image ? ASSETS[relic.image] : "";
+    button.innerHTML = `${imageSrc ? `<img src="${imageSrc}" alt="">` : ""}<strong>${relic.name}</strong>`;
+    button.addEventListener("mouseenter", () => renderSetupPreview(relic));
+    button.addEventListener("focus", () => renderSetupPreview(relic));
+    button.addEventListener("click", () => chooseSetupUpgrade(relic));
+    upgradeOptions.appendChild(button);
+  }
+  upgradeMenuOpen = true;
+  upgradeMenu.hidden = false;
+  keys.clear();
+  mouse.down = false;
+}
+
+function renderSetupPreview(relic) {
+  if (!setupPreview) return;
+  setupPreview.innerHTML = `<strong>${relic.name}</strong><span>${relic.effect}</span><span class="setup-after">Mejora: ${SETUP_IMPROVEMENTS[relic.id]}</span>`;
+}
+
+function chooseSetupUpgrade(relic) {
+  if (!upgradeMenuOpen || upgradeMenuKind !== "setup" || !relic) return;
+  state.player.setupRelicId = relic.id;
+  if (relic.id === "llave-porsche") state.player.speed *= 1.1;
+  upgradeMenuOpen = false;
+  upgradeMenu.hidden = true;
+  state.message = `Setup mejorado: ${relic.name}`;
+  state.messageTime = 1.6;
+  saveCurrentRun();
+}
+
+function isSetupEnhanced(id) {
+  return state?.player?.setupRelicId === id;
+}
+
+function chooseBossUpgrade(upgrade) {
+  if (!upgradeMenuOpen || !upgrade) return;
+  upgrade.apply(state.player);
+  upgradeMenuOpen = false;
+  if (upgradeMenu) upgradeMenu.hidden = true;
+  state.message = `Mejora: ${upgrade.name}`;
+  state.messageTime = 1.2;
+  syncHud();
+  saveCurrentRun();
+}
+
+function tryBuyShopItem(item) {
+  if (!item || item.bought) return false;
+
+  if (!debugState.unlimitedMoney && state.coins < item.price) {
     state.message = "No tienes monedas";
     state.messageTime = 0.9;
     return true;
   }
 
-  state.coins -= item.price;
+  if (!debugState.unlimitedMoney) state.coins -= item.price;
   item.bought = true;
 
   if (item.kind === "key") {
@@ -379,9 +497,39 @@ function tryBuyShopItem() {
   }
 
   state.messageTime = 1.05;
-  SFX.merchantBuy();
   saveCurrentRun();
+  renderMerchantMenu();
   return true;
+}
+
+function renderMerchantMenu() {
+  if (!merchantOffers || !merchantCoins || !merchantInfo) return;
+  merchantCoins.textContent = debugState.unlimitedMoney ? "âˆž" : state?.coins || 0;
+  merchantOffers.innerHTML = "";
+  const available = (state?.shopItems || []).filter((item) => !item.bought);
+  if (!available.length) {
+    merchantOffers.innerHTML = `<p class="merchant-empty">No queda nada a la venta.</p>`;
+    return;
+  }
+  for (const item of available) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "merchant-offer";
+    const relic = item.kind === "object" ? normalizeItem(item.item) : null;
+    if (relic) button.style.setProperty("--rarity-color", rarityColor(relic.rarity));
+    const resourceImage = item.kind === "heart" ? ASSETS.heartRed : ASSETS[item.kind];
+    const imageSrc = relic?.image ? ASSETS[relic.image] : item.kind === "nothing" ? "" : resourceImage;
+    const image = imageSrc ? `<img src="${imageSrc}" alt="">` : `<span class="merchant-question">?</span>`;
+    const description = relic ? relic.effect : item.kind === "nothing" ? "Puede que no recibas nada." : `Compra: ${item.label}.`;
+    button.innerHTML = `${image}<strong>${item.label}</strong><span>${item.price}c</span>`;
+    const showInfo = () => {
+      merchantInfo.innerHTML = `<strong>${item.label}</strong><span>${description}</span>`;
+    };
+    button.addEventListener("mouseenter", showInfo);
+    button.addEventListener("focus", showInfo);
+    button.addEventListener("click", () => tryBuyShopItem(item));
+    merchantOffers.appendChild(button);
+  }
 }
 
 function tryUseSacrifice() {
@@ -484,10 +632,10 @@ function spawnChestRoom(profile, x, y) {
   const variant = profile.chestVariant || { type: "woodChest", count: 1 };
   const count = Math.max(1, Math.min(3, Number(variant.count || 1)));
   const positions = count === 1
-    ? [{ x, y }]
+    ? [{ x, y: y - 92 }]
     : count === 2
-      ? [{ x: x - 48, y }, { x: x + 48, y }]
-      : [{ x, y: y - 36 }, { x: x - 62, y: y + 36 }, { x: x + 62, y: y + 36 }];
+      ? [{ x: x - 172, y: y - 58 }, { x: x + 172, y: y - 58 }]
+      : [{ x, y: y - 128 }, { x: x - 188, y: y + 30 }, { x: x + 188, y: y + 30 }];
 
   for (const position of positions) {
     addChest(variant.type || "woodChest", position.x, position.y);
@@ -495,12 +643,16 @@ function spawnChestRoom(profile, x, y) {
 }
 
 function spawnChestLoot(chestType, x, y) {
-  const chestName = chestType === "goldChest" ? "dorado" : chestType === "silverChest" ? "plata" : "madera";
-  const options = balanceData?.chestLoot
-    ?.filter((row) => String(row.chest).includes(chestName))
-    ?.map((row) => ({ value: row.reward, weight: row.probability })) || [];
-  const reward = options.length ? weightedChoice(options) : "Monedas";
-  spawnRewardByName(reward, x, y, chestType);
+  const relic = chooseObject(chestType);
+  if (relic) {
+    addPickup("object", null, x, y, relic);
+    return;
+  }
+  addResourceBurst(weightedChoice([
+    { value: "heart", weight: 44 },
+    { value: "bomb", weight: 32 },
+    { value: "coin", weight: 24 },
+  ]), chestType === "goldChest" ? 4 : chestType === "silverChest" ? 3 : 2, x, y);
 }
 
 function spawnInternalReward(reward, x, y, amount = 1, label = "", objectSource = "fight") {
@@ -569,11 +721,12 @@ function tryOpenNearbyChest() {
   }
 
   state.keys -= cost;
+  save.keysUsed = (save.keysUsed || 0) + cost;
+  save.chestsOpened = (save.chestsOpened || 0) + 1;
   chest.opened = true;
   state.message = cost > 0 ? "- llave" : "Cofre abierto";
   state.messageTime = 1.0;
   spawnChestLoot(chest.chestType, chest.x, chest.y - 18);
-  state.chests = state.chests.filter((item) => !item.opened);
   saveCurrentRun();
   return true;
 }
@@ -592,7 +745,7 @@ function spawnRewardByName(rewardName, x, y, objectSource = "fight") {
     addResourceBurst("key", text.includes("x2") ? 2 : 1, x, y);
   } else if (text === "bomb" || text.includes("bomba")) {
     addResourceBurst("bomb", text.includes("x2") ? 2 : 1, x, y);
-  } else if (text === "heart" || text.includes("corazón") || text.includes("curación")) {
+  } else if (text === "heart" || text.includes("vida") || text.includes("curacion")) {
     addResourceBurst("heart", 1, x, y);
   } else if (text === "object" || text.includes("objeto") || text.includes("reliquia")) {
     addPickup("object", null, x, y, chooseObject(objectSource, rarityFromText(text)));
@@ -645,7 +798,7 @@ function getOwnedRelicIds() {
 
 function rollObjectRarity(source) {
   const weights = RELIC_RARITY_WEIGHTS[source] || RELIC_RARITY_WEIGHTS.fight;
-  return weightedChoiceFromObject(weights) || "Común";
+  return weightedChoiceFromObject(weights) || "Poco comun";
 }
 
 function getRelicPool(source, rarity, catalog) {
@@ -663,12 +816,12 @@ function relicCanDropFrom(item, source) {
 }
 
 function rarityFromText(text) {
-  if (text.includes("mítica") || text.includes("mitica")) return "Mítica";
+  if (text.includes("mitica")) return "Mitica";
   if (text.includes("legend")) return "Legendaria";
-  if (text.includes("épica") || text.includes("epica")) return "Épica";
+  if (text.includes("epica")) return "Epica";
   if (text.includes("rara")) return "Rara";
-  if (text.includes("poco")) return "Poco común";
-  if (text.includes("común") || text.includes("comun")) return "Común";
+  if (text.includes("poco")) return "Poco comun";
+  if (text.includes("comun")) return "Comun";
   return null;
 }
 
@@ -677,10 +830,10 @@ function normalizeItem(item = {}) {
   return {
     id: item.id || hashString(name),
     name,
-    rarity: item.rarity || item.Rareza || "Común",
+    rarity: (item.rarity || item.Rareza || "Poco comun") === "Comun" ? "Poco comun" : item.rarity || item.Rareza || "Poco comun",
     type: item.type || item.Tipo || "Reliquia",
     effect: item.effect || item.Efecto || "+ poder",
-    penalty: item.penalty || item["Penalización/nota"] || item.note || null,
+    penalty: item.penalty || item["Penalizacion/nota"] || item.note || null,
     price: item.price || item.normalPrice || item["Precio sugerido"] || null,
     visualSeed: item.visualSeed || hashString(name),
     image: item.image || RELIC_IMAGE_KEYS[item.id] || null,
@@ -727,16 +880,36 @@ function spawnRoom(entrySide = null) {
   state.enemies = [];
   state.shots = [];
   state.enemyShots = [];
+  state.minecraftBlocks = [];
+  state.minecraftSummons = [];
+  state.discoZones = [];
+  state.tangleTraps = [];
   state.damageNumbers = [];
+  state.allies = [];
+  state.toxicTrails = [];
   state.pickups = [];
   state.chests = [];
   state.shopItems = [];
   state.cleared = false;
   state.message = "";
   state.roomProfile = createRoomProfile(state.room, entrySide);
+  if (state.roomProfile.type === "chestRoom" && !state.chestRoomHistory.includes(state.room)) {
+    state.chestRoomHistory.push(state.room);
+  }
+  state.player.roomDamaged = false;
+  state.player.roomTime = 0;
+  state.player.trailTimer = 0;
 
   const profile = state.roomProfile;
+  if (state.debugLab) {
+    setupDebugLab(profile);
+    return;
+  }
   const enemyBudget = Math.max(isCombatRoom(profile.type) ? 1 : 0, getEnemyCount(profile));
+  if (state.room === 45) {
+    spawnXavi();
+    return;
+  }
   let spentBudget = 0;
   let i = 0;
   while (spentBudget < enemyBudget && i < 64) {
@@ -747,7 +920,7 @@ function spawnRoom(entrySide = null) {
     const isFinal = isFinalBoss(profile);
     const archetype = selectEnemyArchetype(profile, i);
     const role = getEnemyRole(archetype, profile);
-    spentBudget += getEnemySpawnCost(role);
+    spentBudget += getEnemySpawnCost(role, archetype);
     const difficulty = getEnemyDifficulty();
     const hpMultiplier = difficulty?.hpMultiplier || 1;
     const damageMultiplier = difficulty?.damageMultiplier || 1;
@@ -757,7 +930,7 @@ function spawnRoom(entrySide = null) {
     const baseSpeed = isFinal ? 74 * archetype.speedScale : isBoss ? (34 + Math.floor(state.room / 8)) * archetype.speedScale : getEnemySpeed(profile) * getEnemyRoleSpeedScale(archetype, role);
     const speed = isBoss ? baseSpeed * (0.88 + (speedMultiplier - 1) * 0.22) : baseSpeed;
     const damage = Math.max(1, Math.floor(damageMultiplier));
-    state.enemies.push({
+    const enemyData = {
       x,
       y,
       r: (isFinal ? 62 : isBoss ? 46 : 23) * archetype.rScale,
@@ -777,9 +950,67 @@ function spawnRoom(entrySide = null) {
       role,
       pattern: archetype.pattern || "",
       phase: archetype.phase || 1,
-    });
+      sprite: archetype.sprite || null,
+      specialTimer: archetype.name === "Ferri" ? 2.8 + Math.random() * 4 : 99,
+      specialPrompt: 0,
+      specialReply: 0,
+      stun: 0,
+      chargeDelay: archetype.pattern === "maki" ? 0.45 + Math.random() * 1.3 : 0,
+      rollVx: 0,
+      rollVy: 0,
+    };
+    if (archetype.pattern === "smiteMinion") {
+      const laneCount = Math.min(3, 1 + Math.floor(((state.room - 71) % 10) / 3));
+      const lane = index % laneCount;
+      const yStep = laneCount === 1 ? 0 : lane === 0 ? -58 : lane === 1 ? 0 : 58;
+      const side = index % 2 === 0 ? -1 : 1;
+      enemyData.x = WIDTH / 2 + side * (260 + Math.floor(index / laneCount) * 28);
+      enemyData.y = HEIGHT / 2 + yStep + (Math.random() - 0.5) * 18;
+      enemyData.minionLaneY = enemyData.y;
+      enemyData.minionSide = side;
+    }
+    state.enemies.push(enemyData);
     i += 1;
   }
+  spawnRoomAnts();
+}
+
+function spawnXavi() {
+  state.enemies.push({
+    x: WIDTH / 2, y: HEIGHT / 2 - 34, r: 46, hp: 42, maxHp: 42, speed: 310,
+    wobble: 0, shoot: 99, summon: 99, hit: 0, boss: false, finalBoss: false, damage: 0,
+    name: "Xavi", tint: "rgba(255, 80, 187, 0.34)", canShoot: false, role: "elite",
+    pattern: "xavi", sprite: "enemyXaviJump", specialTimer: 99, specialPrompt: 0, specialReply: 0,
+    stun: 0, chargeDelay: 0, rollVx: 0, rollVy: 0, laserCooldown: 0, jumpFlip: false,
+    xaviAwakened: false, xaviAimTimer: 0,
+    xaviDodgeCooldown: 0,
+  });
+}
+
+function setupDebugLab(profile) {
+  profile.type = "jokeRoom";
+  profile.doorsOpen = false;
+  profile.doorSides = [];
+  profile.bombDoorSide = null;
+  state.player.x = WIDTH / 2;
+  state.player.y = HEIGHT - 138;
+  state.player.hp = state.player.maxHp;
+  state.cleared = true;
+  state.coins = 99;
+  state.keys = 99;
+  state.bombs = 99;
+  const columns = 7;
+  for (const [index, relic] of RELIC_CATALOG.entries()) {
+    const col = index % columns;
+    const row = Math.floor(index / columns);
+    addPickup("object", null, 250 + col * 130, 175 + row * 128, relic);
+  }
+  addChest("woodChest", WIDTH - 192, HEIGHT - 142);
+  addChest("silverChest", WIDTH - 322, HEIGHT - 142);
+  addChest("goldChest", WIDTH - 452, HEIGHT - 142);
+  state.message = "Laboratorio 2345";
+  state.messageTime = 1.4;
+  syncHud();
 }
 
 function selectEnemyArchetype(profile, index) {
@@ -789,6 +1020,62 @@ function selectEnemyArchetype(profile, index) {
 
   const tier = enemyTierForRoom(state.room);
   const themeList = ENEMY_CATALOG[profile.theme.name] || ENEMY_CATALOG.Isaac;
+  if (profile.theme.name === "Japon") {
+    const ninja = themeList.find((enemy) => enemy.name === "Ninja");
+    const maki = themeList.find((enemy) => enemy.name === "Maki rodador");
+    const veteran = themeList.find((enemy) => enemy.name === "Ninja veterano");
+    const stage = {
+      11: { ninja: 1, maki: 0, veteran: 0 },
+      12: { ninja: 1, maki: 0, veteran: 0 },
+      13: { ninja: 0.90, maki: 0.10, veteran: 0 },
+      14: { ninja: 0.78, maki: 0.22, veteran: 0 },
+      15: { ninja: 0.68, maki: 0.28, veteran: 0.04 },
+      16: { ninja: 0.56, maki: 0.36, veteran: 0.08 },
+      17: { ninja: 0.44, maki: 0.42, veteran: 0.14 },
+      18: { ninja: 0.34, maki: 0.46, veteran: 0.20 },
+      19: { ninja: 0.24, maki: 0.50, veteran: 0.26 },
+    }[state.room] || { ninja: 0.25, maki: 0.48, veteran: 0.27 };
+    const typePressure = profile.type === "fightElite" || profile.type === "riskEvent"
+      ? 0.12
+      : profile.type === "fightMixed" ? 0.06 : 0;
+    const roll = Math.random();
+    const ninjaWeight = Math.max(0.12, stage.ninja - typePressure);
+    const makiWeight = Math.min(0.62, stage.maki + typePressure * 0.65);
+    if (roll < ninjaWeight && ninja) return ninja;
+    if (roll < ninjaWeight + makiWeight && maki) return maki;
+    return veteran || ninja || maki;
+  }
+  if (profile.theme.name === "Iglesia") {
+    const bibles = themeList.filter((enemy) => enemy.name.includes("Biblia"));
+    const ferri = themeList.find((enemy) => enemy.name === "Ferri");
+    const ferriChanceByRoom = { 31: 0, 32: 0.08, 33: 0.16, 34: 0.25, 35: 0.38, 36: 0.54, 37: 0.68, 38: 0.82, 39: 0.94 };
+    const ferriChance = ferriChanceByRoom[state.room] ?? 1;
+    if (ferri && Math.random() < ferriChance) return ferri;
+    return bibles[index % bibles.length];
+  }
+  if (profile.theme.name === "Smite") {
+    const minion = themeList.find((enemy) => enemy.name === "Minion");
+    const veteran = themeList.find((enemy) => enemy.name === "Minion veterano");
+    const toro = themeList.find((enemy) => enemy.name === "Toro bruto");
+    const stage = {
+      71: { minion: 1, veteran: 0, toro: 0 },
+      72: { minion: 0.88, veteran: 0.12, toro: 0 },
+      73: { minion: 0.76, veteran: 0.24, toro: 0 },
+      74: { minion: 0.68, veteran: 0.24, toro: 0.08 },
+      75: { minion: 0.56, veteran: 0.32, toro: 0.12 },
+      76: { minion: 0.46, veteran: 0.38, toro: 0.16 },
+      77: { minion: 0.34, veteran: 0.42, toro: 0.24 },
+      78: { minion: 0.26, veteran: 0.44, toro: 0.30 },
+      79: { minion: 0.18, veteran: 0.46, toro: 0.36 },
+    }[state.room] || { minion: 0.18, veteran: 0.45, toro: 0.37 };
+    const elitePush = profile.type === "fightElite" || profile.type === "riskEvent" ? 0.08 : 0;
+    const roll = Math.random();
+    const minionWeight = Math.max(0.08, stage.minion - elitePush);
+    const veteranWeight = Math.min(0.56, stage.veteran + elitePush * 0.45);
+    if (roll < minionWeight && minion) return minion;
+    if (roll < minionWeight + veteranWeight && veteran) return veteran;
+    return toro || veteran || minion;
+  }
   const tierBonus = profile.type === "fightElite" || profile.type === "fightMixed" || profile.type === "riskEvent" ? 1 : 0;
   const available = themeList.filter((enemy) => enemy.tier <= tier + tierBonus);
   const pool = available.length ? available : themeList;
@@ -803,7 +1090,9 @@ function getEnemyRole(archetype, profile) {
   return "swarm";
 }
 
-function getEnemySpawnCost(role) {
+function getEnemySpawnCost(role, archetype = null) {
+  if (archetype?.pattern === "maki") return 3.1;
+  if (archetype?.name === "Mosca") return 0.58;
   if (role === "tank") return 2.35;
   if (role === "shooter") return 1.45;
   return 1;
@@ -819,7 +1108,7 @@ function getEnemyRoleHpMultiplier(role) {
 function getEnemyRoleSpeedScale(archetype, role) {
   if (role === "tank") return archetype.speedScale * 0.58;
   if (role === "shooter") return archetype.speedScale * 0.74;
-  if (role === "runner") return Math.min(1.12, archetype.speedScale * 0.84);
+  if (role === "runner") return archetype.name === "Mosca" ? archetype.speedScale * 0.94 : Math.min(1.12, archetype.speedScale * 0.84);
   return archetype.speedScale * 0.86;
 }
 
@@ -835,7 +1124,6 @@ function completeRoom() {
 
   state.cleared = true;
   state.roomProfile.doorsOpen = true;
-  save.bestRoom = Math.max(save.bestRoom, state.room);
   writeSave();
 
   if (isFinalBoss(state.roomProfile)) {
@@ -844,10 +1132,19 @@ function completeRoom() {
   }
 
   spawnRoomReward(state.roomProfile);
+  applyRoomClearRelics();
 
   if (state.roomProfile.type === "boss") {
+    save.bossesDefeated = (save.bossesDefeated || 0) + 1;
+    writeSave();
     state.message = "Boss derrotado";
     state.messageTime = 1.2;
+    if (hasRelic("crep-chocolate")) state.player.hp = Math.min(state.player.maxHp, state.player.hp + (isSetupEnhanced("crep-chocolate") ? 3 : 2));
+    if (hasRelic("llave-porsche") && (state.player.bossesWithPorsche || 0) < 5) {
+      state.player.bossesWithPorsche = (state.player.bossesWithPorsche || 0) + 1;
+      state.player.speed *= 1.03;
+    }
+    openBossUpgradeMenu();
   } else {
     state.message = "";
     state.messageTime = 0;
@@ -866,7 +1163,8 @@ function nextRoom(exitSide = null) {
 }
 
 function gameOverRun() {
-  save.bestRoom = Math.max(save.bestRoom, state.room);
+  updateProfileRecord(state.room, "death");
+  save.deaths = (save.deaths || 0) + 1;
   save.currentRun = null;
   writeSave();
   runSummary.textContent = `Has llegado a la sala ${state.room}. Mejor sala: ${save.bestRoom}.`;
@@ -874,7 +1172,8 @@ function gameOverRun() {
 }
 
 function winRun() {
-  save.bestRoom = 100;
+  updateProfileRecord(100, "win");
+  save.wins = (save.wins || 0) + 1;
   save.currentRun = null;
   writeSave();
   state.message = "Victoria";
@@ -885,16 +1184,26 @@ function winRun() {
 
 function update(dt) {
   if (mode !== "game") return;
+  if (merchantMenuOpen || healerMenuOpen || upgradeMenuOpen) return;
 
   const player = state.player;
   player.invuln = Math.max(0, player.invuln - dt);
   player.hitFlash = Math.max(0, player.hitFlash - dt);
   player.itemPose = Math.max(0, player.itemPose - dt);
   player.fireCooldown = Math.max(0, player.fireCooldown - dt);
+  player.paralysis = Math.max(0, (player.paralysis || 0) - dt);
+  player.flashPose = Math.max(0, (player.flashPose || 0) - dt);
+  updateTangleTraps(dt);
+  player.roomTime = (player.roomTime || 0) + dt;
+  if (hasRelic("papel-higienico")) player.paperCharge = Math.min(hasRelic("silla-gamer") ? 14 : 18, (player.paperCharge || 0) + dt);
+  updateMando(dt);
   state.messageTime = Math.max(0, state.messageTime - dt);
   state.shake = Math.max(0, state.shake - dt);
 
   updatePlayer(dt);
+  updateRelicEntities(dt);
+  updateMinecraftBlocks(dt);
+  updateDiscoZones(dt);
   updateShots(dt);
   updateDamageNumbers(dt);
   updateEnemies(dt);
@@ -910,6 +1219,8 @@ function update(dt) {
 
 function updatePlayer(dt) {
   const player = state.player;
+  if (player.tangled > 0) return;
+  if (player.paralysis > 0) return;
   let mx = 0;
   let my = 0;
 
@@ -919,8 +1230,22 @@ function updatePlayer(dt) {
   if (keys.has("KeyS") || keys.has("ArrowDown")) my += 1;
 
   const mag = Math.hypot(mx, my) || 1;
+  player.stationaryTime = mx || my ? 0 : (player.stationaryTime || 0) + dt;
+  if ((mx || my) && hasRelic("calcetin-sucio")) {
+    player.trailTimer = (player.trailTimer || 0) - dt;
+    if (player.trailTimer <= 0) {
+      player.trailTimer = 0.09;
+      state.toxicTrails.push({ x: player.x, y: player.y + 12, life: 5, maxLife: 5, r: 27 });
+    }
+  }
+  const previousX = player.x;
+  const previousY = player.y;
   player.x += (mx / mag) * player.speed * dt;
   player.y += (my / mag) * player.speed * dt;
+  if (state.minecraftBlocks.some((block) => circleHitsBlock(player, block))) {
+    player.x = previousX;
+    player.y = previousY;
+  }
 
   const exitSide = getDoorExit(player);
   if (exitSide) {
@@ -973,12 +1298,14 @@ function fireAt(dx, dy) {
 
   const nx = dx / length;
   const ny = dy / length;
-  player.fireCooldown = player.fireDelay;
+  const chairBoost = hasRelic("silla-gamer") && (player.stationaryTime || 0) >= 0.8 ? (isSetupEnhanced("silla-gamer") ? 0.7 : 0.8) : 1;
+  const colacaoDuration = isSetupEnhanced("colacao") ? 18 : hasRelic("crep-chocolate") ? 14 : 12;
+  const colacaoBoost = hasRelic("colacao") && (player.roomTime || 0) <= colacaoDuration ? 0.75 : 1;
+  player.fireCooldown = player.fireDelay * chairBoost * colacaoBoost;
   player.aimX = nx;
   player.aimY = ny;
   player.shotCounter = (player.shotCounter || 0) + 1;
   const critical = Math.random() < (player.critChance || 0);
-  const talonShot = player.talonEvery > 0 && player.shotCounter % player.talonEvery === 0;
   const hurtBonus = player.hp <= Math.ceil(player.maxHp / 2) ? (player.hurtDamageBonus || 0) : 0;
   const shotDamage = (player.damage * (1 + hurtBonus)) * (critical ? 2 : 1);
 
@@ -990,77 +1317,226 @@ function fireAt(dx, dy) {
     player.facing = "front";
   }
 
+  const paperReady = hasRelic("papel-higienico") && player.paperCharge >= (isSetupEnhanced("papel-higienico") ? 11 : 14);
+  const chopsticks = hasRelic("palillos-chinos") && player.shotCounter % 4 === 0;
+  if (paperReady) player.paperCharge = 0;
+  const angles = paperReady
+    ? isSetupEnhanced("papel-higienico") ? [-0.38, -0.19, 0, 0.19, 0.38] : [-0.22, 0, 0.22]
+    : chopsticks
+      ? isSetupEnhanced("palillos-chinos") ? [-0.24, -0.12, 0, 0.12, 0.24] : [-0.12, 0, 0.12]
+      : [0];
+  for (const angle of angles) addPlayerShot(nx, ny, shotDamage * (chopsticks ? 0.78 : 1), critical, angle);
+}
+
+function addPlayerShot(nx, ny, damage, critical = false, angleOffset = 0, automatic = false) {
+  const player = state.player;
+  const angle = Math.atan2(ny, nx) + angleOffset;
+  const sx = Math.cos(angle);
+  const sy = Math.sin(angle);
   state.shots.push({
-    x: player.x + nx * 24,
-    y: player.y + ny * 22,
-    vx: nx * 560,
-    vy: ny * 560,
+    x: player.x + sx * 24,
+    y: player.y + sy * 22,
+    vx: sx * 560,
+    vy: sy * 560,
     r: (critical ? 10 : 8) + (player.tearSizeBonus || 0),
     life: Math.max(1.8, 4.0 + (player.shotLifeBonus || 0)),
-    damage: shotDamage,
-    critical: critical || talonShot,
-    talonShot,
+    damage,
+    critical,
+    automatic,
+    appliesSoja: hasRelic("salsa-soja") && Math.random() < (isSetupEnhanced("salsa-soja") ? 0.28 : 0.15),
+    appliesSpicy: hasRelic("salsa-good-soup") && Math.random() < (isSetupEnhanced("salsa-good-soup") ? 0.24 : 0.13),
   });
 }
 
-function updateShots(dt) {
-  advanceShots(state.shots, dt);
-  advanceShots(state.enemyShots, dt);
-  updateEnemyHitTimers(dt);
-  resolvePlayerShotsAgainstEnemies();
-  resolveEnemyShotsAgainstPlayer();
-  cleanupShotsAndEnemies();
+function updateMando(dt) {
+  const player = state.player;
+  if (!hasRelic("mando") || !state.enemies.length) return;
+  player.autoShotTimer = (player.autoShotTimer || 0) - dt;
+  if (player.autoShotTimer > 0) return;
+  player.autoShotTimer = isSetupEnhanced("mando") ? 0.85 : 1.6;
+  const target = [...state.enemies].sort((a, b) => distance(player, a) - distance(player, b))[0];
+  addPlayerShot(target.x - player.x, target.y - player.y, player.damage * 0.48, false, 0, true);
 }
 
-function advanceShots(shots, dt) {
-  for (const shot of shots) {
+function spawnRoomAnts() {
+  if (!state || !isCombatRoom(state.roomProfile.type)) return;
+  const hasAnt = hasRelic("hormiga");
+  const hasNest = hasRelic("hormiguero");
+  let count = 0;
+  if (hasAnt && hasNest) count = 1;
+  else if (hasAnt && Math.random() < (isSetupEnhanced("hormiga") ? 0.68 : 0.45)) count = 1;
+  else if (hasNest && state.room % 2 === 0) count = 1;
+  if (hasAnt && hasNest && Math.random() < 0.42) count += 1;
+  for (let i = 0; i < Math.min(isSetupEnhanced("hormiguero") ? 6 : 4, count); i += 1) {
+    state.allies.push({ x: state.player.x + (i - 1) * 18, y: state.player.y + 30, r: 9, bite: 0 });
+  }
+}
+
+function updateRelicEntities(dt) {
+  const player = state.player;
+  for (const trail of state.toxicTrails) {
+    trail.life -= dt;
+    for (const enemy of state.enemies) {
+      if (distance(trail, enemy) < trail.r + enemy.r) enemy.hp -= player.damage * (isSetupEnhanced("calcetin-sucio") ? 0.32 : 0.22) * dt;
+    }
+  }
+  state.toxicTrails = state.toxicTrails.filter((trail) => trail.life > 0);
+
+  for (const ant of state.allies) {
+    ant.bite = Math.max(0, ant.bite - dt);
+    const target = [...state.enemies].filter((enemy) => enemy.hp > 0).sort((a, b) => distance(ant, a) - distance(ant, b))[0];
+    if (!target) continue;
+    const dx = target.x - ant.x;
+    const dy = target.y - ant.y;
+    const mag = Math.hypot(dx, dy) || 1;
+    ant.x += (dx / mag) * 178 * dt;
+    ant.y += (dy / mag) * 178 * dt;
+    if (mag < ant.r + target.r + 4 && ant.bite <= 0) {
+      ant.bite = 0.52;
+      target.hp -= Math.max(0.55, player.damage * 0.32);
+      target.hit = Math.max(target.hit, 0.1);
+    }
+  }
+
+  if (hasRelic("rasta-dani")) {
+    player.rastaAngle = (player.rastaAngle || 0) + dt * (isSetupEnhanced("rasta-dani") ? 7.2 : 5.1);
+    const orbit = { x: player.x + Math.cos(player.rastaAngle) * 56, y: player.y + Math.sin(player.rastaAngle) * 38, r: 16 };
+    player.rastaOrbit = orbit;
+    for (const enemy of state.enemies) {
+      if (distance(orbit, enemy) < orbit.r + enemy.r) enemy.hp -= player.damage * (isSetupEnhanced("rasta-dani") ? 1.45 : 1.0) * dt;
+    }
+    for (const shot of state.enemyShots) {
+      if (shot.life > 0 && shot.r <= 9 && distance(orbit, shot) < orbit.r + shot.r && Math.random() < 0.3) shot.life = 0;
+    }
+  } else {
+    player.rastaOrbit = null;
+  }
+}
+
+function triggerTalonKill() {
+  const player = state.player;
+  if (!hasRelic("talon")) return;
+  player.talonKills = (player.talonKills || 0) + 1;
+  if (player.talonKills % (isSetupEnhanced("talon") ? 7 : 10) !== 0 || !state.enemies.length) return;
+  const target = [...state.enemies].filter((enemy) => enemy.hp > 0).sort((a, b) => b.hp - a.hp)[0];
+  if (!target) return;
+  const damage = Math.max(5, player.damage * 3.8);
+  target.hp -= damage;
+  addDamageNumber(target, damage, true);
+  state.message = "Talon";
+  state.messageTime = 0.7;
+}
+
+function applyRoomClearRelics() {
+  const player = state.player;
+  if (!isCombatRoom(state.roomProfile.type)) return;
+  player.fightRooms = (player.fightRooms || 0) + 1;
+  if (hasRelic("tecla") && !player.roomDamaged && (player.perfectRooms || 0) < 45) {
+    player.perfectRooms = (player.perfectRooms || 0) + 1;
+    player.fireDelay = Math.max(0.1, player.fireDelay * (isSetupEnhanced("tecla") ? 0.994 : 0.996));
+  }
+  if (hasRelic("nigiri-salmon") && player.fightRooms % (isSetupEnhanced("nigiri-salmon") ? 3 : 4) === 0) {
+    player.hp = Math.min(player.maxHp, player.hp + 1);
+  }
+  if (hasRelic("pegatina-perros") && Math.random() < (isSetupEnhanced("pegatina-perros") ? 0.28 : hasRelic("perros-code") ? 0.2 : 0.16)) {
+    const reward = weightedChoice([
+      { value: "coin", weight: 50 },
+      { value: "heart", weight: 25 },
+      { value: "key", weight: 20 },
+      { value: "bomb", weight: 5 },
+    ]);
+    addResourceBurst(reward, 1, WIDTH / 2 + 58, HEIGHT / 2 - 34);
+  }
+  if (hasRelic("perros-code") && state.room % (isSetupEnhanced("perros-code") ? 3 : 4) === 0) {
+    const article = randomInt(0, 3);
+    if (article === 0) state.player.damage += 0.1;
+    if (article === 1) state.player.fireDelay = Math.max(0.1, state.player.fireDelay * 0.98);
+    if (article === 2) addResourceBurst("coin", 2, WIDTH / 2 - 58, HEIGHT / 2 - 34);
+    if (article === 3) state.player.damageReduction = Math.min(0.55, (state.player.damageReduction || 0) + 0.04);
+    state.message = "Perros Code";
+    state.messageTime = 0.9;
+  }
+  player.roomDamaged = false;
+}
+
+function updateShots(dt) {
+  for (const shot of state.shots) {
     shot.x += shot.vx * dt;
     shot.y += shot.vy * dt;
     shot.life -= dt;
+    if (state.minecraftBlocks.some((block) => circleHitsBlock(shot, block))) shot.life = 0;
   }
-}
 
-function updateEnemyHitTimers(dt) {
-  for (const enemy of state.enemies) {
-    enemy.hit = Math.max(0, enemy.hit - dt);
-  }
-}
-
-function resolvePlayerShotsAgainstEnemies() {
-  for (const enemy of state.enemies) {
-    for (const shot of state.shots) {
-      if (applyPlayerShotToEnemy(enemy, shot)) break;
+  for (const shot of state.enemyShots) {
+    if (shot.boomerang && shot.owner?.hp > 0) {
+      shot.age = (shot.age || 0) + dt;
+      if (shot.age >= shot.returnAfter) {
+        const dx = shot.owner.x - shot.x;
+        const dy = shot.owner.y - shot.y;
+        const mag = Math.hypot(dx, dy) || 1;
+        shot.vx += (dx / mag) * 980 * dt;
+        shot.vy += (dy / mag) * 980 * dt;
+        const speed = Math.hypot(shot.vx, shot.vy) || 1;
+        if (speed > 520) {
+          shot.vx = (shot.vx / speed) * 520;
+          shot.vy = (shot.vy / speed) * 520;
+        }
+        if (shot.age > shot.returnAfter + 0.35 && distance(shot, shot.owner) < shot.owner.r + 18) shot.life = 0;
+      }
+    }
+    shot.x += shot.vx * dt;
+    shot.y += shot.vy * dt;
+    shot.life -= dt;
+    const hitBlock = state.minecraftBlocks.find((block) => circleHitsBlock(shot, block));
+    if (hitBlock) {
+      if (shot.minecraftPickaxe) hitBlock.life = 0;
+      else shot.life = 0;
     }
   }
-}
 
-function applyPlayerShotToEnemy(enemy, shot) {
-  if (shot.life <= 0 || distance(enemy, shot) >= enemy.r + shot.r) return false;
-
-  const damage = debugState.oneShot || shot.talonShot ? Math.max(enemy.hp, shot.damage) : shot.damage;
-  enemy.hp -= damage;
-  enemy.hit = 0.15;
-  shot.life = 0;
-
-  if (tryReincarnateBoss(enemy)) {
-    addDamageNumber(enemy, damage, true);
-    state.shake = 0.35;
-    return true;
+  for (const enemy of state.enemies) {
+    enemy.hit = Math.max(0, enemy.hit - dt);
+    for (const shot of state.shots) {
+      if (shot.life > 0 && enemy.pattern === "xavi" && !enemy.xaviAwakened && (enemy.xaviDodgeCooldown || 0) <= 0 && distance(enemy, shot) < enemy.r + 190) {
+        dodgeXaviShot(enemy, shot);
+        continue;
+      }
+      if (shot.life > 0 && enemy.pattern === "contra" && (enemy.dodgeCooldown || 0) <= 0 && distance(enemy, shot) < enemy.r + 72) {
+        dodgeCounterShot(enemy, shot);
+        continue;
+      }
+      if (shot.life > 0 && distance(enemy, shot) < enemy.r + shot.r) {
+        const debuffBonus = (enemy.sanded || 0) > 0 ? (isSetupEnhanced("lijadora") ? 1.18 : 1.1) : 1;
+        const sojaBonus = (enemy.soja || 0) > 0 ? 1.08 : 1;
+        const damage = debugState.oneShot ? Math.max(enemy.hp, shot.damage) : shot.damage * debuffBonus * sojaBonus;
+        enemy.hp -= damage;
+        if (enemy.pattern === "enderman" && enemy.hp > 0 && (enemy.teleportCooldown || 0) <= 0) teleportEnderman(enemy);
+        if (enemy.pattern === "xavi" && enemy.hp > 0 && !enemy.xaviAwakened) {
+          enemy.xaviAwakened = true;
+          enemy.xaviAimTimer = 0.7;
+          enemy.sprite = "enemyXaviLaser";
+        }
+        if (hasRelic("lijadora")) enemy.sanded = 3;
+        if (shot.appliesSoja) enemy.soja = 4;
+        if (shot.appliesSpicy) enemy.spicy = 3;
+        if (enemy.soja > 0 && enemy.spicy > 0 && (!enemy.comboCooldown || enemy.comboCooldown <= 0)) {
+          enemy.hp -= Math.max(1, player.damage * 0.45);
+          enemy.comboCooldown = 1;
+        }
+        if (hasRelic("cable-mordido")) chainCableDamage(enemy);
+        enemy.hit = 0.15;
+        shot.life = 0;
+        if (tryReincarnateBoss(enemy)) {
+          addDamageNumber(enemy, damage, true);
+          state.shake = 0.35;
+          break;
+        }
+        addDamageNumber(enemy, damage, Boolean(shot.critical || debugState.oneShot || shot.talonShot));
+        state.shake = 0.05;
+      }
+    }
   }
 
-  addDamageNumber(enemy, damage, Boolean(shot.critical || debugState.oneShot || shot.talonShot));
-  state.shake = 0.05;
-  playEnemyDeathSound(enemy);
-  return false;
-}
-
-function playEnemyDeathSound(enemy) {
-  if (enemy.hp > 0 || enemy._deathSoundPlayed) return;
-  SFX.enemyDeath(enemy.name || null);
-  enemy._deathSoundPlayed = true;
-}
-
-function resolveEnemyShotsAgainstPlayer() {
   const player = state.player;
   for (const shot of state.enemyShots) {
     if (shot.life > 0 && player.invuln <= 0 && distance(player, shot) < player.r + shot.r) {
@@ -1068,16 +1544,200 @@ function resolveEnemyShotsAgainstPlayer() {
       shot.life = 0;
     }
   }
-}
 
-function cleanupShotsAndEnemies() {
+  for (const enemy of state.enemies) {
+    if (enemy.hp <= 0 && !enemy.deathCounted) {
+      enemy.deathCounted = true;
+      save.enemiesKilled = (save.enemiesKilled || 0) + 1;
+      if (enemy.pattern === "daniRasta" || enemy.pattern === "rasta" || enemy.name === "Rasta de Dani") {
+        addTangleTrap(enemy.x, enemy.y);
+      }
+      triggerTalonKill();
+    }
+  }
   state.enemies = state.enemies.filter((enemy) => enemy.hp > 0);
   state.shots = state.shots.filter((shot) => shot.life > 0 && inBounds(shot.x, shot.y, 720));
   state.enemyShots = state.enemyShots.filter((shot) => shot.life > 0 && inBounds(shot.x, shot.y, 90));
 }
 
-function addDamageNumber(enemy, damage, critical = false) {
+function dodgeXaviShot(enemy, shot) {
+  const shotSpeed = Math.hypot(shot.vx, shot.vy) || 1;
+  const side = Math.random() < 0.5 ? -1 : 1;
+  const nx = (-shot.vy / shotSpeed) * side;
+  const ny = (shot.vx / shotSpeed) * side;
+  enemy.x = clamp(enemy.x + nx * 300, 132, WIDTH - 132);
+  enemy.y = clamp(enemy.y + ny * 230, 122, HEIGHT - 106);
+  enemy.jumpFlip = !enemy.jumpFlip;
+  enemy.xaviDodgeCooldown = 0.08;
+  enemy.jumpTimer = 0.22;
+}
+
+function dodgeCounterShot(enemy, shot) {
+  const shotSpeed = Math.hypot(shot.vx, shot.vy) || 1;
+  const side = Math.random() < 0.5 ? -1 : 1;
+  const nx = (-shot.vy / shotSpeed) * side;
+  const ny = (shot.vx / shotSpeed) * side;
+  enemy.x = clamp(enemy.x + nx * 104, 120, WIDTH - 120);
+  enemy.y = clamp(enemy.y + ny * 88, 108, HEIGHT - 92);
+  enemy.dodgeCooldown = 0.46;
+  enemy.hit = Math.max(enemy.hit || 0, 0.08);
+}
+
+function chainCableDamage(origin) {
+  let previous = origin;
+  const hit = new Set([origin]);
+  const maxBounces = isSetupEnhanced("cable-mordido") ? 5 : 3;
+  for (let bounce = 0; bounce < maxBounces; bounce += 1) {
+    const chained = state.enemies
+      .filter((other) => !hit.has(other) && other.hp > 0 && distance(previous, other) < 260)
+      .sort((a, b) => distance(previous, a) - distance(previous, b))[0];
+    if (!chained) return;
+    const chainDamage = Math.max(1, state.player.damage * (0.58 - bounce * 0.1));
+    chained.hp -= chainDamage;
+    chained.hit = Math.max(chained.hit, 0.14);
+    addDamageNumber(chained, chainDamage);
+    hit.add(chained);
+    previous = chained;
+  }
+}
+
+function circleHitsBlock(circle, block) {
+  const nearestX = clamp(circle.x, block.x - block.r, block.x + block.r);
+  const nearestY = clamp(circle.y, block.y - block.r, block.y + block.r);
+  return Math.hypot(circle.x - nearestX, circle.y - nearestY) < (circle.r || 0);
+}
+
+function updateMinecraftBlocks(dt) {
+  for (const block of state.minecraftBlocks) block.life -= dt;
+  state.minecraftBlocks = state.minecraftBlocks.filter((block) => block.life > 0);
+  for (const summon of state.minecraftSummons) summon.life -= dt;
+  for (const summon of state.minecraftSummons.filter((item) => item.life <= 0)) spawnSamuEnderman(summon.x, summon.y);
+  state.minecraftSummons = state.minecraftSummons.filter((summon) => summon.life > 0);
+}
+
+function updateDiscoZones(dt) {
+  for (const zone of state.discoZones) {
+    zone.life -= dt;
+    if (zone.kind === "xaviLaser" && zone.owner?.hp > 0) {
+      const trackingSpeed = zone.warning > 0 ? 0.34 : 0.24;
+      zone.angle += clamp(angleDifference(Math.atan2(state.player.y - zone.owner.y, state.player.x - zone.owner.x), zone.angle), -trackingSpeed * dt, trackingSpeed * dt);
+      zone.x = zone.owner.x;
+      zone.y = zone.owner.y;
+      if (zone.warning <= 0 && lineHitsPlayer(zone, 34) && state.player.invuln <= 0) hurtPlayer(2);
+    }
+    if (zone.kind === "ferriAwp" && zone.owner?.hp > 0) {
+      zone.x = zone.owner.x;
+      zone.y = zone.owner.y;
+      if ((zone.follow || 0) > 0) {
+        zone.angle = Math.atan2(state.player.y - zone.y, state.player.x - zone.x);
+        zone.follow -= dt;
+      } else {
+        zone.fixed -= dt;
+        if ((zone.fixed || 0) <= 0 && !zone.triggered) {
+          zone.triggered = true;
+          zone.blast = 0.22;
+          state.shake = Math.max(state.shake || 0, 0.16);
+          if (lineHitsPlayer(zone, zone.width || 18) && state.player.invuln <= 0) hurtPlayer(3);
+        }
+      }
+    }
+    if (zone.kind === "jajoFlash" && zone.warning <= 0 && !zone.triggered) {
+      zone.triggered = true;
+      zone.blast = 0.28;
+      state.shake = Math.max(state.shake || 0, 0.1);
+      if (lineHitsPlayer(zone, zone.width)) {
+        state.player.paralysis = Math.max(state.player.paralysis || 0, 0.95);
+        state.player.flashPose = Math.max(state.player.flashPose || 0, 1.05);
+      }
+      fireJajoBurst(zone.owner, zone.projectiles);
+    }
+    if (zone.kind === "scyllaCrush" && zone.warning <= 0 && !zone.triggered) {
+      zone.triggered = true;
+      zone.blast = 0.34;
+      state.shake = Math.max(state.shake || 0, 0.12);
+      if (distance(state.player, zone) < (zone.radius || 90) + state.player.r && state.player.invuln <= 0) {
+        hurtPlayer(zone.damage || 1);
+      }
+    }
+    zone.blast = Math.max(0, (zone.blast || 0) - dt);
+    zone.warning -= dt;
+  }
+  state.discoZones = state.discoZones.filter((zone) => zone.life > 0);
+}
+
+function updateTangleTraps(dt) {
+  if (!state?.player) return;
+  const player = state.player;
+  player.tangled = Math.max(0, (player.tangled || 0) - dt);
+  if (player.tangled > 0) {
+    player.tangleHint = Math.max(0, (player.tangleHint || 0) - dt);
+    return;
+  }
+  for (const trap of state.tangleTraps || []) {
+    trap.life -= dt;
+    if (trap.life > 0 && distance(player, trap) < player.r + trap.r) {
+      player.tangled = trap.duration || 2.7;
+      player.tanglePresses = 0;
+      player.tangleHint = 0.6;
+      state.message = "ENREDADO";
+      state.messageTime = 0.75;
+      break;
+    }
+  }
+  state.tangleTraps = (state.tangleTraps || []).filter((trap) => trap.life > 0);
+}
+
+function addTangleTrap(x, y) {
   if (!state) return;
+  state.tangleTraps ||= [];
+  state.tangleTraps.push({ x, y, r: 46, life: 9, maxLife: 9, duration: 2.7 });
+}
+
+function mashOutOfTangle() {
+  const player = state?.player;
+  if (!player || player.tangled <= 0) return false;
+  player.tanglePresses = (player.tanglePresses || 0) + 1;
+  player.tangleHint = 0.55;
+  state.message = `E ${player.tanglePresses}/10`;
+  state.messageTime = 0.45;
+  if (player.tanglePresses >= 10) {
+    player.tangled = 0;
+    player.tanglePresses = 0;
+    state.message = "LIBRE";
+    state.messageTime = 0.55;
+  }
+  return true;
+}
+
+function angleDifference(target, current) {
+  return Math.atan2(Math.sin(target - current), Math.cos(target - current));
+}
+
+function lineHitsPlayer(zone, width) {
+  const dx = state.player.x - zone.x;
+  const dy = state.player.y - zone.y;
+  const along = Math.cos(zone.angle) * dx + Math.sin(zone.angle) * dy;
+  const across = Math.abs(-Math.sin(zone.angle) * dx + Math.cos(zone.angle) * dy);
+  return along >= 0 && along <= (zone.length || 980) && across <= width / 2 + state.player.r;
+}
+
+function addMinecraftBlock(x, y, life = 5) {
+  if (distance(state.player, { x, y }) < 108) return false;
+  state.minecraftBlocks.push({ x: clamp(x, 150, WIDTH - 150), y: clamp(y, 138, HEIGHT - 122), r: 34, life });
+  return true;
+}
+
+function teleportEnderman(enemy) {
+  const angle = Math.random() * Math.PI * 2;
+  const radius = 142 + Math.random() * 78;
+  enemy.x = clamp(state.player.x + Math.cos(angle) * radius, 132, WIDTH - 132);
+  enemy.y = clamp(state.player.y + Math.sin(angle) * radius, 122, HEIGHT - 106);
+  enemy.teleportCooldown = 1.25;
+  enemy.hit = 0.2;
+}
+
+function addDamageNumber(enemy, damage, critical = false) {
+  if (!state || !options.damageNumbers) return;
   state.damageNumbers.push({
     x: enemy.x + (Math.random() - 0.5) * enemy.r * 0.8,
     y: enemy.y - enemy.r - 12,
@@ -1093,8 +1753,9 @@ function tryReincarnateBoss(enemy) {
   if (!enemy.boss || enemy.hp > 0 || state.room !== 20 || enemy.phase === 2) return false;
   const nextHp = Math.max(55, Math.round(enemy.maxHp * 0.72));
   enemy.phase = 2;
-  enemy.name = "Mónica";
+  enemy.name = "Monica";
   enemy.pattern = "monica";
+  enemy.sprite = "bossMonica";
   enemy.tint = "rgba(255, 124, 160, 0.36)";
   enemy.hp = nextHp;
   enemy.maxHp = nextHp;
@@ -1102,7 +1763,7 @@ function tryReincarnateBoss(enemy) {
   enemy.canShoot = false;
   enemy.shoot = 99;
   enemy.summon = 0.6;
-  state.message = "Mónica entra";
+  state.message = "Monica entra";
   state.messageTime = 1.1;
   return true;
 }
@@ -1122,24 +1783,134 @@ function updateEnemies(dt) {
   for (const enemy of state.enemies) {
     enemy.wobble += dt * 8;
     enemy.shoot -= dt;
+    enemy.specialTimer -= dt;
+    const previousPrompt = enemy.specialPrompt || 0;
+    enemy.specialPrompt = Math.max(0, previousPrompt - dt);
+    enemy.specialReply = Math.max(0, (enemy.specialReply || 0) - dt);
+    enemy.stun = Math.max(0, (enemy.stun || 0) - dt);
+    enemy.sanded = Math.max(0, (enemy.sanded || 0) - dt);
+    enemy.soja = Math.max(0, (enemy.soja || 0) - dt);
+    enemy.spicy = Math.max(0, (enemy.spicy || 0) - dt);
+    enemy.comboCooldown = Math.max(0, (enemy.comboCooldown || 0) - dt);
+    enemy.teleportCooldown = Math.max(0, (enemy.teleportCooldown || 0) - dt);
+    enemy.laserCooldown = Math.max(0, (enemy.laserCooldown || 0) - dt);
+    enemy.xaviAimTimer = Math.max(0, (enemy.xaviAimTimer || 0) - dt);
+    enemy.jumpTimer = Math.max(0, (enemy.jumpTimer || 0) - dt);
+    enemy.xaviDodgeCooldown = Math.max(0, (enemy.xaviDodgeCooldown || 0) - dt);
+    enemy.dodgeCooldown = Math.max(0, (enemy.dodgeCooldown || 0) - dt);
+    enemy.akBurst = Math.max(0, (enemy.akBurst || 0) - dt);
+    enemy.akTick = Math.max(0, (enemy.akTick || 0) - dt);
+    if (enemy.spicy > 0) enemy.hp -= state.player.damage * 0.12 * dt;
+    enemy.chargeDelay = Math.max(0, (enemy.chargeDelay || 0) - dt);
 
     const dx = player.x - enemy.x;
     const dy = player.y - enemy.y;
     const mag = Math.hypot(dx, dy) || 1;
 
-    if (enemy.boss) {
-      updateBossMovement(enemy, dx, dy, mag, dt);
+    if (enemy.pattern === "creeper") {
+      if (mag < 126 && !enemy.creeperFuse) enemy.creeperFuse = 0.82;
+      if (enemy.creeperFuse > 0) {
+        enemy.creeperFuse -= dt;
+        if (enemy.creeperFuse <= 0) {
+          explodeCreeper(enemy);
+          continue;
+        }
+        continue;
+      }
+    }
+
+    if (enemy.pattern === "xavi" && enemy.xaviLaser) {
+      enemy.xaviLaser -= dt;
+      if (enemy.xaviLaser <= 0) {
+        enemy.sprite = "enemyXaviLaser";
+        enemy.xaviAimTimer = 2.1;
+      }
+      continue;
+    }
+
+    if (enemy.pattern === "xavi" && enemy.xaviAwakened && enemy.xaviAimTimer > 0) {
+      enemy.sprite = "enemyXaviLaser";
+      continue;
+    }
+
+    if (enemy.pattern === "xavi" && enemy.xaviAwakened && !enemy.xaviLaser) {
+      triggerXaviLaser(enemy);
+      continue;
+    }
+
+    if (enemy.stun > 0) {
+      continue;
+    } else if (enemy.pattern === "maki") {
+      if (!enemy.rollVx && !enemy.rollVy && enemy.chargeDelay <= 0) {
+        enemy.rollVx = (dx / mag) * 620;
+        enemy.rollVy = (dy / mag) * 620;
+      }
+      enemy.x += enemy.rollVx * dt;
+      enemy.y += enemy.rollVy * dt;
+      if (enemy.x <= 112 || enemy.x >= WIDTH - 112) {
+        stunMaki(enemy);
+      }
+      if (enemy.y <= 104 || enemy.y >= HEIGHT - 86) {
+        stunMaki(enemy);
+      }
+    } else if (enemy.boss) {
+      if (!(enemy.pattern === "ferriCounter" && ((enemy.akBurst || 0) > 0 || hasActiveFerriAim(enemy)))) {
+        updateBossMovement(enemy, dx, dy, mag, dt);
+      }
+    } else if (enemy.pattern === "xavi") {
+      if (enemy.jumpTimer <= 0) {
+        enemy.jumpTimer = 0.28;
+        enemy.jumpFlip = !enemy.jumpFlip;
+      }
+      enemy.x += (Math.random() - 0.5) * enemy.speed * 2.4 * dt;
+      enemy.y += (Math.random() - 0.5) * enemy.speed * 2.4 * dt;
+    } else if (enemy.pattern === "counterChicken") {
+      enemy.chickenTurn = Math.max(0, (enemy.chickenTurn || 0) - dt);
+      if (enemy.chickenTurn <= 0) {
+        enemy.chickenTurn = 0.18 + Math.random() * 0.34;
+        enemy.chickenAngle = Math.atan2(dy, dx) + (Math.random() - 0.5) * 1.9;
+      }
+      enemy.x += Math.cos(enemy.chickenAngle || 0) * enemy.speed * dt;
+      enemy.y += Math.sin(enemy.chickenAngle || 0) * enemy.speed * dt;
+    } else if (enemy.pattern === "smiteMinion") {
+      const lanePull = ((enemy.minionLaneY || enemy.y) - enemy.y) * 0.9;
+      enemy.x += (dx / mag) * enemy.speed * dt;
+      enemy.y += ((dy / mag) * enemy.speed * 0.36 + lanePull) * dt;
+    } else if (enemy.pattern === "smiteToro") {
+      enemy.toroCooldown = Math.max(0, (enemy.toroCooldown || 0) - dt);
+      if ((enemy.toroCharge || 0) > 0) {
+        enemy.toroCharge -= dt;
+        enemy.x += (enemy.toroVx || 0) * dt;
+        enemy.y += (enemy.toroVy || 0) * dt;
+      } else if (enemy.toroCooldown <= 0 && mag < 430) {
+        enemy.toroCooldown = 2.1 + Math.random() * 0.7;
+        enemy.toroCharge = 0.48;
+        enemy.toroVx = (dx / mag) * 360;
+        enemy.toroVy = (dy / mag) * 360;
+      } else {
+        enemy.x += (dx / mag) * enemy.speed * 0.72 * dt;
+        enemy.y += (dy / mag) * enemy.speed * 0.72 * dt;
+      }
     } else {
       enemy.x += (dx / mag) * enemy.speed * dt;
       enemy.y += (dy / mag) * enemy.speed * dt;
-      enemy.x += Math.sin(enemy.wobble) * 12 * dt;
+      enemy.x += Math.sin(enemy.wobble) * (enemy.pattern === "drunk" ? 42 : 12) * dt;
       enemy.y += Math.cos(enemy.wobble * 0.7) * 10 * dt;
     }
     enemy.x = clamp(enemy.x, 112, WIDTH - 112);
     enemy.y = clamp(enemy.y, 104, HEIGHT - 86);
 
-    if (distance(player, enemy) < player.r + enemy.r && player.invuln <= 0) {
+    if (enemy.name === "Ferri" && enemy.specialPrompt <= 0 && enemy.specialReply <= 0 && enemy.specialTimer <= 0) {
+      enemy.specialPrompt = 1.7;
+      enemy.specialTimer = 5.5 + Math.random() * 3;
+    }
+    if (enemy.name === "Ferri" && previousPrompt > 0 && enemy.specialPrompt <= 0) {
+      triggerFerriRush();
+    }
+
+    if (enemy.pattern !== "xavi" && distance(player, enemy) < player.r + enemy.r && player.invuln <= 0) {
       hurtPlayer(enemy.damage || 1);
+      if (enemy.pattern === "maki") stunMaki(enemy);
     }
 
     if ((player.dirtyAura || 0) > 0 && !enemy.boss && distance(player, enemy) < 112) {
@@ -1147,15 +1918,34 @@ function updateEnemies(dt) {
       enemy.hit = Math.max(enemy.hit, 0.05);
     }
 
-    if (enemy.canShoot && enemy.shoot <= 0 && state.room >= 2) {
-      enemy.shoot = enemy.finalBoss ? 0.5 + Math.random() * 0.25 : enemy.boss ? 0.95 + Math.random() * 0.55 : 1.7 + Math.random() * 1.2;
+    if (enemy.pattern === "ninja" && enemy.shoot <= 0) {
+      enemy.shoot = 1.25 + Math.random() * 0.7;
+      shootBossRing(enemy, 8, 245, "projectileShuriken");
+    } else if (enemy.canShoot && enemy.pattern !== "alex" && enemy.shoot <= 0 && state.room >= 2) {
+      if (enemy.pattern === "terror") {
+        shootCounterBurst(enemy, 3, 350, 0.06, 1);
+        enemy.shoot = 2.35 + Math.random() * 0.65;
+        continue;
+      }
+      if (enemy.pattern === "contra") {
+        shootCounterBurst(enemy, 1, 390, 0, 1);
+        enemy.shoot = 1.35 + Math.random() * 0.55;
+        continue;
+      }
+      enemy.shoot = enemy.pattern === "pooter" ? 2 + Math.random() : enemy.pattern === "clotty" ? 2.45 + Math.random() * 0.55 : enemy.finalBoss ? 0.5 + Math.random() * 0.25 : enemy.boss ? 0.95 + Math.random() * 0.55 : 1.7 + Math.random() * 1.2;
       const shotSpeed = enemy.finalBoss ? 360 : enemy.boss ? 300 : 260;
-      const vx = (dx / mag) * shotSpeed;
-      const vy = (dy / mag) * shotSpeed;
-      state.enemyShots.push({ x: enemy.x, y: enemy.y, vx, vy, r: enemy.finalBoss ? 9 : 7, life: 2, damage: enemy.damage || 1 });
+      const angle = Math.atan2(dy, dx);
+      const spreads = enemy.pattern === "clotty" ? [-0.28, 0, 0.28] : [0];
+      const projectileSprite = enemy.pattern === "ninja"
+        ? "projectileShuriken"
+        : enemy.pattern === "scylla"
+          ? "projectileMagicPurple"
+          : null;
+      for (const spread of spreads) {
+        state.enemyShots.push({ x: enemy.x, y: enemy.y, vx: Math.cos(angle + spread) * shotSpeed, vy: Math.sin(angle + spread) * shotSpeed, r: enemy.finalBoss ? 9 : 7, life: 2, damage: enemy.damage || 1, sprite: projectileSprite });
+      }
 
       if (enemy.finalBoss) {
-        const angle = Math.atan2(dy, dx);
         for (const spread of [-0.34, 0.34]) {
           state.enemyShots.push({
             x: enemy.x,
@@ -1174,6 +1964,120 @@ function updateEnemies(dt) {
       updateBossPattern(enemy, dx, dy, mag, dt);
     }
   }
+
+  separateEnemies();
+}
+
+function hasActiveFerriAim(enemy) {
+  return state.discoZones.some((zone) => zone.kind === "ferriAwp" && zone.owner === enemy && zone.life > 0 && !zone.triggered);
+}
+
+function shootCounterBurst(enemy, count = 3, speed = 350, spread = 0.06, damage = 1) {
+  const angle = Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x);
+  for (let index = 0; index < count; index += 1) {
+    const offset = (index - (count - 1) / 2) * spread + (Math.random() - 0.5) * 0.035;
+    state.enemyShots.push({
+      x: enemy.x,
+      y: enemy.y,
+      vx: Math.cos(angle + offset) * speed,
+      vy: Math.sin(angle + offset) * speed,
+      r: 5,
+      life: 2.2,
+      damage,
+      sprite: "projectileRifleBullet",
+    });
+  }
+}
+
+function explodeCreeper(enemy) {
+  const blastRadius = enemy.name === "Creeper cargado" ? 178 : 150;
+  enemy.hp = 0;
+  enemy.exploded = true;
+  if (distance(state.player, enemy) < blastRadius && state.player.invuln <= 0) {
+    hurtPlayer(enemy.name === "Creeper cargado" ? 2 : 1);
+  }
+  for (const other of state.enemies) {
+    if (other !== enemy && !other.boss && distance(other, enemy) < blastRadius) {
+      other.hp -= Math.max(8, enemy.maxHp * 0.42);
+      other.hit = Math.max(other.hit, 0.18);
+    }
+  }
+  state.damageNumbers.push({
+    x: enemy.x,
+    y: enemy.y - enemy.r,
+    vx: 0,
+    value: "BOOM",
+    life: 0.7,
+    maxLife: 0.7,
+    critical: true,
+  });
+}
+
+function stunMaki(enemy) {
+  enemy.rollVx = 0;
+  enemy.rollVy = 0;
+  enemy.stun = 1.35;
+  enemy.chargeDelay = 0.35;
+}
+
+function separateEnemies() {
+  const enemies = state.enemies;
+  for (let i = 0; i < enemies.length; i += 1) {
+    const first = enemies[i];
+    for (let j = i + 1; j < enemies.length; j += 1) {
+      const second = enemies[j];
+      let dx = second.x - first.x;
+      let dy = second.y - first.y;
+      let currentDistance = Math.hypot(dx, dy);
+      const minimumDistance = (first.r + second.r) * 0.62;
+      if (currentDistance >= minimumDistance) continue;
+      if (currentDistance < 0.001) {
+        dx = Math.random() - 0.5 || 0.5;
+        dy = Math.random() - 0.5 || -0.5;
+        currentDistance = Math.hypot(dx, dy);
+      }
+      const overlap = minimumDistance - currentDistance;
+      const nx = dx / currentDistance;
+      const ny = dy / currentDistance;
+      const firstPush = first.boss ? 0.18 : second.boss ? 0.82 : 0.5;
+      const secondPush = second.boss ? 0.18 : first.boss ? 0.82 : 0.5;
+      first.x = clamp(first.x - nx * overlap * firstPush, 112, WIDTH - 112);
+      first.y = clamp(first.y - ny * overlap * firstPush, 104, HEIGHT - 86);
+      second.x = clamp(second.x + nx * overlap * secondPush, 112, WIDTH - 112);
+      second.y = clamp(second.y + ny * overlap * secondPush, 104, HEIGHT - 86);
+      if (first.pattern === "maki" && Math.hypot(first.rollVx || 0, first.rollVy || 0) > 0) stunMaki(first);
+      if (second.pattern === "maki" && Math.hypot(second.rollVx || 0, second.rollVy || 0) > 0) stunMaki(second);
+    }
+  }
+}
+
+function triggerFerriRush() {
+  const player = state.player;
+  for (const ferri of state.enemies.filter((enemy) => enemy.name === "Ferri")) {
+    const dx = player.x - ferri.x;
+    const dy = player.y - ferri.y;
+    const mag = Math.hypot(dx, dy) || 1;
+    ferri.x = clamp(player.x - (dx / mag) * 24, 112, WIDTH - 112);
+    ferri.y = clamp(player.y - (dy / mag) * 24, 104, HEIGHT - 86);
+  }
+  if (player.invuln <= 0) hurtPlayer(1);
+  state.message = "Los Ferris cargan";
+  state.messageTime = 0.9;
+}
+
+function clickFerriPrompt() {
+  const ferri = state?.enemies?.find((enemy) =>
+    enemy.name === "Ferri"
+    && enemy.specialPrompt > 0
+    && distance(mouse, { x: enemy.x, y: enemy.y - enemy.r - 34 }) < 58
+  );
+  if (!ferri) return false;
+  ferri.specialPrompt = 0;
+  ferri.specialReply = 1.5;
+  ferri.specialTimer = 5.5 + Math.random() * 3;
+  state.message = "LO QUE?";
+  state.messageTime = 1.1;
+  return true;
 }
 
 function updateBossMovement(enemy, dx, dy, mag, dt) {
@@ -1187,15 +2091,33 @@ function updateBossMovement(enemy, dx, dy, mag, dt) {
 
 function updateBossPattern(enemy, dx, dy, mag, dt) {
   enemy.summon -= dt;
-  if (enemy.pattern === "nigiri" && enemy.summon <= 0) {
-    enemy.summon = state.room === 20 ? 0.72 + Math.random() * 0.22 : 1.35 + Math.random() * 0.45;
-    summonBossMinions(enemy, "nigiri", state.room === 20 ? 6 : 4);
+  if (enemy.pattern === "alex") {
+    updateAlexPattern(enemy, dt);
+    return;
+  }
+  if (enemy.pattern === "samu") {
+    updateSamuPattern(enemy);
+    return;
+  }
+  if (enemy.pattern === "jajo") {
+    updateJajoPattern(enemy);
+    return;
+  }
+  if (enemy.pattern === "ferriCounter") {
+    updateFerriCounterPattern(enemy, dt);
+    return;
+  }
+  if (enemy.pattern === "scylla") {
+    updateScyllaPattern(enemy);
+    return;
+  }
+  if (enemy.pattern === "nigiri") {
+    updateJapanBossPattern(enemy, "nigiri", dt);
     return;
   }
 
-  if (enemy.pattern === "monica" && enemy.summon <= 0) {
-    enemy.summon = 0.82 + Math.random() * 0.26;
-    summonBossMinions(enemy, "salmon", 5);
+  if (enemy.pattern === "monica") {
+    updateJapanBossPattern(enemy, "salmon", dt);
     return;
   }
 
@@ -1205,30 +2127,422 @@ function updateBossPattern(enemy, dx, dy, mag, dt) {
     return;
   }
 
+  if (enemy.pattern === "daniRastas" && enemy.summon <= 0) {
+    const phaseTwo = enemy.hp < enemy.maxHp * 0.5;
+    enemy.summon = phaseTwo ? 1.15 + Math.random() * 0.35 : 1.65 + Math.random() * 0.45;
+    summonBossMinions(enemy, "rasta", phaseTwo ? 4 : 3);
+    shootBossRing(enemy, phaseTwo ? 8 : 6, phaseTwo ? 235 : 205);
+    enemy.sprite = phaseTwo ? "bossDaniNoRastas" : "bossDaniRastas";
+    return;
+  }
+
   if (enemy.pattern === "spread" && enemy.summon <= 0) {
     enemy.summon = 2.2 + Math.random() * 0.6;
     shootBossRing(enemy, 8, 220);
   }
+
+  if (enemy.pattern === "victor" && enemy.summon <= 0) {
+    enemy.summon = 1.08 + Math.random() * 0.22;
+    enemy.attackStep = ((enemy.attackStep || 0) + 1) % 4;
+    shootVictorPattern(enemy, enemy.attackStep);
+  }
+}
+
+function triggerXaviLaser(enemy) {
+  enemy.xaviLaser = 3.4;
+  enemy.laserCooldown = 0;
+  enemy.sprite = "enemyXaviLaser";
+  state.discoZones.push({
+    kind: "xaviLaser", owner: enemy, x: enemy.x, y: enemy.y,
+    angle: Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x),
+    warning: 1.05, life: 3.4, length: 1100,
+  });
+}
+
+function updateJapanBossPattern(enemy, kind, dt) {
+  enemy.japanRest = Math.max(0, (enemy.japanRest || 0) - dt);
+  if (enemy.japanRest > 0) {
+    enemy.summon = Math.max(enemy.summon, 0.18);
+    return;
+  }
+  if (enemy.summon > 0) return;
+
+  const phaseTwo = enemy.pattern === "monica" || enemy.hp <= enemy.maxHp * 0.5;
+  const waveLimit = kind === "salmon" ? 3 : phaseTwo ? 3 : 2;
+  const count = kind === "salmon" ? 3 : phaseTwo ? 4 : 3;
+  const delay = kind === "salmon" ? 1.08 + Math.random() * 0.22 : 1.18 + Math.random() * 0.28;
+  summonBossMinions(enemy, kind, count);
+  enemy.japanWaveCount = (enemy.japanWaveCount || 0) + 1;
+
+  if (enemy.japanWaveCount >= waveLimit) {
+    enemy.japanWaveCount = 0;
+    enemy.japanRest = kind === "salmon" ? 2.35 : 2.15;
+    enemy.summon = enemy.japanRest;
+    state.message = kind === "salmon" ? "Monica descansa" : "Adri descansa";
+    state.messageTime = 0.75;
+    return;
+  }
+
+  enemy.summon = delay;
+}
+
+function updateFerriCounterPattern(enemy, dt) {
+  const phaseTwo = enemy.hp <= enemy.maxHp * 0.5;
+  enemy.sprite = "bossFerriCounter";
+  if (phaseTwo) {
+    if ((enemy.akBurst || 0) > 0) {
+      const targetAngle = Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x);
+      enemy.akAngle = (enemy.akAngle ?? targetAngle) + clamp(angleDifference(targetAngle, enemy.akAngle ?? targetAngle), -0.9 * dt, 0.9 * dt);
+      if (enemy.akTick <= 0) {
+        enemy.akTick = 0.11;
+        const angle = (enemy.akAngle ?? targetAngle) + (Math.random() - 0.5) * 0.12;
+        state.enemyShots.push({
+          x: enemy.x + Math.cos(angle) * 26,
+          y: enemy.y + Math.sin(angle) * 26,
+          vx: Math.cos(angle) * 440,
+          vy: Math.sin(angle) * 440,
+          r: 5,
+          life: 2.1,
+          damage: 1,
+        });
+      }
+      return;
+    }
+    if (enemy.summon <= 0) {
+      enemy.summon = 2.35 + Math.random() * 0.55;
+      enemy.akBurst = 1.35 + Math.random() * 0.35;
+      enemy.akTick = 0;
+      enemy.akAngle = Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x);
+      if (Math.random() < 0.48) summonCounterChickens(enemy, randomInt(1, 2));
+    }
+    return;
+  }
+
+  if (enemy.summon <= 0) {
+    enemy.summon = 4.0;
+    addFerriAwpLine(enemy);
+  }
+}
+
+function addFerriAwpLine(enemy) {
+  state.discoZones.push({
+    kind: "ferriAwp",
+    owner: enemy,
+    x: enemy.x,
+    y: enemy.y,
+    angle: Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x),
+    follow: 1.5,
+    fixed: 1.0,
+    life: 2.65,
+    length: 1240,
+    width: 18,
+    triggered: false,
+  });
+}
+
+function updateScyllaPattern(enemy) {
+  if (enemy.summon > 0) return;
+  const phaseTwo = enemy.hp <= enemy.maxHp * 0.5;
+  enemy.attackStep = ((enemy.attackStep || 0) + 1) % 5;
+  enemy.summon = phaseTwo ? 1.25 + Math.random() * 0.28 : 1.75 + Math.random() * 0.45;
+  if (enemy.attackStep === 0 || enemy.attackStep === 3) {
+    shootScyllaLobos(enemy, phaseTwo ? 3 : 1);
+    return;
+  }
+  if (enemy.attackStep === 1) {
+    addScyllaCrush(enemy, phaseTwo);
+    return;
+  }
+  if (enemy.attackStep === 2 && phaseTwo) {
+    summonBossMinions(enemy, "smite", 4);
+    return;
+  }
+  shootBossRing(enemy, phaseTwo ? 10 : 7, phaseTwo ? 280 : 245, "projectileMagicPurple");
+}
+
+function shootScyllaLobos(enemy, count) {
+  const angle = Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x);
+  const spreads = count === 1 ? [0] : [-0.24, 0, 0.24];
+  for (const spread of spreads) {
+    const shotAngle = angle + spread;
+    state.enemyShots.push({
+      x: enemy.x + Math.cos(shotAngle) * 24,
+      y: enemy.y + Math.sin(shotAngle) * 24,
+      vx: Math.cos(shotAngle) * 360,
+      vy: Math.sin(shotAngle) * 360,
+      r: 18,
+      life: 3.2,
+      damage: 1,
+      sprite: "scyllaLobo",
+      angle: shotAngle,
+    });
+  }
+}
+
+function addScyllaCrush(enemy, phaseTwo) {
+  const x = clamp(state.player.x + (Math.random() - 0.5) * (phaseTwo ? 90 : 54), 150, WIDTH - 150);
+  const y = clamp(state.player.y + (Math.random() - 0.5) * (phaseTwo ? 70 : 42), 130, HEIGHT - 110);
+  state.discoZones.push({
+    kind: "scyllaCrush",
+    owner: enemy,
+    x,
+    y,
+    warning: phaseTwo ? 0.72 : 0.95,
+    life: phaseTwo ? 1.28 : 1.55,
+    radius: phaseTwo ? 112 : 92,
+    damage: phaseTwo ? 2 : 1,
+    triggered: false,
+  });
+}
+
+function summonCounterChickens(enemy, count) {
+  for (let index = 0; index < count; index += 1) {
+    const angle = Math.random() * Math.PI * 2;
+    state.enemies.push({
+      x: clamp(enemy.x + Math.cos(angle) * 78, 120, WIDTH - 120),
+      y: clamp(enemy.y + Math.sin(angle) * 58, 108, HEIGHT - 92),
+      r: 21,
+      hp: 2,
+      maxHp: 2,
+      speed: 188,
+      wobble: Math.random() * 10,
+      shoot: 99,
+      summon: 99,
+      hit: 0,
+      boss: false,
+      finalBoss: false,
+      damage: 1,
+      name: "Pollo",
+      tint: "rgba(255, 235, 190, 0.28)",
+      canShoot: false,
+      role: "runner",
+      pattern: "counterChicken",
+      sprite: "enemyCounterChicken",
+      specialTimer: 99,
+      specialPrompt: 0,
+      specialReply: 0,
+      stun: 0,
+      chargeDelay: 0,
+      rollVx: 0,
+      rollVy: 0,
+    });
+  }
+}
+
+function updateJajoPattern(enemy) {
+  if (enemy.summon > 0) return;
+  const phaseTwo = enemy.hp <= enemy.maxHp * 0.5;
+  enemy.summon = phaseTwo ? 1.75 : 2.6;
+  addJajoFlash(enemy, phaseTwo);
+  if (phaseTwo && Math.random() < 0.45) {
+    setTimeout(() => {
+      if (enemy.hp > 0) addJajoFlash(enemy, true);
+    }, 520);
+  }
+}
+
+function addJajoFlash(enemy, phaseTwo) {
+  const angle = Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x);
+  state.discoZones.push({
+    kind: "jajoFlash", owner: enemy, x: enemy.x, y: enemy.y, angle,
+    warning: phaseTwo ? 0.82 : 1.15, life: phaseTwo ? 1.18 : 1.48,
+    width: phaseTwo ? 210 : 164, length: 1180, projectiles: phaseTwo ? 5 : 3, triggered: false,
+  });
+}
+
+function fireJajoBurst(enemy, count) {
+  if (!enemy || enemy.hp <= 0) return;
+  const angle = Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x);
+  const spacing = count === 5 ? 0.16 : 0.19;
+  for (let index = 0; index < count; index += 1) {
+    const spread = (index - (count - 1) / 2) * spacing;
+    state.enemyShots.push({
+      x: enemy.x, y: enemy.y,
+      vx: Math.cos(angle + spread) * 390, vy: Math.sin(angle + spread) * 390,
+      r: 8, life: 3, damage: 1,
+    });
+  }
+}
+
+function updateAlexPattern(enemy, dt) {
+  enemy.alexPoseTime = Math.max(0, (enemy.alexPoseTime || 0) - dt);
+  if (enemy.alexJump) {
+    enemy.alexJump.timer -= dt;
+    if (enemy.alexJump.timer <= 0) {
+      enemy.x = enemy.alexJump.x;
+      enemy.y = enemy.alexJump.y;
+      if (distance(state.player, enemy) < 112 && state.player.invuln <= 0) hurtPlayer(2);
+      enemy.alexJump = null;
+      state.shake = 0.32;
+    }
+    return;
+  }
+  if (enemy.summon > 0) return;
+  const phaseTwo = enemy.hp <= enemy.maxHp * 0.5;
+  enemy.attackStep = ((enemy.attackStep || 0) + 1) % 3;
+  enemy.summon = phaseTwo ? 1.15 + Math.random() * 0.45 : 1.75 + Math.random() * 0.65;
+  const angle = Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x);
+  if (enemy.attackStep === 0) {
+    enemy.alexJump = { x: state.player.x, y: state.player.y, timer: phaseTwo ? 0.72 : 0.95 };
+    return;
+  }
+  enemy.alexPose = enemy.attackStep === 1 ? "open" : "pout";
+  enemy.alexPoseTime = 0.58;
+  const spreads = enemy.attackStep === 1 ? [-0.48, -0.24, 0, 0.24, 0.48] : [-0.16, 0, 0.16];
+  const speed = enemy.attackStep === 1 ? 285 : 350;
+  for (const spread of spreads) {
+    state.enemyShots.push({
+      x: enemy.x,
+      y: enemy.y,
+      vx: Math.cos(angle + spread) * speed,
+      vy: Math.sin(angle + spread) * speed,
+      r: enemy.attackStep === 1 ? 9 : 7,
+      life: 3,
+      damage: enemy.damage || 1,
+    });
+  }
+}
+
+function updateSamuPattern(enemy) {
+  if (enemy.summon > 0) return;
+  const hpRatio = enemy.hp / enemy.maxHp;
+  const phase = hpRatio <= 0.25 ? 3 : hpRatio <= 0.6 ? 2 : 1;
+  enemy.attackStep = ((enemy.attackStep || 0) + 1) % 7;
+  enemy.summon = phase === 3 ? 1.12 : phase === 2 ? 1.42 : 1.78;
+  if (enemy.attackStep === 0 || enemy.attackStep === 6) {
+    placeSamuBlocks(phase === 1 ? 3 : 5);
+    return;
+  }
+  if (enemy.attackStep === 1 || enemy.attackStep === 3) {
+    throwSamuPickaxe(enemy, phase);
+    return;
+  }
+  if (enemy.attackStep === 2 || enemy.attackStep === 5) {
+    summonSamuEnderman(enemy, phase === 1 ? 1 : 2);
+    return;
+  }
+  placeSamuWall(phase);
+}
+
+function placeSamuBlocks(count) {
+  let placed = 0;
+  for (let tries = 0; tries < 20 && placed < count; tries += 1) {
+    if (addMinecraftBlock(220 + Math.random() * (WIDTH - 440), 170 + Math.random() * (HEIGHT - 330), 4.6)) placed += 1;
+  }
+}
+
+function placeSamuWall(phase) {
+  const vertical = Math.random() < 0.5;
+  const gap = randomInt(1, phase === 3 ? 3 : 4);
+  for (let i = 0; i < 5; i += 1) {
+    if (i === gap) continue;
+    const x = vertical ? WIDTH / 2 : 310 + i * 164;
+    const y = vertical ? 180 + i * 92 : HEIGHT / 2;
+    addMinecraftBlock(x, y, phase === 3 ? 5 : 4.2);
+  }
+}
+
+function throwSamuPickaxe(enemy, phase) {
+  const angle = Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x);
+  const speed = phase === 3 ? 520 : phase === 2 ? 470 : 420;
+  state.enemyShots.push({
+    x: enemy.x,
+    y: enemy.y,
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed,
+    r: 18,
+    life: 6,
+    damage: 1,
+    sprite: "minecraftPickaxe",
+    minecraftPickaxe: true,
+    boomerang: true,
+    owner: enemy,
+    age: 0,
+    returnAfter: phase === 3 ? 0.72 : phase === 2 ? 0.9 : 1.08,
+  });
+}
+
+function summonSamuEnderman(boss, maxActive) {
+  const active = state.enemies.filter((enemy) => enemy.pattern === "enderman").length + state.minecraftSummons.length;
+  if (active >= maxActive) return;
+  const angle = Math.random() * Math.PI * 2;
+  const x = clamp(boss.x + Math.cos(angle) * 148, 132, WIDTH - 132);
+  const y = clamp(boss.y + Math.sin(angle) * 118, 122, HEIGHT - 106);
+  state.minecraftSummons.push({ x, y, life: 1, maxLife: 1 });
+}
+
+function spawnSamuEnderman(x, y) {
+  state.enemies.push({
+    x, y, r: 28, hp: 7, maxHp: 7, speed: 112, wobble: Math.random() * 10, shoot: 99, summon: 99,
+    hit: 0, boss: false, finalBoss: false, damage: 1, name: "Enderman", tint: "rgba(112, 53, 158, 0.38)",
+    canShoot: false, role: "tank", pattern: "enderman", sprite: "enemyEnderman", specialTimer: 99,
+    specialPrompt: 0, specialReply: 0, stun: 0, chargeDelay: 0, rollVx: 0, rollVy: 0, teleportCooldown: 0.8,
+  });
+}
+
+function shootVictorPattern(enemy, pattern) {
+  if (pattern === 0) {
+    shootVictorCrosses(enemy, 4, 430, 0, 1.75);
+    return;
+  }
+  if (pattern === 1) {
+    shootVictorCrosses(enemy, 4, 455, Math.PI / 4, 1.82);
+    return;
+  }
+  if (pattern === 2) {
+    const angleToPlayer = Math.atan2(state.player.y - enemy.y, state.player.x - enemy.x);
+    for (const spread of [-0.34, -0.16, 0, 0.16, 0.34]) {
+      addVictorCross(enemy, angleToPlayer + spread, 470, 1.9);
+    }
+    return;
+  }
+  shootVictorCrosses(enemy, 8, 445, enemy.wobble * 0.16, 1.85);
+}
+
+function shootVictorCrosses(enemy, count, speed, offset = 0, returnAfter = 1.82) {
+  for (let i = 0; i < count; i += 1) {
+    const angle = (Math.PI * 2 * i) / count + offset;
+    addVictorCross(enemy, angle, speed, returnAfter);
+  }
+}
+
+function addVictorCross(enemy, angle, speed, returnAfter) {
+  state.enemyShots.push({
+    x: enemy.x,
+    y: enemy.y,
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed,
+    r: 18,
+    life: 6.2,
+    damage: Math.max(1, enemy.damage || 1),
+    sprite: "victorCross",
+    boomerang: true,
+    owner: enemy,
+    age: 0,
+    returnAfter,
+  });
 }
 
 function summonBossMinions(boss, kind, count) {
   const livingMinions = state.enemies.filter((enemy) => !enemy.boss).length;
-  const minionCap = state.room === 20 ? 44 : 24;
-  if (livingMinions > minionCap) return;
+  const minionCap = kind === "salmon" ? 18 : kind === "nigiri" ? 16 : kind === "smite" ? 20 : kind === "rasta" ? 18 : state.room === 20 ? 44 : 24;
+  if (livingMinions >= minionCap) return;
 
   for (let i = 0; i < count; i += 1) {
     const angle = (Math.PI * 2 * i) / count + Math.random() * 0.7;
     const radius = 74 + Math.random() * 34;
     const isFinal = kind === "final";
     const isSalmon = kind === "salmon";
-    const hp = isFinal ? 7 + Math.floor(state.room / 18) : isSalmon ? 3 : 2;
+    const isRasta = kind === "rasta";
+    const isSmite = kind === "smite";
+    const hp = isSmite ? 3 : isRasta ? 4 + Math.floor(state.room / 22) : isFinal ? 7 + Math.floor(state.room / 18) : isSalmon ? 2 : 2;
     state.enemies.push({
       x: clamp(boss.x + Math.cos(angle) * radius, 112, WIDTH - 112),
       y: clamp(boss.y + Math.sin(angle) * radius, 104, HEIGHT - 86),
-      r: isFinal ? 20 : isSalmon ? 20 : 18,
+      r: isSmite ? 22 : isRasta ? 24 : isFinal ? 20 : isSalmon ? 20 : 18,
       hp,
       maxHp: hp,
-      speed: isFinal ? 86 : isSalmon ? 132 : 124,
+      speed: isSmite ? 122 : isRasta ? 138 : isFinal ? 86 : isSalmon ? 116 : 108,
       wobble: Math.random() * 10,
       shoot: isFinal ? 1.2 : 99,
       summon: 99,
@@ -1236,17 +2550,17 @@ function summonBossMinions(boss, kind, count) {
       boss: false,
       finalBoss: false,
       damage: isFinal ? boss.damage : 1,
-      name: isFinal ? "Eco" : isSalmon ? "Salmón flameado" : "Nigiri de atún",
-      tint: isFinal ? "rgba(255, 225, 95, 0.28)" : isSalmon ? "rgba(255, 118, 72, 0.34)" : "rgba(255, 245, 210, 0.32)",
+      name: isSmite ? "Minion" : isRasta ? "Rasta de Dani" : isFinal ? "Eco" : isSalmon ? "Salmon flameado" : "Nigiri de atun",
+      tint: isSmite ? "rgba(92, 113, 222, 0.26)" : isRasta ? "rgba(84, 70, 46, 0.38)" : isFinal ? "rgba(255, 225, 95, 0.28)" : isSalmon ? "rgba(255, 118, 72, 0.34)" : "rgba(255, 245, 210, 0.32)",
       canShoot: isFinal,
       role: "swarm",
-      pattern: "",
-      sprite: isFinal ? null : isSalmon ? "enemyNigiriSalmonFlameado" : "enemyNigiriAtun",
+      pattern: isSmite ? "smiteMinion" : isRasta ? "rasta" : "",
+      sprite: isSmite ? "enemySmiteMinion" : isRasta ? "enemyRasta" : isFinal ? null : isSalmon ? "enemyNigiriSalmonFlameado" : "enemyNigiriAtun",
     });
   }
 }
 
-function shootBossRing(enemy, count, speed) {
+function shootBossRing(enemy, count, speed, sprite = null) {
   for (let i = 0; i < count; i += 1) {
     const angle = (Math.PI * 2 * i) / count + enemy.wobble * 0.08;
     state.enemyShots.push({
@@ -1257,6 +2571,7 @@ function shootBossRing(enemy, count, speed) {
       r: 7,
       life: 2.6,
       damage: enemy.damage || 1,
+      sprite,
     });
   }
 }
@@ -1288,17 +2603,21 @@ function collectPickup(pickup) {
   state.messageTime = 1.0;
 
   if (pickup.type === "coin") {
-    state.coins += 1 + (player.coinBonus || 0);
+    const amount = 1 + (player.coinBonus || 0);
+    state.coins += amount;
+    save.totalCoins = (save.totalCoins || 0) + amount;
     state.message = "+ moneda";
   }
 
   if (pickup.type === "key") {
     state.keys += 1;
+    save.totalKeys = (save.totalKeys || 0) + 1;
     state.message = "+ llave";
   }
 
   if (pickup.type === "bomb") {
     state.bombs += 1;
+    save.totalBombs = (save.totalBombs || 0) + 1;
     state.message = "+ bomba";
   }
 
@@ -1310,6 +2629,8 @@ function collectPickup(pickup) {
   if (pickup.type === "object") {
     const item = normalizeItem(pickup.item);
     player.items.push(item);
+    save.relicUseCounts ||= {};
+    save.relicUseCounts[item.id] = (save.relicUseCounts[item.id] || 0) + 1;
     discoverRelic(item);
     applyObject(item);
     state.message = item.name || "+ objeto";
@@ -1325,7 +2646,7 @@ function applyObject(item) {
   }
 
   const effect = String(item?.effect || "").toLowerCase();
-  if (effect.includes("daño") || effect.includes("dano")) {
+  if (effect.includes("dano")) {
     state.player.damage += effect.includes("%") ? 0.35 : 1;
   }
   if (effect.includes("velocidad")) {
@@ -1334,17 +2655,17 @@ function applyObject(item) {
   if (effect.includes("cadencia")) {
     state.player.fireDelay = Math.max(0.12, state.player.fireDelay * 0.9);
   }
-  if (effect.includes("vida máxima") || effect.includes("vida maxima")) {
+  if (effect.includes("vida maxima")) {
     state.player.maxHp += 1;
     state.player.hp += 1;
   }
-  if (effect.includes("daño recibido") || effect.includes("dano recibido") || effect.includes("defensa")) {
+  if (effect.includes("dano recibido") || effect.includes("defensa")) {
     state.player.damageReduction = Math.min(0.45, (state.player.damageReduction || 0) + 0.1);
   }
-  if (effect.includes("crítico") || effect.includes("critico")) {
+  if (effect.includes("critico")) {
     state.player.critChance = Math.min(0.5, (state.player.critChance || 0) + 0.08);
   }
-  if (effect.includes("daño de bombas") || effect.includes("dano de bombas")) {
+  if (effect.includes("dano de bombas")) {
     state.player.bombDamage = Math.min(1, (state.player.bombDamage || 0) + 0.1);
   }
   if (effect.includes("moneda")) {
@@ -1362,100 +2683,52 @@ function applyRelicEffect(item) {
   const player = state.player;
   switch (item?.id) {
     case "papel-higienico":
-      addMaxHp(1);
       return true;
     case "silla-gamer":
-      addMaxHp(2);
-      player.damageReduction = Math.min(0.55, (player.damageReduction || 0) + 0.15);
-      player.speed *= 0.94;
+      addMaxHp(3);
       return true;
     case "calcetin-sucio":
-      player.critChance = Math.min(0.65, (player.critChance || 0) + 0.08);
-      player.dirtyAura = (player.dirtyAura || 0) + 1;
+      player.speed *= 1.2;
+      player.dirtyAura = 0.58;
       return true;
     case "hormiga":
-      player.speed *= 1.12;
-      player.fireDelay = Math.max(0.1, player.fireDelay * 0.9);
-      if (hasRelic("hormiguero")) player.damage += 2;
       return true;
     case "hormiguero":
-      if (hasRelic("hormiga")) player.damage += 3;
-      else {
-        player.damage += 1;
-        addMaxHp(1);
-      }
       return true;
     case "tecla":
-      player.fireDelay = Math.max(0.1, player.fireDelay * 0.88);
       return true;
     case "llave-porsche":
-      player.speed *= 1.22;
-      player.fireDelay = Math.max(0.1, player.fireDelay * 0.88);
-      state.keys += 1;
+      player.speed *= 1.16;
       return true;
     case "cable-mordido":
-      player.damage += 1;
-      player.shotLifeBonus = (player.shotLifeBonus || 0) - 0.45;
       return true;
     case "lijadora":
-      player.damage += 1.5;
-      player.tearSizeBonus = (player.tearSizeBonus || 0) + 2;
-      player.fireDelay = Math.min(0.45, player.fireDelay * 1.08);
       return true;
     case "mando":
-      player.fireDelay = Math.max(0.1, player.fireDelay * 0.9);
-      player.critChance = Math.min(0.65, (player.critChance || 0) + 0.08);
       return true;
     case "colacao":
-      addMaxHp(1);
-      player.hp = Math.min(player.maxHp, player.hp + 2);
-      player.coinBonus = Math.min(4, (player.coinBonus || 0) + 1);
       return true;
     case "setup":
-      player.damage += 1;
-      player.fireDelay = Math.max(0.1, player.fireDelay * 0.88);
-      player.critChance = Math.min(0.65, (player.critChance || 0) + 0.08);
+      player.setupBoost = true;
+      setTimeout(() => openSetupUpgradeMenu(), 0);
       return true;
     case "nigiri-salmon":
-      addMaxHp(1);
-      player.hp = Math.min(player.maxHp, player.hp + 2);
-      player.speed *= 1.08;
       return true;
     case "crep-chocolate":
-      addMaxHp(1);
-      player.hurtDamageBonus = (player.hurtDamageBonus || 0) + 0.12;
       return true;
     case "palillos-chinos":
-      player.fireDelay = Math.max(0.1, player.fireDelay * 0.84);
-      player.critChance = Math.min(0.65, (player.critChance || 0) + 0.12);
       return true;
     case "salsa-soja":
-      player.fireDelay = Math.max(0.1, player.fireDelay * 0.9);
-      state.keys += 1;
       return true;
     case "salsa-good-soup":
-      player.damage += 2;
-      player.maxHp = Math.max(1, player.maxHp - 1);
-      player.hp = Math.min(player.hp, player.maxHp);
       return true;
     case "rasta-dani":
-      player.damageReduction = Math.min(0.55, (player.damageReduction || 0) + 0.15);
-      player.critChance = Math.min(0.65, (player.critChance || 0) + 0.15);
       return true;
     case "pegatina-perros":
-      player.damage += Math.max(1, Math.floor(player.items.length / 5));
       return true;
     case "talon":
-      player.damage += 2;
-      player.talonEvery = 7;
       return true;
     case "perros-code":
-      player.damage += 1;
-      addMaxHp(1);
-      player.speed *= 1.1;
-      player.fireDelay = Math.max(0.1, player.fireDelay * 0.9);
-      player.critChance = Math.min(0.65, (player.critChance || 0) + 0.1);
-      player.keyLuck = Math.min(0.5, (player.keyLuck || 0) + 0.1);
       return true;
     default:
       return false;
@@ -1487,6 +2760,8 @@ function hurtPlayer(amount = 1) {
   }
 
   player.hp -= Math.max(1, Math.floor(amount));
+  player.roomDamaged = true;
+  player.paperCharge = 0;
   player.invuln = 1.05;
   player.hitFlash = 0.45;
   state.shake = 0.18;
@@ -1526,10 +2801,10 @@ function renderPauseDetails() {
   const rows = [
     ["Sala", `${state.room}/100`],
     ["Vida", `${Math.max(0, player.hp)}/${player.maxHp}`],
-    ["Daño", player.damage.toFixed(1)],
+    ["Dano", player.damage.toFixed(1)],
     ["Cadencia", `${(1 / player.fireDelay).toFixed(1)}/s`],
     ["Velocidad", Math.round(player.speed)],
-    ["Crítico", `${Math.round((player.critChance || 0) * 100)}%`],
+    ["Critico", `${Math.round((player.critChance || 0) * 100)}%`],
     ["Defensa", `${Math.round((player.damageReduction || 0) * 100)}%`],
     ["Moneda extra", `+${player.coinBonus || 0}`],
     ["Suerte llave", `${Math.round((player.keyLuck || 0) * 100)}%`],
@@ -1547,7 +2822,7 @@ function renderPauseDetails() {
   if (!player.items.length) {
     const empty = document.createElement("div");
     empty.className = "empty-relics";
-    empty.textContent = "Todavía no has pillado reliquias.";
+    empty.textContent = "Todavia no has pillado reliquias.";
     pauseRelics.appendChild(empty);
     return;
   }
@@ -1558,11 +2833,12 @@ function renderPauseDetails() {
     const cell = document.createElement("div");
     cell.className = `relic-cell relic-shape-${visual.shape}`;
     cell.tabIndex = 0;
-    cell.dataset.tooltip = relicDescription(relic);
     cell.style.setProperty("--relic-color", visual.color);
     cell.style.setProperty("--rarity-color", rarityColor(relic.rarity));
     const imageSrc = relic.image ? ASSETS[relic.image] : "";
-    cell.innerHTML = `<div class="relic-icon">${imageSrc ? `<img class="relic-img" src="${imageSrc}" alt="">` : `<span>${visual.mark}</span>`}</div>`;
+    cell.innerHTML = imageSrc
+      ? `${relicTooltip(relic)}<img class="relic-img" src="${imageSrc}" alt="">`
+      : `${relicTooltip(relic)}<span class="relic-fallback">${visual.mark}</span>`;
     pauseRelics.appendChild(cell);
   }
 }
@@ -1576,39 +2852,69 @@ function discoverRelic(item) {
 }
 
 function renderCollection() {
-  if (!collectionRelics || !collectionProgress) return;
+  if (!collectionRelics || !collectionProgress || !recordsGrid) return;
   const discovered = new Set(save.discoveredRelics || []);
   const unlockedCount = RELIC_CATALOG.filter((item) => discovered.has(item.id)).length;
-  collectionProgress.textContent = `${unlockedCount}/${RELIC_CATALOG.length} reliquias descubiertas`;
+  const showingRelics = statsViewMode === "relics";
+  if (statsTitle) statsTitle.textContent = showingRelics ? "Relics" : "Stats";
+  collectionProgress.hidden = true;
+  collectionProgress.textContent = "";
+  const relicUses = Object.entries(save.relicUseCounts || {}).sort((a, b) => b[1] - a[1]);
+  const favoriteRelic = relicUses.length
+    ? `${RELIC_CATALOG.find((item) => item.id === relicUses[0][0])?.name || relicUses[0][0]} x${relicUses[0][1]}`
+    : "None";
+  const records = [
+    ["Mejor sala", `${save.bestRoom || 0}/100`],
+    ["Total runs", save.runsPlayed || 0],
+    ["Total deaths", save.deaths || 0],
+    ["Victorias", save.wins || 0],
+    ["Bosses derrotados", save.bossesDefeated || 0],
+    ["Enemigos eliminados", save.enemiesKilled || 0],
+    ["Monedas recogidas", save.totalCoins || 0],
+    ["Llaves usadas", save.keysUsed || 0],
+    ["Bombas usadas", save.bombsUsed || 0],
+    ["Cofres abiertos", save.chestsOpened || 0],
+    ["Reliquia mas usada", favoriteRelic],
+  ];
+  recordsGrid.innerHTML = records.map(([label, value]) => `<div class="record-row"><span>${label}</span><strong>${value}</strong></div>`).join("");
+  recordsGrid.hidden = showingRelics;
+  collectionRelics.hidden = !showingRelics;
   collectionRelics.innerHTML = "";
+  if (!showingRelics) return;
 
-  for (const item of RELIC_CATALOG) {
+  const rarityOrder = ["Poco comun", "Rara", "Epica", "Legendaria", "Mitica"];
+  const sortedRelics = [...RELIC_CATALOG].sort((a, b) => rarityOrder.indexOf(a.rarity) - rarityOrder.indexOf(b.rarity));
+  let previousRarity = "";
+  for (const item of sortedRelics) {
     const relic = normalizeItem(item);
+    if (relic.rarity !== previousRarity) {
+      const title = document.createElement("h2");
+      title.className = "collection-rarity-title";
+      title.textContent = relic.rarity;
+      collectionRelics.appendChild(title);
+      previousRarity = relic.rarity;
+    }
     const unlocked = discovered.has(relic.id);
     const visual = relicVisual(relic);
     const cell = document.createElement("div");
     cell.className = `collection-cell relic-shape-${visual.shape} ${unlocked ? "unlocked" : "locked"}`;
     cell.style.setProperty("--relic-color", unlocked ? visual.color : "#020202");
     cell.style.setProperty("--rarity-color", rarityColor(relic.rarity));
-    cell.dataset.tooltip = unlocked ? relicDescription(relic) : relic.name;
+    cell.tabIndex = unlocked ? 0 : -1;
     const imageSrc = relic.image ? ASSETS[relic.image] : "";
     const icon = imageSrc
       ? `<img class="collection-img" src="${imageSrc}" alt="">`
       : `<span>${unlocked ? visual.mark : ""}</span>`;
-    cell.innerHTML = `
-      <div class="relic-icon">${icon}</div>
-      <span class="collection-name">${relic.name}</span>
-      <span class="collection-rarity">${unlocked ? relic.rarity : "???"}</span>
-    `;
+    cell.innerHTML = `${unlocked ? relicTooltip(relic) : ""}${icon}`;
     collectionRelics.appendChild(cell);
   }
 }
 
 function rarityColor(rarity) {
   const text = String(rarity || "").toLowerCase();
-  if (text.includes("mítica") || text.includes("mitica")) return "#ff4fd8";
+  if (text.includes("mitica")) return "#ff4fd8";
   if (text.includes("legend")) return "#ffd84a";
-  if (text.includes("épica") || text.includes("epica")) return "#b56dff";
+  if (text.includes("epica")) return "#b56dff";
   if (text.includes("rara")) return "#58a6ff";
   if (text.includes("poco")) return "#44e070";
   return "#f0dfbf";
@@ -1624,6 +2930,7 @@ function renderDebugPanel() {
     renderDebugRoomOptions();
     if (debugGodMode) debugGodMode.checked = debugState.godMode;
     if (debugOneShot) debugOneShot.checked = debugState.oneShot;
+    if (debugUnlimitedMoney) debugUnlimitedMoney.checked = debugState.unlimitedMoney;
   }
 }
 
@@ -1633,7 +2940,7 @@ function renderDebugRoomOptions() {
   const previousSelection = Number(debugRoomSelect.value || debugState.selectedRoom || currentRoom);
   const selectedRoom = clamp(
     Number.isFinite(previousSelection) ? previousSelection : currentRoom,
-    currentRoom,
+    1,
     100,
   );
   debugRoomSelect.innerHTML = "";
@@ -1642,7 +2949,6 @@ function renderDebugRoomOptions() {
     const option = document.createElement("option");
     option.value = room;
     option.textContent = `Sala ${room}`;
-    option.disabled = room < currentRoom;
     if (room === selectedRoom) option.selected = true;
     debugRoomSelect.appendChild(option);
   }
@@ -1660,7 +2966,7 @@ function unlockDebugTools() {
 function jumpToDebugRoom() {
   if (!state || !debugRoomSelect) return;
   const targetRoom = Number(debugRoomSelect.value);
-  if (!Number.isFinite(targetRoom) || targetRoom < state.room || targetRoom > 100) return;
+  if (!Number.isFinite(targetRoom) || targetRoom < 1 || targetRoom > 100) return;
   if (targetRoom === state.room) {
     debugState.panelOpen = false;
     renderDebugPanel();
@@ -1668,6 +2974,7 @@ function jumpToDebugRoom() {
     return;
   }
   state.room = targetRoom;
+  state.debugLab = false;
   debugState.selectedRoom = targetRoom;
   state.player.invuln = 1.15;
   state.player.itemPose = 0;
@@ -1678,171 +2985,80 @@ function jumpToDebugRoom() {
   setMode("game");
 }
 
+function enterDebugLab() {
+  if (!state) return;
+  state.debugLab = true;
+  debugState.panelOpen = false;
+  spawnRoom();
+  setMode("game");
+}
+
+function spawnDebugEnemy() {
+  if (!state?.debugLab) return;
+  const hp = 18 + state.enemies.length * 3;
+  state.enemies.push({
+    x: WIDTH / 2 + (Math.random() - 0.5) * 420,
+    y: HEIGHT / 2 + (Math.random() - 0.5) * 180,
+    r: 30,
+    hp,
+    maxHp: hp,
+    speed: 78,
+    wobble: Math.random() * 10,
+    shoot: 1.4,
+    summon: 99,
+    hit: 0,
+    boss: false,
+    finalBoss: false,
+    tint: "rgba(205, 72, 64, 0.35)",
+    canShoot: true,
+    specialTimer: 99,
+    specialPrompt: 0,
+    specialReply: 0,
+    stun: 0,
+    chargeDelay: 0,
+    damage: 1,
+  });
+}
+
 function relicDescription(item) {
   const parts = [
     item.name,
-    `${item.rarity || "Reliquia"} · ${item.type || "Objeto"}`,
+    `${item.rarity || "Reliquia"} - ${item.type || "Objeto"}`,
     item.effect || "",
     item.penalty ? String(item.penalty) : "",
   ].filter(Boolean);
   return parts.join(" | ");
 }
-function getDoorExit(player) {
-  const profile = state.roomProfile;
-  if (!profile?.doorsOpen || player.itemPose > 0) return null;
-  const sides = profile.doorSides;
 
-  if (sides.includes("top") && player.y <= 132 && Math.abs(player.x - WIDTH / 2) < 70) return "top";
-  if (sides.includes("bottom") && player.y >= HEIGHT - 116 && Math.abs(player.x - WIDTH / 2) < 70) return "bottom";
-  if (sides.includes("left") && player.x <= 160 && Math.abs(player.y - HEIGHT / 2) < 70) return "left";
-  if (sides.includes("right") && player.x >= WIDTH - 160 && Math.abs(player.y - HEIGHT / 2) < 70) return "right";
+function relicTooltip(item) {
+  return `<span class="relic-tooltip"><strong>${item.name}</strong><span>${item.effect || "Sin efecto"}</span></span>`;
+}
 
-  if (profile.bombDoorSide && !profile.bombDoorUsed && isAtDoor(player, profile.bombDoorSide)) {
-    return `bomb:${profile.bombDoorSide}`;
+
+// Loading helpers stay with core gameplay because they use ASSETS and balanceData.
+function loadImages() {
+  const entries = Object.entries(ASSETS);
+  return Promise.all(entries.map(([key, src]) => new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      images[key] = img;
+      resolve();
+    };
+    img.onerror = () => {
+      images[key] = img;
+      resolve();
+    };
+    img.src = src;
+  })));
+}
+
+async function loadBalance() {
+  try {
+    const response = await fetch("assets/data/balance.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`Balance ${response.status}`);
+    balanceData = await response.json();
+  } catch {
+    balanceData = null;
   }
-
-  return null;
 }
 
-function isAtDoor(player, side) {
-  if (side === "top") return player.y <= 132 && Math.abs(player.x - WIDTH / 2) < 70;
-  if (side === "bottom") return player.y >= HEIGHT - 116 && Math.abs(player.x - WIDTH / 2) < 70;
-  if (side === "left") return player.x <= 160 && Math.abs(player.y - HEIGHT / 2) < 70;
-  if (side === "right") return player.x >= WIDTH - 160 && Math.abs(player.y - HEIGHT / 2) < 70;
-  return false;
-}
-
-function openBombDoor(side) {
-  if (state.bombs <= 0) {
-    state.message = "Necesitas bomba";
-    state.messageTime = 0.9;
-    bouncePlayerFromDoor(side);
-    return;
-  }
-
-  state.bombs -= 1;
-  state.roomProfile.bombDoorUsed = true;
-  state.message = "Puerta bomba";
-  state.messageTime = 1.0;
-  spawnBombDoorReward(WIDTH / 2, HEIGHT / 2 - 34);
-  bouncePlayerFromDoor(side);
-  saveCurrentRun();
-}
-
-function bouncePlayerFromDoor(side) {
-  const player = state.player;
-  if (side === "top") player.y = 166;
-  if (side === "bottom") player.y = HEIGHT - 158;
-  if (side === "left") player.x = 178;
-  if (side === "right") player.x = WIDTH - 178;
-}
-
-function placePlayerAtEntrance(side) {
-  const player = state.player;
-  if (side === "top") {
-    player.x = WIDTH / 2;
-    player.y = 164;
-    player.facing = "front";
-    player.aimX = 0;
-    player.aimY = 1;
-    return;
-  }
-  if (side === "bottom") {
-    player.x = WIDTH / 2;
-    player.y = HEIGHT - 156;
-    player.facing = "front";
-    player.aimX = 0;
-    player.aimY = -1;
-    return;
-  }
-  if (side === "left") {
-    player.x = 178;
-    player.y = HEIGHT / 2;
-    player.facing = "right";
-    player.aimX = 1;
-    player.aimY = 0;
-    return;
-  }
-  if (side === "right") {
-    player.x = WIDTH - 178;
-    player.y = HEIGHT / 2;
-    player.facing = "left";
-    player.aimX = -1;
-    player.aimY = 0;
-    return;
-  }
-  player.x = WIDTH / 2;
-  player.y = HEIGHT / 2;
-}
-
-function oppositeSide(side) {
-  if (side === "top") return "bottom";
-  if (side === "bottom") return "top";
-  if (side === "left") return "right";
-  if (side === "right") return "left";
-  return null;
-}
-
-function distance(a, b) {
-  return Math.hypot(a.x - b.x, a.y - b.y);
-}
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
-}
-
-function inBounds(x, y, pad) {
-  return x > -pad && y > -pad && x < WIDTH + pad && y < HEIGHT + pad;
-}
-
-function resizeMousePosition(event) {
-  const rect = canvas.getBoundingClientRect();
-  mouse.x = ((event.clientX - rect.left) / rect.width) * WIDTH;
-  mouse.y = ((event.clientY - rect.top) / rect.height) * HEIGHT;
-  updateMenuCursor();
-}
-
-function isOverMenuStart() {
-  return mouse.x >= MENU_START_BOUNDS.x
-    && mouse.x <= MENU_START_BOUNDS.x + MENU_START_BOUNDS.w
-    && mouse.y >= MENU_START_BOUNDS.y
-    && mouse.y <= MENU_START_BOUNDS.y + MENU_START_BOUNDS.h;
-}
-
-function isPointInsideBounds(bounds, point = mouse) {
-  return point.x >= bounds.x
-    && point.x <= bounds.x + bounds.w
-    && point.y >= bounds.y
-    && point.y <= bounds.y + bounds.h;
-}
-
-function getMainMenuItemAtPointer() {
-  const point = getMainMenuPointer();
-  return MAIN_MENU_ITEMS.find((item) => isPointInsideBounds(item.bounds, point)) || null;
-}
-
-function updateMenuCursor() {
-  menuPressHover = mode === "menu" && isOverMenuStart();
-  const hoveredItem = mode === "mainmenu" ? getMainMenuItemAtPointer() : null;
-  mainMenuHover = hoveredItem?.id || null;
-  const canClickMainItem = Boolean(hoveredItem && hoveredItem.enabled());
-  setCustomCursor(menuPressHover || canClickMainItem);
-}
-
-function getMainMenuPointer() {
-  if (mode !== "mainmenu") return mouse;
-  const centerX = WIDTH / 2;
-  const centerY = 372;
-  const angle = 0.055;
-  const dx = mouse.x - centerX;
-  const dy = mouse.y - centerY;
-  return {
-    x: centerX + dx * Math.cos(angle) - dy * Math.sin(angle),
-    y: centerY + dx * Math.sin(angle) + dy * Math.cos(angle),
-  };
-}
-
-function setCustomCursor(isAction) {
-  document.body.classList.toggle("cursor-action", isAction);
-  canvas.style.cursor = "";
-}

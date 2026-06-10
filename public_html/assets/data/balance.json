@@ -19,13 +19,13 @@
       "room": 2,
       "transition": "1 → 2",
       "weights": {
-        "fightBasic": 77.2,
+        "fightBasic": 74.2,
         "fightMixed": 17.8,
-        "fightElite": 4.0,
-        "chestRoom": 1.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightElite": 4,
+        "chestRoom": 4,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Inicio: casi todo pelea, cofre testimonial."
     },
@@ -33,13 +33,13 @@
       "room": 3,
       "transition": "2 → 3",
       "weights": {
-        "fightBasic": 77.2,
+        "fightBasic": 74.2,
         "fightMixed": 17.8,
-        "fightElite": 4.0,
-        "chestRoom": 1.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightElite": 4,
+        "chestRoom": 4,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Inicio: casi todo pelea, cofre testimonial."
     },
@@ -47,13 +47,13 @@
       "room": 4,
       "transition": "3 → 4",
       "weights": {
-        "fightBasic": 77.2,
+        "fightBasic": 74.2,
         "fightMixed": 17.8,
-        "fightElite": 4.0,
-        "chestRoom": 1.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightElite": 4,
+        "chestRoom": 4,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Inicio: casi todo pelea, cofre testimonial."
     },
@@ -61,13 +61,13 @@
       "room": 5,
       "transition": "4 → 5",
       "weights": {
-        "fightBasic": 74.5,
+        "fightBasic": 72.2,
         "fightMixed": 19.6,
         "fightElite": 3.9,
-        "chestRoom": 2.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "chestRoom": 4.3,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -75,13 +75,13 @@
       "room": 6,
       "transition": "5 → 6",
       "weights": {
-        "fightBasic": 73.5,
+        "fightBasic": 71.2,
         "fightMixed": 19.6,
         "fightElite": 4.9,
-        "chestRoom": 2.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "chestRoom": 4.3,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -89,13 +89,13 @@
       "room": 7,
       "transition": "6 → 7",
       "weights": {
-        "fightBasic": 73.5,
+        "fightBasic": 71.2,
         "fightMixed": 19.6,
         "fightElite": 4.9,
-        "chestRoom": 2.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "chestRoom": 4.3,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -103,13 +103,13 @@
       "room": 8,
       "transition": "7 → 8",
       "weights": {
-        "fightBasic": 73.5,
+        "fightBasic": 71.2,
         "fightMixed": 19.6,
         "fightElite": 4.9,
-        "chestRoom": 2.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "chestRoom": 4.3,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -117,13 +117,13 @@
       "room": 9,
       "transition": "8 → 9",
       "weights": {
-        "fightBasic": 80.0,
-        "fightMixed": 15.0,
-        "fightElite": 5.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 80,
+        "fightMixed": 15,
+        "fightElite": 5,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -131,13 +131,13 @@
       "room": 10,
       "transition": "9 → 10",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     },
@@ -145,13 +145,13 @@
       "room": 11,
       "transition": "10 → 11",
       "weights": {
-        "fightBasic": 70.5,
-        "fightMixed": 20.0,
+        "fightBasic": 68,
+        "fightMixed": 20,
         "fightElite": 7.3,
-        "chestRoom": 2.2,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "chestRoom": 4.7,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -159,13 +159,13 @@
       "room": 12,
       "transition": "11 → 12",
       "weights": {
-        "fightBasic": 69.0,
+        "fightBasic": 66.5,
         "fightMixed": 19.7,
         "fightElite": 7.2,
-        "chestRoom": 2.2,
-        "madShop": 0.0,
+        "chestRoom": 4.7,
+        "madShop": 0,
         "riskEvent": 1.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -173,13 +173,13 @@
       "room": 13,
       "transition": "12 → 13",
       "weights": {
-        "fightBasic": 69.0,
+        "fightBasic": 66.5,
         "fightMixed": 19.7,
         "fightElite": 7.2,
-        "chestRoom": 2.2,
-        "madShop": 0.0,
+        "chestRoom": 4.7,
+        "madShop": 0,
         "riskEvent": 1.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -187,13 +187,13 @@
       "room": 14,
       "transition": "13 → 14",
       "weights": {
-        "fightBasic": 69.0,
+        "fightBasic": 66.5,
         "fightMixed": 19.7,
         "fightElite": 7.2,
-        "chestRoom": 2.2,
-        "madShop": 0.0,
+        "chestRoom": 4.7,
+        "madShop": 0,
         "riskEvent": 1.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -201,13 +201,13 @@
       "room": 15,
       "transition": "14 → 15",
       "weights": {
-        "fightBasic": 66.3,
+        "fightBasic": 63.8,
         "fightMixed": 21.3,
         "fightElite": 7.1,
-        "chestRoom": 2.2,
+        "chestRoom": 4.7,
         "madShop": 1.2,
         "riskEvent": 1.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -215,13 +215,13 @@
       "room": 16,
       "transition": "15 → 16",
       "weights": {
-        "fightBasic": 65.2,
+        "fightBasic": 62.4,
         "fightMixed": 21.3,
-        "fightElite": 8.0,
-        "chestRoom": 2.4,
+        "fightElite": 8,
+        "chestRoom": 5.2,
         "madShop": 1.2,
         "riskEvent": 1.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -229,13 +229,13 @@
       "room": 17,
       "transition": "16 → 17",
       "weights": {
-        "fightBasic": 64.6,
-        "fightMixed": 21.0,
+        "fightBasic": 61.8,
+        "fightMixed": 21,
         "fightElite": 7.9,
-        "chestRoom": 2.4,
+        "chestRoom": 5.2,
         "madShop": 1.8,
         "riskEvent": 2.4,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -243,13 +243,13 @@
       "room": 18,
       "transition": "17 → 18",
       "weights": {
-        "fightBasic": 64.6,
-        "fightMixed": 21.0,
+        "fightBasic": 61.8,
+        "fightMixed": 21,
         "fightElite": 7.9,
-        "chestRoom": 2.4,
+        "chestRoom": 5.2,
         "madShop": 1.8,
         "riskEvent": 2.4,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -257,13 +257,13 @@
       "room": 19,
       "transition": "18 → 19",
       "weights": {
-        "fightBasic": 73.0,
-        "fightMixed": 18.0,
-        "fightElite": 9.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 73,
+        "fightMixed": 18,
+        "fightElite": 9,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -271,13 +271,13 @@
       "room": 20,
       "transition": "19 → 20",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     },
@@ -285,13 +285,13 @@
       "room": 21,
       "transition": "20 → 21",
       "weights": {
-        "fightBasic": 61.9,
-        "fightMixed": 21.6,
-        "fightElite": 10.3,
-        "chestRoom": 2.5,
-        "madShop": 1.5,
-        "riskEvent": 2.2,
-        "boss": 0.0
+        "fightBasic": 10,
+        "fightMixed": 3,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 85,
+        "riskEvent": 2,
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -299,13 +299,13 @@
       "room": 22,
       "transition": "21 → 22",
       "weights": {
-        "fightBasic": 61.9,
+        "fightBasic": 59,
         "fightMixed": 21.6,
         "fightElite": 10.3,
-        "chestRoom": 2.5,
+        "chestRoom": 5.4,
         "madShop": 1.5,
         "riskEvent": 2.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -313,13 +313,13 @@
       "room": 23,
       "transition": "22 → 23",
       "weights": {
-        "fightBasic": 61.9,
+        "fightBasic": 59,
         "fightMixed": 21.6,
         "fightElite": 10.3,
-        "chestRoom": 2.5,
+        "chestRoom": 5.4,
         "madShop": 1.5,
         "riskEvent": 2.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -327,13 +327,13 @@
       "room": 24,
       "transition": "23 → 24",
       "weights": {
-        "fightBasic": 61.9,
+        "fightBasic": 59,
         "fightMixed": 21.6,
         "fightElite": 10.3,
-        "chestRoom": 2.5,
+        "chestRoom": 5.4,
         "madShop": 1.5,
         "riskEvent": 2.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -341,13 +341,13 @@
       "room": 25,
       "transition": "24 → 25",
       "weights": {
-        "fightBasic": 60.1,
+        "fightBasic": 57.2,
         "fightMixed": 23.4,
         "fightElite": 10.3,
-        "chestRoom": 2.5,
+        "chestRoom": 5.4,
         "madShop": 1.5,
         "riskEvent": 2.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -355,13 +355,13 @@
       "room": 26,
       "transition": "25 → 26",
       "weights": {
-        "fightBasic": 59.1,
+        "fightBasic": 56.1,
         "fightMixed": 23.4,
         "fightElite": 11.2,
-        "chestRoom": 2.6,
+        "chestRoom": 5.6,
         "madShop": 1.5,
         "riskEvent": 2.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -369,13 +369,13 @@
       "room": 27,
       "transition": "26 → 27",
       "weights": {
-        "fightBasic": 58.4,
+        "fightBasic": 55.4,
         "fightMixed": 23.2,
         "fightElite": 11.1,
-        "chestRoom": 2.6,
-        "madShop": 2.0,
+        "chestRoom": 5.6,
+        "madShop": 2,
         "riskEvent": 2.7,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -383,13 +383,13 @@
       "room": 28,
       "transition": "27 → 28",
       "weights": {
-        "fightBasic": 58.4,
+        "fightBasic": 55.4,
         "fightMixed": 23.2,
         "fightElite": 11.1,
-        "chestRoom": 2.6,
-        "madShop": 2.0,
+        "chestRoom": 5.6,
+        "madShop": 2,
         "riskEvent": 2.7,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -397,13 +397,13 @@
       "room": 29,
       "transition": "28 → 29",
       "weights": {
-        "fightBasic": 66.0,
-        "fightMixed": 21.0,
-        "fightElite": 13.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 66,
+        "fightMixed": 21,
+        "fightElite": 13,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -411,13 +411,13 @@
       "room": 30,
       "transition": "29 → 30",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     },
@@ -425,13 +425,13 @@
       "room": 31,
       "transition": "30 → 31",
       "weights": {
-        "fightBasic": 55.8,
+        "fightBasic": 52.6,
         "fightMixed": 23.7,
         "fightElite": 13.5,
-        "chestRoom": 2.8,
+        "chestRoom": 6,
         "madShop": 1.8,
         "riskEvent": 2.5,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -439,13 +439,13 @@
       "room": 32,
       "transition": "31 → 32",
       "weights": {
-        "fightBasic": 55.8,
+        "fightBasic": 52.6,
         "fightMixed": 23.7,
         "fightElite": 13.5,
-        "chestRoom": 2.8,
+        "chestRoom": 6,
         "madShop": 1.8,
         "riskEvent": 2.5,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -453,13 +453,13 @@
       "room": 33,
       "transition": "32 → 33",
       "weights": {
-        "fightBasic": 55.8,
+        "fightBasic": 52.6,
         "fightMixed": 23.7,
         "fightElite": 13.5,
-        "chestRoom": 2.8,
+        "chestRoom": 6,
         "madShop": 1.8,
         "riskEvent": 2.5,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -467,13 +467,13 @@
       "room": 34,
       "transition": "33 → 34",
       "weights": {
-        "fightBasic": 55.8,
+        "fightBasic": 52.6,
         "fightMixed": 23.7,
         "fightElite": 13.5,
-        "chestRoom": 2.8,
+        "chestRoom": 6,
         "madShop": 1.8,
         "riskEvent": 2.5,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -481,13 +481,13 @@
       "room": 35,
       "transition": "34 → 35",
       "weights": {
-        "fightBasic": 53.9,
+        "fightBasic": 50.7,
         "fightMixed": 25.6,
         "fightElite": 13.5,
-        "chestRoom": 2.8,
+        "chestRoom": 6,
         "madShop": 1.8,
         "riskEvent": 2.5,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -495,13 +495,13 @@
       "room": 36,
       "transition": "35 → 36",
       "weights": {
-        "fightBasic": 52.9,
+        "fightBasic": 49.6,
         "fightMixed": 25.5,
         "fightElite": 14.4,
-        "chestRoom": 2.9,
+        "chestRoom": 6.2,
         "madShop": 1.8,
         "riskEvent": 2.5,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -509,13 +509,13 @@
       "room": 37,
       "transition": "36 → 37",
       "weights": {
-        "fightBasic": 52.4,
+        "fightBasic": 49.1,
         "fightMixed": 25.2,
         "fightElite": 14.2,
-        "chestRoom": 2.9,
+        "chestRoom": 6.2,
         "madShop": 2.2,
-        "riskEvent": 3.0,
-        "boss": 0.0
+        "riskEvent": 3,
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -523,13 +523,13 @@
       "room": 38,
       "transition": "37 → 38",
       "weights": {
-        "fightBasic": 52.4,
+        "fightBasic": 49.1,
         "fightMixed": 25.2,
         "fightElite": 14.2,
-        "chestRoom": 2.9,
+        "chestRoom": 6.2,
         "madShop": 2.2,
-        "riskEvent": 3.0,
-        "boss": 0.0
+        "riskEvent": 3,
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -537,13 +537,13 @@
       "room": 39,
       "transition": "38 → 39",
       "weights": {
-        "fightBasic": 59.0,
-        "fightMixed": 24.0,
-        "fightElite": 17.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 59,
+        "fightMixed": 24,
+        "fightElite": 17,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -551,13 +551,13 @@
       "room": 40,
       "transition": "39 → 40",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     },
@@ -565,13 +565,13 @@
       "room": 41,
       "transition": "40 → 41",
       "weights": {
-        "fightBasic": 49.7,
+        "fightBasic": 46.3,
         "fightMixed": 25.8,
         "fightElite": 16.6,
-        "chestRoom": 3.0,
-        "madShop": 2.0,
+        "chestRoom": 6.4,
+        "madShop": 2,
         "riskEvent": 2.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -579,13 +579,13 @@
       "room": 42,
       "transition": "41 → 42",
       "weights": {
-        "fightBasic": 49.7,
+        "fightBasic": 46.3,
         "fightMixed": 25.8,
         "fightElite": 16.6,
-        "chestRoom": 3.0,
-        "madShop": 2.0,
+        "chestRoom": 6.4,
+        "madShop": 2,
         "riskEvent": 2.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -593,13 +593,13 @@
       "room": 43,
       "transition": "42 → 43",
       "weights": {
-        "fightBasic": 49.7,
+        "fightBasic": 46.3,
         "fightMixed": 25.8,
         "fightElite": 16.6,
-        "chestRoom": 3.0,
-        "madShop": 2.0,
+        "chestRoom": 6.4,
+        "madShop": 2,
         "riskEvent": 2.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -607,13 +607,13 @@
       "room": 44,
       "transition": "43 → 44",
       "weights": {
-        "fightBasic": 49.7,
+        "fightBasic": 46.3,
         "fightMixed": 25.8,
         "fightElite": 16.6,
-        "chestRoom": 3.0,
-        "madShop": 2.0,
+        "chestRoom": 6.4,
+        "madShop": 2,
         "riskEvent": 2.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -621,13 +621,13 @@
       "room": 45,
       "transition": "44 → 45",
       "weights": {
-        "fightBasic": 47.9,
+        "fightBasic": 44.5,
         "fightMixed": 27.6,
         "fightElite": 16.6,
-        "chestRoom": 3.0,
-        "madShop": 2.0,
+        "chestRoom": 6.4,
+        "madShop": 2,
         "riskEvent": 2.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -635,13 +635,13 @@
       "room": 46,
       "transition": "45 → 46",
       "weights": {
-        "fightBasic": 46.9,
+        "fightBasic": 43.3,
         "fightMixed": 27.6,
         "fightElite": 17.5,
-        "chestRoom": 3.1,
-        "madShop": 2.0,
+        "chestRoom": 6.7,
+        "madShop": 2,
         "riskEvent": 2.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -649,13 +649,13 @@
       "room": 47,
       "transition": "46 → 47",
       "weights": {
-        "fightBasic": 46.4,
+        "fightBasic": 42.8,
         "fightMixed": 27.3,
         "fightElite": 17.3,
-        "chestRoom": 3.1,
+        "chestRoom": 6.7,
         "madShop": 2.5,
         "riskEvent": 3.4,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -663,13 +663,13 @@
       "room": 48,
       "transition": "47 → 48",
       "weights": {
-        "fightBasic": 46.4,
+        "fightBasic": 42.8,
         "fightMixed": 27.3,
         "fightElite": 17.3,
-        "chestRoom": 3.1,
+        "chestRoom": 6.7,
         "madShop": 2.5,
         "riskEvent": 3.4,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -677,13 +677,13 @@
       "room": 49,
       "transition": "48 → 49",
       "weights": {
-        "fightBasic": 52.0,
-        "fightMixed": 27.0,
-        "fightElite": 21.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 52,
+        "fightMixed": 27,
+        "fightElite": 21,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -691,13 +691,13 @@
       "room": 50,
       "transition": "49 → 50",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     },
@@ -705,13 +705,13 @@
       "room": 51,
       "transition": "50 → 51",
       "weights": {
-        "fightBasic": 43.9,
+        "fightBasic": 40.2,
         "fightMixed": 27.8,
         "fightElite": 19.6,
-        "chestRoom": 3.2,
+        "chestRoom": 6.9,
         "madShop": 2.2,
         "riskEvent": 3.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -719,13 +719,13 @@
       "room": 52,
       "transition": "51 → 52",
       "weights": {
-        "fightBasic": 43.9,
+        "fightBasic": 40.2,
         "fightMixed": 27.8,
         "fightElite": 19.6,
-        "chestRoom": 3.2,
+        "chestRoom": 6.9,
         "madShop": 2.2,
         "riskEvent": 3.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -733,13 +733,13 @@
       "room": 53,
       "transition": "52 → 53",
       "weights": {
-        "fightBasic": 43.9,
+        "fightBasic": 40.2,
         "fightMixed": 27.8,
         "fightElite": 19.6,
-        "chestRoom": 3.2,
+        "chestRoom": 6.9,
         "madShop": 2.2,
         "riskEvent": 3.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -747,13 +747,13 @@
       "room": 54,
       "transition": "53 → 54",
       "weights": {
-        "fightBasic": 43.9,
+        "fightBasic": 40.2,
         "fightMixed": 27.8,
         "fightElite": 19.6,
-        "chestRoom": 3.2,
+        "chestRoom": 6.9,
         "madShop": 2.2,
         "riskEvent": 3.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -761,13 +761,13 @@
       "room": 55,
       "transition": "54 → 55",
       "weights": {
-        "fightBasic": 42.0,
+        "fightBasic": 38.3,
         "fightMixed": 29.7,
         "fightElite": 19.6,
-        "chestRoom": 3.2,
+        "chestRoom": 6.9,
         "madShop": 2.2,
         "riskEvent": 3.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -775,13 +775,13 @@
       "room": 56,
       "transition": "55 → 56",
       "weights": {
-        "fightBasic": 41.0,
+        "fightBasic": 37.1,
         "fightMixed": 29.6,
         "fightElite": 20.5,
-        "chestRoom": 3.4,
+        "chestRoom": 7.3,
         "madShop": 2.2,
         "riskEvent": 3.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -789,13 +789,13 @@
       "room": 57,
       "transition": "56 → 57",
       "weights": {
-        "fightBasic": 40.5,
+        "fightBasic": 36.6,
         "fightMixed": 29.3,
         "fightElite": 20.3,
-        "chestRoom": 3.4,
+        "chestRoom": 7.3,
         "madShop": 2.8,
         "riskEvent": 3.8,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -803,13 +803,13 @@
       "room": 58,
       "transition": "57 → 58",
       "weights": {
-        "fightBasic": 40.5,
+        "fightBasic": 36.6,
         "fightMixed": 29.3,
         "fightElite": 20.3,
-        "chestRoom": 3.4,
+        "chestRoom": 7.3,
         "madShop": 2.8,
         "riskEvent": 3.8,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -817,13 +817,13 @@
       "room": 59,
       "transition": "58 → 59",
       "weights": {
-        "fightBasic": 45.0,
-        "fightMixed": 30.0,
-        "fightElite": 25.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 45,
+        "fightMixed": 30,
+        "fightElite": 25,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -831,13 +831,13 @@
       "room": 60,
       "transition": "59 → 60",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     },
@@ -845,13 +845,13 @@
       "room": 61,
       "transition": "60 → 61",
       "weights": {
-        "fightBasic": 38.0,
+        "fightBasic": 34,
         "fightMixed": 29.8,
         "fightElite": 22.6,
-        "chestRoom": 3.5,
+        "chestRoom": 7.5,
         "madShop": 2.5,
         "riskEvent": 3.6,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -859,13 +859,13 @@
       "room": 62,
       "transition": "61 → 62",
       "weights": {
-        "fightBasic": 38.0,
+        "fightBasic": 34,
         "fightMixed": 29.8,
         "fightElite": 22.6,
-        "chestRoom": 3.5,
+        "chestRoom": 7.5,
         "madShop": 2.5,
         "riskEvent": 3.6,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -873,13 +873,13 @@
       "room": 63,
       "transition": "62 → 63",
       "weights": {
-        "fightBasic": 38.0,
+        "fightBasic": 34,
         "fightMixed": 29.8,
         "fightElite": 22.6,
-        "chestRoom": 3.5,
+        "chestRoom": 7.5,
         "madShop": 2.5,
         "riskEvent": 3.6,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -887,13 +887,13 @@
       "room": 64,
       "transition": "63 → 64",
       "weights": {
-        "fightBasic": 38.0,
+        "fightBasic": 34,
         "fightMixed": 29.8,
         "fightElite": 22.6,
-        "chestRoom": 3.5,
+        "chestRoom": 7.5,
         "madShop": 2.5,
         "riskEvent": 3.6,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -901,13 +901,13 @@
       "room": 65,
       "transition": "64 → 65",
       "weights": {
-        "fightBasic": 36.2,
+        "fightBasic": 32.2,
         "fightMixed": 31.6,
         "fightElite": 22.6,
-        "chestRoom": 3.5,
+        "chestRoom": 7.5,
         "madShop": 2.5,
         "riskEvent": 3.6,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -915,13 +915,13 @@
       "room": 66,
       "transition": "65 → 66",
       "weights": {
-        "fightBasic": 35.1,
+        "fightBasic": 31,
         "fightMixed": 31.6,
         "fightElite": 23.5,
-        "chestRoom": 3.6,
+        "chestRoom": 7.7,
         "madShop": 2.5,
         "riskEvent": 3.6,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -929,13 +929,13 @@
       "room": 67,
       "transition": "66 → 67",
       "weights": {
-        "fightBasic": 34.8,
+        "fightBasic": 30.7,
         "fightMixed": 31.2,
         "fightElite": 23.2,
-        "chestRoom": 3.6,
-        "madShop": 3.0,
+        "chestRoom": 7.7,
+        "madShop": 3,
         "riskEvent": 4.1,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -943,13 +943,13 @@
       "room": 68,
       "transition": "67 → 68",
       "weights": {
-        "fightBasic": 34.8,
+        "fightBasic": 30.7,
         "fightMixed": 31.2,
         "fightElite": 23.2,
-        "chestRoom": 3.6,
-        "madShop": 3.0,
+        "chestRoom": 7.7,
+        "madShop": 3,
         "riskEvent": 4.1,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -957,13 +957,13 @@
       "room": 69,
       "transition": "68 → 69",
       "weights": {
-        "fightBasic": 38.0,
-        "fightMixed": 33.0,
-        "fightElite": 29.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 38,
+        "fightMixed": 33,
+        "fightElite": 29,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -971,13 +971,13 @@
       "room": 70,
       "transition": "69 → 70",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     },
@@ -985,13 +985,13 @@
       "room": 71,
       "transition": "70 → 71",
       "weights": {
-        "fightBasic": 32.2,
+        "fightBasic": 27.8,
         "fightMixed": 31.8,
         "fightElite": 25.5,
-        "chestRoom": 3.8,
+        "chestRoom": 8.2,
         "madShop": 2.8,
         "riskEvent": 3.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -999,13 +999,13 @@
       "room": 72,
       "transition": "71 → 72",
       "weights": {
-        "fightBasic": 32.2,
+        "fightBasic": 27.8,
         "fightMixed": 31.8,
         "fightElite": 25.5,
-        "chestRoom": 3.8,
+        "chestRoom": 8.2,
         "madShop": 2.8,
         "riskEvent": 3.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -1013,13 +1013,13 @@
       "room": 73,
       "transition": "72 → 73",
       "weights": {
-        "fightBasic": 32.2,
+        "fightBasic": 27.8,
         "fightMixed": 31.8,
         "fightElite": 25.5,
-        "chestRoom": 3.8,
+        "chestRoom": 8.2,
         "madShop": 2.8,
         "riskEvent": 3.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -1027,13 +1027,13 @@
       "room": 74,
       "transition": "73 → 74",
       "weights": {
-        "fightBasic": 32.2,
+        "fightBasic": 27.8,
         "fightMixed": 31.8,
         "fightElite": 25.5,
-        "chestRoom": 3.8,
+        "chestRoom": 8.2,
         "madShop": 2.8,
         "riskEvent": 3.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -1041,13 +1041,13 @@
       "room": 75,
       "transition": "74 → 75",
       "weights": {
-        "fightBasic": 30.4,
+        "fightBasic": 26,
         "fightMixed": 33.6,
         "fightElite": 25.5,
-        "chestRoom": 3.8,
+        "chestRoom": 8.2,
         "madShop": 2.8,
         "riskEvent": 3.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -1055,13 +1055,13 @@
       "room": 76,
       "transition": "75 → 76",
       "weights": {
-        "fightBasic": 29.5,
+        "fightBasic": 25,
         "fightMixed": 33.5,
         "fightElite": 26.4,
-        "chestRoom": 3.9,
+        "chestRoom": 8.4,
         "madShop": 2.8,
         "riskEvent": 3.9,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -1069,13 +1069,13 @@
       "room": 77,
       "transition": "76 → 77",
       "weights": {
-        "fightBasic": 29.1,
+        "fightBasic": 24.6,
         "fightMixed": 33.2,
         "fightElite": 26.1,
-        "chestRoom": 3.9,
+        "chestRoom": 8.4,
         "madShop": 3.2,
         "riskEvent": 4.4,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -1083,13 +1083,13 @@
       "room": 78,
       "transition": "77 → 78",
       "weights": {
-        "fightBasic": 29.1,
+        "fightBasic": 24.6,
         "fightMixed": 33.2,
         "fightElite": 26.1,
-        "chestRoom": 3.9,
+        "chestRoom": 8.4,
         "madShop": 3.2,
         "riskEvent": 4.4,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "No hay sala vacía: todo es pelea, cofre, mercader o evento con riesgo."
     },
@@ -1097,13 +1097,13 @@
       "room": 79,
       "transition": "78 → 79",
       "weights": {
-        "fightBasic": 31.0,
-        "fightMixed": 36.0,
-        "fightElite": 33.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 31,
+        "fightMixed": 36,
+        "fightElite": 33,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -1111,13 +1111,13 @@
       "room": 80,
       "transition": "79 → 80",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     },
@@ -1125,13 +1125,13 @@
       "room": 81,
       "transition": "80 → 81",
       "weights": {
-        "fightBasic": 26.6,
+        "fightBasic": 22,
         "fightMixed": 33.7,
         "fightElite": 28.4,
-        "chestRoom": 4.0,
-        "madShop": 3.0,
+        "chestRoom": 8.6,
+        "madShop": 3,
         "riskEvent": 4.3,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1139,13 +1139,13 @@
       "room": 82,
       "transition": "81 → 82",
       "weights": {
-        "fightBasic": 26.6,
+        "fightBasic": 22,
         "fightMixed": 33.7,
         "fightElite": 28.4,
-        "chestRoom": 4.0,
-        "madShop": 3.0,
+        "chestRoom": 8.6,
+        "madShop": 3,
         "riskEvent": 4.3,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1153,13 +1153,13 @@
       "room": 83,
       "transition": "82 → 83",
       "weights": {
-        "fightBasic": 26.6,
+        "fightBasic": 22,
         "fightMixed": 33.7,
         "fightElite": 28.4,
-        "chestRoom": 4.0,
-        "madShop": 3.0,
+        "chestRoom": 8.6,
+        "madShop": 3,
         "riskEvent": 4.3,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1167,13 +1167,13 @@
       "room": 84,
       "transition": "83 → 84",
       "weights": {
-        "fightBasic": 26.6,
+        "fightBasic": 22,
         "fightMixed": 33.7,
         "fightElite": 28.4,
-        "chestRoom": 4.0,
-        "madShop": 3.0,
+        "chestRoom": 8.6,
+        "madShop": 3,
         "riskEvent": 4.3,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1181,13 +1181,13 @@
       "room": 85,
       "transition": "84 → 85",
       "weights": {
-        "fightBasic": 24.8,
+        "fightBasic": 20.2,
         "fightMixed": 35.5,
         "fightElite": 28.4,
-        "chestRoom": 4.0,
-        "madShop": 3.0,
+        "chestRoom": 8.6,
+        "madShop": 3,
         "riskEvent": 4.3,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1195,13 +1195,13 @@
       "room": 86,
       "transition": "85 → 86",
       "weights": {
-        "fightBasic": 23.9,
+        "fightBasic": 19.1,
         "fightMixed": 35.4,
         "fightElite": 29.2,
-        "chestRoom": 4.2,
-        "madShop": 3.0,
+        "chestRoom": 9,
+        "madShop": 3,
         "riskEvent": 4.3,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1209,13 +1209,13 @@
       "room": 87,
       "transition": "86 → 87",
       "weights": {
-        "fightBasic": 23.6,
-        "fightMixed": 35.0,
+        "fightBasic": 18.8,
+        "fightMixed": 35,
         "fightElite": 28.9,
-        "chestRoom": 4.2,
+        "chestRoom": 9,
         "madShop": 3.5,
         "riskEvent": 4.8,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1223,13 +1223,13 @@
       "room": 88,
       "transition": "87 → 88",
       "weights": {
-        "fightBasic": 23.6,
-        "fightMixed": 35.0,
+        "fightBasic": 18.8,
+        "fightMixed": 35,
         "fightElite": 28.9,
-        "chestRoom": 4.2,
+        "chestRoom": 9,
         "madShop": 3.5,
         "riskEvent": 4.8,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1237,13 +1237,13 @@
       "room": 89,
       "transition": "88 → 89",
       "weights": {
-        "fightBasic": 26.0,
-        "fightMixed": 39.0,
-        "fightElite": 35.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 26,
+        "fightMixed": 39,
+        "fightElite": 35,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -1251,13 +1251,13 @@
       "room": 90,
       "transition": "89 → 90",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     },
@@ -1265,13 +1265,13 @@
       "room": 91,
       "transition": "90 → 91",
       "weights": {
-        "fightBasic": 21.0,
+        "fightBasic": 16.2,
         "fightMixed": 35.6,
         "fightElite": 31.2,
-        "chestRoom": 4.2,
+        "chestRoom": 9,
         "madShop": 3.2,
         "riskEvent": 4.7,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1279,13 +1279,13 @@
       "room": 92,
       "transition": "91 → 92",
       "weights": {
-        "fightBasic": 21.0,
+        "fightBasic": 16.2,
         "fightMixed": 35.6,
         "fightElite": 31.2,
-        "chestRoom": 4.2,
+        "chestRoom": 9,
         "madShop": 3.2,
         "riskEvent": 4.7,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1293,13 +1293,13 @@
       "room": 93,
       "transition": "92 → 93",
       "weights": {
-        "fightBasic": 21.0,
+        "fightBasic": 16.2,
         "fightMixed": 35.6,
         "fightElite": 31.2,
-        "chestRoom": 4.2,
+        "chestRoom": 9,
         "madShop": 3.2,
         "riskEvent": 4.7,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1307,13 +1307,13 @@
       "room": 94,
       "transition": "93 → 94",
       "weights": {
-        "fightBasic": 21.0,
+        "fightBasic": 16.2,
         "fightMixed": 35.6,
         "fightElite": 31.2,
-        "chestRoom": 4.2,
+        "chestRoom": 9,
         "madShop": 3.2,
         "riskEvent": 4.7,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1321,13 +1321,13 @@
       "room": 95,
       "transition": "94 → 95",
       "weights": {
-        "fightBasic": 19.3,
+        "fightBasic": 14.5,
         "fightMixed": 37.3,
         "fightElite": 31.2,
-        "chestRoom": 4.2,
+        "chestRoom": 9,
         "madShop": 3.2,
         "riskEvent": 4.7,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1335,13 +1335,13 @@
       "room": 96,
       "transition": "95 → 96",
       "weights": {
-        "fightBasic": 18.4,
+        "fightBasic": 13.8,
         "fightMixed": 37.3,
-        "fightElite": 32.0,
-        "chestRoom": 4.4,
+        "fightElite": 32,
+        "chestRoom": 9,
         "madShop": 3.2,
         "riskEvent": 4.7,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1349,13 +1349,13 @@
       "room": 97,
       "transition": "96 → 97",
       "weights": {
-        "fightBasic": 18.3,
+        "fightBasic": 13.7,
         "fightMixed": 36.8,
         "fightElite": 31.6,
-        "chestRoom": 4.4,
+        "chestRoom": 9,
         "madShop": 3.8,
         "riskEvent": 5.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1363,13 +1363,13 @@
       "room": 98,
       "transition": "97 → 98",
       "weights": {
-        "fightBasic": 18.3,
+        "fightBasic": 13.7,
         "fightMixed": 36.8,
         "fightElite": 31.6,
-        "chestRoom": 4.4,
+        "chestRoom": 9,
         "madShop": 3.8,
         "riskEvent": 5.2,
-        "boss": 0.0
+        "boss": 0
       },
       "note": "Final: mucho combate duro, recompensa rara."
     },
@@ -1377,13 +1377,13 @@
       "room": 99,
       "transition": "98 → 99",
       "weights": {
-        "fightBasic": 23.0,
-        "fightMixed": 42.0,
-        "fightElite": 35.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 0.0
+        "fightBasic": 23,
+        "fightMixed": 42,
+        "fightElite": 35,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 0
       },
       "note": "Pre-boss: combate 100%, una única puerta hacia boss."
     },
@@ -1391,13 +1391,13 @@
       "room": 100,
       "transition": "99 → 100",
       "weights": {
-        "fightBasic": 0.0,
-        "fightMixed": 0.0,
-        "fightElite": 0.0,
-        "chestRoom": 0.0,
-        "madShop": 0.0,
-        "riskEvent": 0.0,
-        "boss": 100.0
+        "fightBasic": 0,
+        "fightMixed": 0,
+        "fightElite": 0,
+        "chestRoom": 0,
+        "madShop": 0,
+        "riskEvent": 0,
+        "boss": 100
       },
       "note": "Boss obligatorio. Sin cofres, sin mercader, sin sala vacía."
     }
@@ -1426,8 +1426,8 @@
         "3": 3.4,
         "4": 1.1
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -1440,8 +1440,8 @@
         "3": 3.4,
         "4": 1.1
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -1454,8 +1454,8 @@
         "3": 3.4,
         "4": 1.1
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -1468,8 +1468,8 @@
         "3": 3.4,
         "4": 1.1
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -1519,13 +1519,13 @@
       "room": 9,
       "transition": "8 → 9",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -1533,13 +1533,13 @@
       "room": 10,
       "transition": "9 → 10",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     },
@@ -1659,13 +1659,13 @@
       "room": 19,
       "transition": "18 → 19",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -1673,13 +1673,13 @@
       "room": 20,
       "transition": "19 → 20",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     },
@@ -1689,7 +1689,7 @@
       "doorWeights": {
         "1": 78.4,
         "2": 16.4,
-        "3": 4.0,
+        "3": 4,
         "4": 1.1
       },
       "bombDoorChance": 4.8,
@@ -1703,7 +1703,7 @@
       "doorWeights": {
         "1": 78.4,
         "2": 16.4,
-        "3": 4.0,
+        "3": 4,
         "4": 1.1
       },
       "bombDoorChance": 4.8,
@@ -1717,7 +1717,7 @@
       "doorWeights": {
         "1": 78.4,
         "2": 16.4,
-        "3": 4.0,
+        "3": 4,
         "4": 1.1
       },
       "bombDoorChance": 4.8,
@@ -1731,7 +1731,7 @@
       "doorWeights": {
         "1": 78.4,
         "2": 16.4,
-        "3": 4.0,
+        "3": 4,
         "4": 1.1
       },
       "bombDoorChance": 4.8,
@@ -1745,7 +1745,7 @@
       "doorWeights": {
         "1": 78.4,
         "2": 16.4,
-        "3": 4.0,
+        "3": 4,
         "4": 1.1
       },
       "bombDoorChance": 4.8,
@@ -1759,7 +1759,7 @@
       "doorWeights": {
         "1": 78.4,
         "2": 16.4,
-        "3": 4.0,
+        "3": 4,
         "4": 1.1
       },
       "bombDoorChance": 4.8,
@@ -1773,7 +1773,7 @@
       "doorWeights": {
         "1": 78.4,
         "2": 16.4,
-        "3": 4.0,
+        "3": 4,
         "4": 1.1
       },
       "bombDoorChance": 4.8,
@@ -1787,7 +1787,7 @@
       "doorWeights": {
         "1": 78.4,
         "2": 16.4,
-        "3": 4.0,
+        "3": 4,
         "4": 1.1
       },
       "bombDoorChance": 4.8,
@@ -1799,13 +1799,13 @@
       "room": 29,
       "transition": "28 → 29",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -1813,13 +1813,13 @@
       "room": 30,
       "transition": "29 → 30",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     },
@@ -1939,13 +1939,13 @@
       "room": 39,
       "transition": "38 → 39",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -1953,13 +1953,13 @@
       "room": 40,
       "transition": "39 → 40",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     },
@@ -1967,13 +1967,13 @@
       "room": 41,
       "transition": "40 → 41",
       "doorWeights": {
-        "1": 76.0,
-        "2": 18.0,
+        "1": 76,
+        "2": 18,
         "3": 4.8,
         "4": 1.2
       },
-      "bombDoorChance": 6.0,
-      "realBombDoorChance": 6.0,
+      "bombDoorChance": 6,
+      "realBombDoorChance": 6,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -1981,13 +1981,13 @@
       "room": 42,
       "transition": "41 → 42",
       "doorWeights": {
-        "1": 76.0,
-        "2": 18.0,
+        "1": 76,
+        "2": 18,
         "3": 4.8,
         "4": 1.2
       },
-      "bombDoorChance": 6.0,
-      "realBombDoorChance": 6.0,
+      "bombDoorChance": 6,
+      "realBombDoorChance": 6,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -1995,13 +1995,13 @@
       "room": 43,
       "transition": "42 → 43",
       "doorWeights": {
-        "1": 76.0,
-        "2": 18.0,
+        "1": 76,
+        "2": 18,
         "3": 4.8,
         "4": 1.2
       },
-      "bombDoorChance": 6.0,
-      "realBombDoorChance": 6.0,
+      "bombDoorChance": 6,
+      "realBombDoorChance": 6,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2009,13 +2009,13 @@
       "room": 44,
       "transition": "43 → 44",
       "doorWeights": {
-        "1": 76.0,
-        "2": 18.0,
+        "1": 76,
+        "2": 18,
         "3": 4.8,
         "4": 1.2
       },
-      "bombDoorChance": 6.0,
-      "realBombDoorChance": 6.0,
+      "bombDoorChance": 6,
+      "realBombDoorChance": 6,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2023,13 +2023,13 @@
       "room": 45,
       "transition": "44 → 45",
       "doorWeights": {
-        "1": 76.0,
-        "2": 18.0,
+        "1": 76,
+        "2": 18,
         "3": 4.8,
         "4": 1.2
       },
-      "bombDoorChance": 6.0,
-      "realBombDoorChance": 6.0,
+      "bombDoorChance": 6,
+      "realBombDoorChance": 6,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2037,13 +2037,13 @@
       "room": 46,
       "transition": "45 → 46",
       "doorWeights": {
-        "1": 76.0,
-        "2": 18.0,
+        "1": 76,
+        "2": 18,
         "3": 4.8,
         "4": 1.2
       },
-      "bombDoorChance": 6.0,
-      "realBombDoorChance": 6.0,
+      "bombDoorChance": 6,
+      "realBombDoorChance": 6,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2051,13 +2051,13 @@
       "room": 47,
       "transition": "46 → 47",
       "doorWeights": {
-        "1": 76.0,
-        "2": 18.0,
+        "1": 76,
+        "2": 18,
         "3": 4.8,
         "4": 1.2
       },
-      "bombDoorChance": 6.0,
-      "realBombDoorChance": 6.0,
+      "bombDoorChance": 6,
+      "realBombDoorChance": 6,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2065,13 +2065,13 @@
       "room": 48,
       "transition": "47 → 48",
       "doorWeights": {
-        "1": 76.0,
-        "2": 18.0,
+        "1": 76,
+        "2": 18,
         "3": 4.8,
         "4": 1.2
       },
-      "bombDoorChance": 6.0,
-      "realBombDoorChance": 6.0,
+      "bombDoorChance": 6,
+      "realBombDoorChance": 6,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2079,13 +2079,13 @@
       "room": 49,
       "transition": "48 → 49",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -2093,13 +2093,13 @@
       "room": 50,
       "transition": "49 → 50",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     },
@@ -2219,13 +2219,13 @@
       "room": 59,
       "transition": "58 → 59",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -2233,13 +2233,13 @@
       "room": 60,
       "transition": "59 → 60",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     },
@@ -2359,13 +2359,13 @@
       "room": 69,
       "transition": "68 → 69",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -2373,13 +2373,13 @@
       "room": 70,
       "transition": "69 → 70",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     },
@@ -2499,13 +2499,13 @@
       "room": 79,
       "transition": "78 → 79",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -2513,13 +2513,13 @@
       "room": 80,
       "transition": "79 → 80",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     },
@@ -2639,13 +2639,13 @@
       "room": 89,
       "transition": "88 → 89",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -2653,13 +2653,13 @@
       "room": 90,
       "transition": "89 → 90",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     },
@@ -2667,13 +2667,13 @@
       "room": 91,
       "transition": "90 → 91",
       "doorWeights": {
-        "1": 70.0,
-        "2": 22.0,
+        "1": 70,
+        "2": 22,
         "3": 6.5,
         "4": 1.5
       },
-      "bombDoorChance": 9.0,
-      "realBombDoorChance": 9.0,
+      "bombDoorChance": 9,
+      "realBombDoorChance": 9,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2681,13 +2681,13 @@
       "room": 92,
       "transition": "91 → 92",
       "doorWeights": {
-        "1": 70.0,
-        "2": 22.0,
+        "1": 70,
+        "2": 22,
         "3": 6.5,
         "4": 1.5
       },
-      "bombDoorChance": 9.0,
-      "realBombDoorChance": 9.0,
+      "bombDoorChance": 9,
+      "realBombDoorChance": 9,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2695,13 +2695,13 @@
       "room": 93,
       "transition": "92 → 93",
       "doorWeights": {
-        "1": 70.0,
-        "2": 22.0,
+        "1": 70,
+        "2": 22,
         "3": 6.5,
         "4": 1.5
       },
-      "bombDoorChance": 9.0,
-      "realBombDoorChance": 9.0,
+      "bombDoorChance": 9,
+      "realBombDoorChance": 9,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2709,13 +2709,13 @@
       "room": 94,
       "transition": "93 → 94",
       "doorWeights": {
-        "1": 70.0,
-        "2": 22.0,
+        "1": 70,
+        "2": 22,
         "3": 6.5,
         "4": 1.5
       },
-      "bombDoorChance": 9.0,
-      "realBombDoorChance": 9.0,
+      "bombDoorChance": 9,
+      "realBombDoorChance": 9,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2723,13 +2723,13 @@
       "room": 95,
       "transition": "94 → 95",
       "doorWeights": {
-        "1": 70.0,
-        "2": 22.0,
+        "1": 70,
+        "2": 22,
         "3": 6.5,
         "4": 1.5
       },
-      "bombDoorChance": 9.0,
-      "realBombDoorChance": 9.0,
+      "bombDoorChance": 9,
+      "realBombDoorChance": 9,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2737,13 +2737,13 @@
       "room": 96,
       "transition": "95 → 96",
       "doorWeights": {
-        "1": 70.0,
-        "2": 22.0,
+        "1": 70,
+        "2": 22,
         "3": 6.5,
         "4": 1.5
       },
-      "bombDoorChance": 9.0,
-      "realBombDoorChance": 9.0,
+      "bombDoorChance": 9,
+      "realBombDoorChance": 9,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2751,13 +2751,13 @@
       "room": 97,
       "transition": "96 → 97",
       "doorWeights": {
-        "1": 70.0,
-        "2": 22.0,
+        "1": 70,
+        "2": 22,
         "3": 6.5,
         "4": 1.5
       },
-      "bombDoorChance": 9.0,
-      "realBombDoorChance": 9.0,
+      "bombDoorChance": 9,
+      "realBombDoorChance": 9,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2765,13 +2765,13 @@
       "room": 98,
       "transition": "97 → 98",
       "doorWeights": {
-        "1": 70.0,
-        "2": 22.0,
+        "1": 70,
+        "2": 22,
         "3": 6.5,
         "4": 1.5
       },
-      "bombDoorChance": 9.0,
-      "realBombDoorChance": 9.0,
+      "bombDoorChance": 9,
+      "realBombDoorChance": 9,
       "rule": "Puerta bomba opcional: consume bomba y debe llevar a recompensa útil garantizada.",
       "note": null
     },
@@ -2779,13 +2779,13 @@
       "room": 99,
       "transition": "98 → 99",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Pre-boss: una puerta única al boss. Nunca puerta bomba.",
       "note": null
     },
@@ -2793,13 +2793,13 @@
       "room": 100,
       "transition": "99 → 100",
       "doorWeights": {
-        "1": 100.0,
-        "2": 0.0,
-        "3": 0.0,
-        "4": 0.0
+        "1": 100,
+        "2": 0,
+        "3": 0,
+        "4": 0
       },
-      "bombDoorChance": 0.0,
-      "realBombDoorChance": 0.0,
+      "bombDoorChance": 0,
+      "realBombDoorChance": 0,
       "rule": "Boss: sin puertas extra hasta derrotarlo.",
       "note": null
     }
@@ -2822,7 +2822,7 @@
           "id": "1x-silverChest",
           "type": "silverChest",
           "count": 1,
-          "weight": 5.0
+          "weight": 5
         },
         {
           "id": "1x-goldChest",
@@ -2834,7 +2834,7 @@
           "id": "2x-woodChest",
           "type": "woodChest",
           "count": 2,
-          "weight": 2.0
+          "weight": 2
         },
         {
           "id": "2x-silverChest",
@@ -3454,12 +3454,12 @@
         10
       ],
       "weights": {
-        "nothing": 45.0,
-        "coins": 32.0,
-        "heart": 12.0,
-        "key": 6.0,
-        "bomb": 2.0,
-        "woodChest": 3.0
+        "nothing": 45,
+        "coins": 32,
+        "heart": 12,
+        "key": 6,
+        "bomb": 2,
+        "woodChest": 3
       },
       "quantities": {
         "coins": [
@@ -3500,12 +3500,12 @@
         30
       ],
       "weights": {
-        "nothing": 43.0,
-        "coins": 34.0,
-        "heart": 11.0,
-        "key": 7.0,
-        "bomb": 2.0,
-        "woodChest": 3.0
+        "nothing": 43,
+        "coins": 34,
+        "heart": 11,
+        "key": 7,
+        "bomb": 2,
+        "woodChest": 3
       },
       "quantities": {
         "coins": [
@@ -3546,12 +3546,12 @@
         60
       ],
       "weights": {
-        "nothing": 42.0,
-        "coins": 35.0,
-        "heart": 10.0,
-        "key": 8.0,
-        "bomb": 2.0,
-        "woodChest": 3.0
+        "nothing": 42,
+        "coins": 35,
+        "heart": 10,
+        "key": 8,
+        "bomb": 2,
+        "woodChest": 3
       },
       "quantities": {
         "coins": [
@@ -3592,12 +3592,12 @@
         100
       ],
       "weights": {
-        "nothing": 40.0,
-        "coins": 36.0,
-        "heart": 9.0,
-        "key": 8.0,
-        "bomb": 3.0,
-        "woodChest": 4.0
+        "nothing": 40,
+        "coins": 36,
+        "heart": 9,
+        "key": 8,
+        "bomb": 3,
+        "woodChest": 4
       },
       "quantities": {
         "coins": [
@@ -3638,12 +3638,12 @@
         30
       ],
       "weights": {
-        "nothing": 35.0,
-        "coins": 35.0,
-        "heart": 12.0,
-        "key": 8.0,
-        "bomb": 3.0,
-        "woodChest": 7.0
+        "nothing": 35,
+        "coins": 35,
+        "heart": 12,
+        "key": 8,
+        "bomb": 3,
+        "woodChest": 7
       },
       "quantities": {
         "coins": [
@@ -3684,12 +3684,12 @@
         70
       ],
       "weights": {
-        "nothing": 32.0,
-        "coins": 36.0,
-        "heart": 11.0,
-        "key": 9.0,
-        "bomb": 4.0,
-        "woodChest": 8.0
+        "nothing": 32,
+        "coins": 36,
+        "heart": 11,
+        "key": 9,
+        "bomb": 4,
+        "woodChest": 8
       },
       "quantities": {
         "coins": [
@@ -3730,12 +3730,12 @@
         100
       ],
       "weights": {
-        "nothing": 30.0,
-        "coins": 36.0,
-        "heart": 10.0,
-        "key": 10.0,
-        "bomb": 5.0,
-        "woodChest": 9.0
+        "nothing": 30,
+        "coins": 36,
+        "heart": 10,
+        "key": 10,
+        "bomb": 5,
+        "woodChest": 9
       },
       "quantities": {
         "coins": [
@@ -3776,12 +3776,12 @@
         30
       ],
       "weights": {
-        "nothing": 20.0,
-        "coins": 38.0,
-        "heart": 12.0,
-        "key": 10.0,
-        "bomb": 5.0,
-        "woodChest": 15.0
+        "nothing": 20,
+        "coins": 38,
+        "heart": 12,
+        "key": 10,
+        "bomb": 5,
+        "woodChest": 15
       },
       "quantities": {
         "coins": [
@@ -3822,12 +3822,12 @@
         70
       ],
       "weights": {
-        "nothing": 18.0,
-        "coins": 38.0,
-        "heart": 10.0,
-        "key": 12.0,
-        "bomb": 6.0,
-        "woodChest": 16.0
+        "nothing": 18,
+        "coins": 38,
+        "heart": 10,
+        "key": 12,
+        "bomb": 6,
+        "woodChest": 16
       },
       "quantities": {
         "coins": [
@@ -3868,12 +3868,12 @@
         100
       ],
       "weights": {
-        "nothing": 15.0,
-        "coins": 40.0,
-        "heart": 8.0,
-        "key": 12.0,
-        "bomb": 7.0,
-        "woodChest": 18.0
+        "nothing": 15,
+        "coins": 40,
+        "heart": 8,
+        "key": 12,
+        "bomb": 7,
+        "woodChest": 18
       },
       "quantities": {
         "coins": [
@@ -3912,7 +3912,7 @@
     {
       "reward": "object",
       "label": "Reliquia/objeto",
-      "probability": 100.0,
+      "probability": 100,
       "quantity": [
         1,
         1
@@ -3922,7 +3922,7 @@
     {
       "reward": "coins",
       "label": "Monedas",
-      "probability": 70.0,
+      "probability": 70,
       "quantity": [
         5,
         12
@@ -3932,7 +3932,7 @@
     {
       "reward": "heart",
       "label": "Curación",
-      "probability": 45.0,
+      "probability": 45,
       "quantity": [
         1,
         1
@@ -3942,7 +3942,7 @@
     {
       "reward": "key",
       "label": "Llave",
-      "probability": 25.0,
+      "probability": 25,
       "quantity": [
         1,
         1
@@ -3952,7 +3952,7 @@
     {
       "reward": "bomb",
       "label": "Bomba",
-      "probability": 15.0,
+      "probability": 15,
       "quantity": [
         1,
         1
@@ -3962,7 +3962,7 @@
     {
       "reward": "woodChest",
       "label": "Cofre extra",
-      "probability": 5.0,
+      "probability": 5,
       "quantity": [
         1,
         1
@@ -3975,7 +3975,7 @@
       "chest": "madera",
       "cost": "Gratis",
       "reward": "Monedas",
-      "probability": 45.0,
+      "probability": 45,
       "quantity": "2-5",
       "intent": null
     },
@@ -3983,7 +3983,7 @@
       "chest": "madera",
       "cost": "Gratis",
       "reward": "Corazón",
-      "probability": 20.0,
+      "probability": 20,
       "quantity": "1",
       "intent": null
     },
@@ -3991,7 +3991,7 @@
       "chest": "madera",
       "cost": "Gratis",
       "reward": "Llave",
-      "probability": 15.0,
+      "probability": 15,
       "quantity": "1",
       "intent": null
     },
@@ -3999,7 +3999,7 @@
       "chest": "madera",
       "cost": "Gratis",
       "reward": "Bomba",
-      "probability": 8.0,
+      "probability": 8,
       "quantity": "1",
       "intent": null
     },
@@ -4007,7 +4007,7 @@
       "chest": "madera",
       "cost": "Gratis",
       "reward": "Consumible",
-      "probability": 7.0,
+      "probability": 7,
       "quantity": "Carta/píldora simple",
       "intent": null
     },
@@ -4015,7 +4015,7 @@
       "chest": "madera",
       "cost": "Gratis",
       "reward": "Objeto común",
-      "probability": 5.0,
+      "probability": 5,
       "quantity": "1",
       "intent": null
     },
@@ -4023,7 +4023,7 @@
       "chest": "plata",
       "cost": "1 llave",
       "reward": "Monedas",
-      "probability": 30.0,
+      "probability": 30,
       "quantity": "5-10",
       "intent": null
     },
@@ -4031,7 +4031,7 @@
       "chest": "plata",
       "cost": "1 llave",
       "reward": "Llaves",
-      "probability": 18.0,
+      "probability": 18,
       "quantity": "1-2",
       "intent": null
     },
@@ -4039,7 +4039,7 @@
       "chest": "plata",
       "cost": "1 llave",
       "reward": "Bomba",
-      "probability": 12.0,
+      "probability": 12,
       "quantity": "1",
       "intent": null
     },
@@ -4047,7 +4047,7 @@
       "chest": "plata",
       "cost": "1 llave",
       "reward": "Curación buena",
-      "probability": 15.0,
+      "probability": 15,
       "quantity": "1-2 corazones",
       "intent": null
     },
@@ -4055,7 +4055,7 @@
       "chest": "plata",
       "cost": "1 llave",
       "reward": "Consumible fuerte",
-      "probability": 10.0,
+      "probability": 10,
       "quantity": "Carta/runa",
       "intent": null
     },
@@ -4063,7 +4063,7 @@
       "chest": "plata",
       "cost": "1 llave",
       "reward": "Objeto común",
-      "probability": 12.0,
+      "probability": 12,
       "quantity": "1",
       "intent": null
     },
@@ -4071,7 +4071,7 @@
       "chest": "plata",
       "cost": "1 llave",
       "reward": "Objeto raro",
-      "probability": 3.0,
+      "probability": 3,
       "quantity": "1",
       "intent": null
     },
@@ -4079,7 +4079,7 @@
       "chest": "dorado",
       "cost": "1 llave",
       "reward": "Objeto común",
-      "probability": 35.0,
+      "probability": 35,
       "quantity": "1",
       "intent": null
     },
@@ -4087,7 +4087,7 @@
       "chest": "dorado",
       "cost": "1 llave",
       "reward": "Objeto raro",
-      "probability": 20.0,
+      "probability": 20,
       "quantity": "1",
       "intent": null
     },
@@ -4095,7 +4095,7 @@
       "chest": "dorado",
       "cost": "1 llave",
       "reward": "Monedas",
-      "probability": 15.0,
+      "probability": 15,
       "quantity": "10-20",
       "intent": null
     },
@@ -4103,7 +4103,7 @@
       "chest": "dorado",
       "cost": "1 llave",
       "reward": "Llaves",
-      "probability": 10.0,
+      "probability": 10,
       "quantity": "2",
       "intent": null
     },
@@ -4111,7 +4111,7 @@
       "chest": "dorado",
       "cost": "1 llave",
       "reward": "Bombas",
-      "probability": 8.0,
+      "probability": 8,
       "quantity": "1-2",
       "intent": null
     },
@@ -4119,7 +4119,7 @@
       "chest": "dorado",
       "cost": "1 llave",
       "reward": "Curación grande",
-      "probability": 7.0,
+      "probability": 7,
       "quantity": "2-3 corazones",
       "intent": null
     },
@@ -4127,7 +4127,7 @@
       "chest": "dorado",
       "cost": "1 llave",
       "reward": "Objeto épico",
-      "probability": 5.0,
+      "probability": 5,
       "quantity": "1",
       "intent": null
     }
@@ -4136,56 +4136,56 @@
     {
       "reward": "Cofre plata",
       "internalReward": "silverChest",
-      "probability": 24.0,
+      "probability": 24,
       "quantity": "1",
       "note": "Útil garantizado."
     },
     {
       "reward": "Cofre dorado",
       "internalReward": "goldChest",
-      "probability": 14.0,
+      "probability": 14,
       "quantity": "1",
       "note": "Bueno, pero no siempre."
     },
     {
       "reward": "Monedas",
       "internalReward": "coins",
-      "probability": 24.0,
+      "probability": 24,
       "quantity": "8-15",
       "note": "Rentable sin romper."
     },
     {
       "reward": "Curación fuerte",
       "internalReward": "heart",
-      "probability": 14.0,
+      "probability": 14,
       "quantity": "1",
       "note": "Salva runs."
     },
     {
       "reward": "Llave",
       "internalReward": "key",
-      "probability": 8.0,
+      "probability": 8,
       "quantity": "1-2",
       "note": "Puede encadenar cofres."
     },
     {
       "reward": "Objeto común",
       "internalReward": "object",
-      "probability": 9.0,
+      "probability": 9,
       "quantity": "1",
       "note": "Premio bueno."
     },
     {
       "reward": "Objeto raro",
       "internalReward": "object",
-      "probability": 4.0,
+      "probability": 4,
       "quantity": "1",
       "note": "Muy raro."
     },
     {
       "reward": "Mercader secreto",
       "internalReward": "madShop",
-      "probability": 3.0,
+      "probability": 3,
       "quantity": "1",
       "note": "Raro y caro."
     }
@@ -4216,10 +4216,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -4247,10 +4247,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -4278,10 +4278,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -4309,10 +4309,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -4340,10 +4340,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -4371,10 +4371,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -4402,10 +4402,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -4433,10 +4433,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -4464,10 +4464,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -4495,10 +4495,10 @@
         2,
         3
       ],
-      "hpMultiplier": 1.0,
-      "damageMultiplier": 1.0,
+      "hpMultiplier": 1,
+      "damageMultiplier": 1,
       "speedLabel": "Bajo",
-      "speedMultiplier": 1.0,
+      "speedMultiplier": 1,
       "feel": "Primer boss difícil pero pasable si juegas bien."
     },
     {
@@ -7007,7 +7007,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
@@ -7038,7 +7038,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
@@ -7069,7 +7069,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
@@ -7100,7 +7100,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
@@ -7131,7 +7131,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
@@ -7162,7 +7162,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
@@ -7193,7 +7193,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
@@ -7224,7 +7224,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
@@ -7255,7 +7255,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
@@ -7286,7 +7286,7 @@
         14
       ],
       "hpMultiplier": 5.4,
-      "damageMultiplier": 3.0,
+      "damageMultiplier": 3,
       "speedLabel": "Extremo+",
       "speedMultiplier": 1.9,
       "feel": "Llegar a 100 debe ser prácticamente imposible."
