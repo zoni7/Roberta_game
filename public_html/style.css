@@ -67,7 +67,8 @@ body.cursor-action #game {
 .intro-screen button:focus-visible,
 .fullscreen-toggle:hover,
 .fullscreen-toggle:focus-visible {
-  background: #fff4df;
+  background: #fff5e8;
+  transform: translateY(2px);
   outline: 3px solid rgba(252, 222, 131, 0.5);
   outline-offset: 3px;
 }
@@ -138,6 +139,33 @@ body.cursor-action #game {
   font-size: 13px;
   letter-spacing: 0;
   pointer-events: auto;
+}
+
+.hud-music-control {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  z-index: 24;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ece0cf;
+  border: 2px solid #201512;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 5px 0 #4d3327;
+  pointer-events: auto;
+}
+
+.hud-music-control input[type="range"] {
+  width: 80px;
+  cursor: pointer;
+  accent-color: #4d3327;
+}
+
+.hud-music-control span {
+  font-size: 16px;
+  line-height: 1;
 }
 
 .hud {

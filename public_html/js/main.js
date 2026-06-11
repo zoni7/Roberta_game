@@ -1,9 +1,26 @@
-﻿let introFinished = false;
+let introFinished = false;
 let introFallbackTimer = null;
 
 function updateFullscreenToggle() {
   if (!fullscreenToggleBtn) return;
   fullscreenToggleBtn.textContent = document.fullscreenElement ? "EXIT" : "FULL";
+}
+
+function updateMusicToggle() {
+  if (!musicToggleBtn) return;
+  const vol = options?.musicVolume ?? 100;
+  musicToggleBtn.value = vol;
+  const hudIcon = document.getElementById("hudMusicIcon");
+  if (hudIcon) hudIcon.textContent = vol > 0 ? "🎵" : "🔇";
+}
+
+function handleHudMusicInput() {
+  if (!options) return;
+  options.musicVolume = Number(musicToggleBtn.value);
+  updateMusicToggle();
+  writeOptions();
+  if (typeof SFX !== "undefined") SFX.updateVolumes();
+  if (typeof renderOptions === "function") renderOptions(); // Sync with options menu
 }
 
 async function toggleFullscreen() {
@@ -61,6 +78,7 @@ function showMainMenu() {
   renderRankingPanel();
   renderProfilePanel();
   setMode("mainmenu");
+  SFX.playMainMenuMusic();
 }
 
 function openEntryAfterPressStart() {
@@ -116,7 +134,7 @@ function backToMainMenuFromPause() {
   if (state) saveCurrentRun();
   keys.clear();
   mouse.down = false;
-  setMode("mainmenu");
+  showMainMenu();
 }
 
 
@@ -201,6 +219,7 @@ introScreen?.addEventListener("pointerdown", (event) => {
   }
 });
 fullscreenToggleBtn?.addEventListener("click", () => toggleFullscreen());
+musicToggleBtn?.addEventListener("input", () => handleHudMusicInput());
 
 function shouldBlockBrowserShortcut(event) {
   if (mode !== "game" && mode !== "paused") return false;
@@ -412,6 +431,8 @@ for (const control of [masterVolume, musicVolume, effectsVolume, muteAudio, scre
   control?.addEventListener("input", () => {
     options[control.id] = control.type === "checkbox" ? control.checked : Number(control.value);
     renderOptions();
+    if (typeof SFX !== "undefined") SFX.updateVolumes();
+    updateMusicToggle();
   });
 }
 
@@ -479,8 +500,13 @@ debugUnlimitedMoney?.addEventListener("change", () => {
 });
 
 Promise.all([loadImages(), loadBalance()]).then(() => {
+  if (typeof SFX !== "undefined") {
+    SFX.init();
+    SFX.updateVolumes();
+  }
   detectOnlineApi();
   playIntro();
   updateFullscreenToggle();
+  updateMusicToggle();
   requestAnimationFrame(loop);
 });

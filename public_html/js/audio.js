@@ -104,6 +104,22 @@ const SOUND_REGISTRY = {
     },
   },
 
+  mainMenuMusic: {
+    type: "files",
+    files: ["assets/audio/soundtrack/main_menu.mp3"],
+    volume: AUDIO_CONFIG.MUSIC_VOLUME,
+  },
+
+  battleMusic: {
+    type: "files",
+    files: [
+      "assets/audio/soundtrack/battle-1.mp3",
+      "assets/audio/soundtrack/battle-2.mp3",
+      "assets/audio/soundtrack/battle-3.mp3"
+    ],
+    volume: AUDIO_CONFIG.MUSIC_VOLUME,
+  },
+
 };
 
 
@@ -116,8 +132,11 @@ const SFX = {
   _enabled: true,
   _pools  : {},   // { [eventKey]: Howl[]  |  { generic: Howl[], themes: {…} } }
   _music  : {
+    mainMenu  : null,
+    battle    : null,
     soundtrack: null,
     theme     : null,
+    manager   : null, // Timeout handle for battle music
   },
 
 
@@ -259,6 +278,7 @@ const SFX = {
       const pitch = AUDIO_CONFIG.PITCH_MIN
         + Math.random() * (AUDIO_CONFIG.PITCH_MAX - AUDIO_CONFIG.PITCH_MIN);
       sound.rate(pitch);
+      sound.volume(this.getEffectsVolume());
       sound.play();
       return;
     }
@@ -270,6 +290,7 @@ const SFX = {
         const pitch = AUDIO_CONFIG.PITCH_MIN
           + Math.random() * (AUDIO_CONFIG.PITCH_MAX - AUDIO_CONFIG.PITCH_MIN);
         loadingSound.rate(pitch);
+        loadingSound.volume(this.getEffectsVolume());
         loadingSound.play();
       });
       return;
@@ -339,6 +360,103 @@ const SFX = {
   //  API PÚBLICA — eventos del juego
   // ───────────────────────────────────────────────────────────
 
+  getMusicVolume() {
+    if (typeof options === "undefined" || !options) return AUDIO_CONFIG.MUSIC_VOLUME;
+    if (options.muteAudio) return 0;
+    return AUDIO_CONFIG.MUSIC_VOLUME * (options.musicVolume / 100) * (options.masterVolume / 100);
+  },
+
+  getEffectsVolume() {
+    if (typeof options === "undefined" || !options) return AUDIO_CONFIG.VOLUME_DEFAULT;
+    if (options.muteAudio) return 0;
+    return AUDIO_CONFIG.VOLUME_DEFAULT * (options.effectsVolume / 100) * (options.masterVolume / 100);
+  },
+
+  updateVolumes() {
+    const musicVol = this.getMusicVolume();
+    if (this._music.mainMenu) this._music.mainMenu.volume(musicVol);
+    if (this._music.soundtrack) this._music.soundtrack.volume(musicVol);
+    // Para que sea menos agresivo, la música de batalla suena al 70% de volumen de música.
+    if (this._music.battle) this._music.battle.volume(musicVol * 0.7);
+  },
+
+  playMainMenuMusic() {
+    if (!this._enabled) return;
+    this.stopBattleMusicManager();
+    const pool = this._getPool("mainMenuMusic");
+    if (!pool || pool.length === 0) return;
+    
+    const howl = pool[0];
+    howl.volume(this.getMusicVolume());
+    howl.loop(true);
+    
+    if (!howl.playing()) {
+      howl.play();
+    }
+    this._music.mainMenu = howl;
+  },
+
+  stopMainMenuMusic() {
+    if (this._music.mainMenu) {
+      this._music.mainMenu.stop();
+      this._music.mainMenu = null;
+    }
+  },
+
+  startBattleMusicManager() {
+    this.stopMainMenuMusic();
+    if (!this._enabled) return;
+
+    if (this._music.manager) {
+      clearTimeout(this._music.manager);
+    }
+    
+    const playRandom = () => {
+      const pool = this._getPool("battleMusic");
+      if (!pool || pool.length === 0) return;
+      
+      const loaded = pool.filter((sound) => sound.state() === "loaded");
+      if (loaded.length === 0) return;
+
+      const sound = loaded[Math.floor(Math.random() * loaded.length)];
+      
+      // Stop old battle music
+      if (this._music.battle) {
+        this._music.battle.stop();
+        this._music.battle.off("end");
+      }
+      
+      // Reproduce menos agresivo: menos volumen y pitch normal o ligeramente más bajo.
+      sound.volume(this.getMusicVolume() * 0.7);
+      sound.rate(1.0); 
+      sound.loop(false);
+      
+      sound.once("end", () => {
+        // Al terminar, esperar un tiempo aleatorio entre 15s y 45s para que no sea repetitivo
+        const delay = 15000 + Math.random() * 30000;
+        this._music.manager = setTimeout(playRandom, delay);
+      });
+      
+      sound.play();
+      this._music.battle = sound;
+    };
+    
+    // Iniciar con un pequeño delay inicial
+    this._music.manager = setTimeout(playRandom, 5000);
+  },
+
+  stopBattleMusicManager() {
+    if (this._music.manager) {
+      clearTimeout(this._music.manager);
+      this._music.manager = null;
+    }
+    if (this._music.battle) {
+      this._music.battle.stop();
+      this._music.battle.off("end");
+      this._music.battle = null;
+    }
+  },
+
   /**
    * Reproduce un sonido de compra al adquirir un objeto en la tienda.
    * Llamar desde game.js cuando la transacción sea exitosa.
@@ -391,6 +509,7 @@ const SFX = {
 
     soundtrack.loop(true);
     soundtrack.rate(1);
+    soundtrack.volume(this.getMusicVolume());
 
     this._music.soundtrack = soundtrack;
     this._music.theme = themeName ?? "generic";

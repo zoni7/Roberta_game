@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8">
@@ -10,6 +10,10 @@
     <main class="shell">
       <canvas id="game" width="1280" height="720" aria-label="Demo del juego"></canvas>
       <button class="fullscreen-toggle" id="fullscreenToggleBtn" type="button" aria-label="Fullscreen">FULL</button>
+      <div class="hud-music-control" id="hudMusicControl">
+        <span id="hudMusicIcon">🎵</span>
+        <input id="musicToggleBtn" type="range" min="0" max="100" value="100" aria-label="Music Volume">
+      </div>
 
       <section class="intro-screen" id="introScreen" hidden>
         <video id="introVideo" class="intro-video" src="assets/ui/intro.mp4" preload="auto" playsinline></video>
@@ -267,11 +271,13 @@
       </section>
     </main>
 
-    <script src="js/constants.js?v=20260610-02"></script>
-    <script src="js/save.js?v=20260610-02"></script>
-    <script src="js/game.js?v=20260610-02"></script>
-    <script src="js/rendering.js?v=20260610-02"></script>
-    <script src="js/main.js?v=20260610-02"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+    <script src="js/audio.js?v=20260611-01"></script>
+    <script src="js/constants.js?v=20260611-01"></script>
+    <script src="js/save.js?v=20260611-01"></script>
+    <script src="js/game.js?v=20260611-01"></script>
+    <script src="js/rendering.js?v=20260611-01"></script>
+    <script src="js/main.js?v=20260611-01"></script>
   </body>
 </html>
 

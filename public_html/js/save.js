@@ -445,6 +445,7 @@ function newRun() {
   spawnRoom();
   saveCurrentRun();
   setMode("game");
+  SFX.startBattleMusicManager();
 }
 
 function continueRun() {
@@ -453,6 +454,7 @@ function continueRun() {
   spawnRoom();
   saveCurrentRun();
   setMode("game");
+  if (typeof SFX !== "undefined") SFX.startBattleMusicManager();
 }
 
 function snapshotCurrentRun() {

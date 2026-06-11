@@ -1,4 +1,4 @@
-﻿
+
 function setMode(nextMode) {
   mode = nextMode;
   if (introScreen) introScreen.hidden = mode !== "intro";
@@ -475,7 +475,7 @@ function tryBuyShopItem(item) {
   if (!debugState.unlimitedMoney) state.coins -= item.price;
   item.bought = true;
 
-  if (item.kind === "key") {
+    if (item.kind === "key") {
     state.keys += 1;
     state.message = "+ llave";
   } else if (item.kind === "bomb") {
@@ -495,6 +495,9 @@ function tryBuyShopItem(item) {
   } else {
     state.message = "El mercader se rie";
   }
+
+  SFX.merchantBuy();
+  
 
   state.messageTime = 1.05;
   saveCurrentRun();
@@ -1169,6 +1172,7 @@ function gameOverRun() {
   writeSave();
   runSummary.textContent = `Has llegado a la sala ${state.room}. Mejor sala: ${save.bestRoom}.`;
   setMode("gameover");
+  if (typeof SFX !== "undefined") SFX.stopBattleMusicManager();
 }
 
 function winRun() {
@@ -1180,6 +1184,7 @@ function winRun() {
   state.messageTime = 2;
   victorySummary.textContent = "Has derrotado al boss de la sala 100.";
   setMode("victory");
+  if (typeof SFX !== "undefined") SFX.stopBattleMusicManager();
 }
 
 function update(dt) {
